@@ -164,21 +164,18 @@ def parse_pdf(
                 "file_size_bytes": pdf_path.stat().st_size,
                 "sha256": calculate_sha256(pdf_path),
             },
-
             "document": {
                 "page_count": document.num_pages(),
                 "table_count": len(document.tables),
             },
-
             "parser": {
                 "name": "docling",
-                "conversion_status": status,
+                "status": status,
                 "processing_time_seconds": round(
                     processing_time,
                     3,
                 ),
             },
-
             "outputs": {
                 "json": str(json_path),
                 "markdown": str(markdown_path),
@@ -213,7 +210,6 @@ def parse_pdf(
                 "file_name": pdf_path.name,
                 "relative_path": str(relative_path),
             },
-
             "parser": {
                 "name": "docling",
                 "status": "failed",
@@ -222,7 +218,6 @@ def parse_pdf(
                     3,
                 ),
             },
-
             "error": {
                 "type": type(error).__name__,
                 "message": str(error),

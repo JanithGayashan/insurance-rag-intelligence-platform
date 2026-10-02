@@ -13,6 +13,10 @@ PROCESSED_DATA_DIR = Path("data/processed")
 def discover_pdfs(
     raw_directory: Path,
 ) -> list[Path]:
+    """
+    Recursively discover all PDF files
+    inside the raw data directory.
+    """
 
     pdf_files = sorted(
         raw_directory.rglob("*.pdf")
@@ -21,10 +25,23 @@ def discover_pdfs(
     return pdf_files
 
 
-def run_ingestion_pipeline():
+def run_ingestion_pipeline() -> None:
+    """
+    Run the document ingestion pipeline.
+
+    The pipeline:
+    1. Discovers all PDF files.
+    2. Creates one reusable Docling converter.
+    3. Parses each PDF.
+    4. Counts successful and failed documents.
+    """
 
     print("Starting document ingestion")
     print("=" * 60)
+
+    # --------------------------------
+    # 1. Discover PDF files
+    # --------------------------------
 
     pdf_files = discover_pdfs(
         RAW_DATA_DIR
@@ -40,11 +57,18 @@ def run_ingestion_pipeline():
         )
         return
 
-    # Create once and reuse it.
+    # --------------------------------
+    # 2. Create Docling converter once
+    # --------------------------------
+
     converter = create_converter()
 
     successful = 0
     failed = 0
+
+    # --------------------------------
+    # 3. Process each PDF
+    # --------------------------------
 
     for pdf_path in pdf_files:
 
@@ -55,15 +79,23 @@ def run_ingestion_pipeline():
             converter=converter,
         )
 
-        if (
-            result.get("parser", {})
-            .get("status")
-            == "failed"
-        ):
-            failed += 1
+        # --------------------------------
+        # 4. Check parser status
+        # --------------------------------
 
+        parser_status = result.get(
+            "parser",
+            {}
+        ).get("status")
+
+        if parser_status == "failed":
+            failed += 1
         else:
             successful += 1
+
+    # --------------------------------
+    # 5. Print summary
+    # --------------------------------
 
     print()
     print("=" * 60)
