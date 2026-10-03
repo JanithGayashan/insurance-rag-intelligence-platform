@@ -6,8 +6,8 @@ from src.ingestion.docling_parser import (
 )
 
 
-RAW_DATA_DIR = Path("data/raw")
-PROCESSED_DATA_DIR = Path("data/processed")
+RAW_DATA_DIR = Path("data/raw/allianz")
+PROCESSED_DATA_DIR = Path("data/processed/allianz")
 
 
 def discover_pdfs(

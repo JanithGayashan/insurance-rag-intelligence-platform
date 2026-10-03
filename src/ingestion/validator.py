@@ -17,8 +17,8 @@ from docling_core.types.doc.document import DoclingDocument
 # PATHS
 # ============================================================
 
-RAW_DATA_DIR = Path("data/raw")
-PROCESSED_DATA_DIR = Path("data/processed")
+RAW_DATA_DIR = Path("data/raw/allianz")
+PROCESSED_DATA_DIR = Path("data/processed/allianz")
 
 SUMMARY_OUTPUT_PATH = (
     PROCESSED_DATA_DIR / "validation_summary.json"
