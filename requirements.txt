@@ -150,7 +150,7 @@ python-magic==0.4.27
 python-oxmsg==0.0.2
 python-pptx==1.0.2
 pytz==2026.3.post1
-pywin32==312
+pywin32==312; sys_platform == "win32"
 PyYAML==6.0.3
 RapidFuzz==3.14.5
 rapidocr==3.9.2
