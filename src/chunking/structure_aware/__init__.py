@@ -1,4 +1,4 @@
-from src.chunking.structure_aware import (
+from src.chunking.structure_aware.chunker import (
     StructureAwareChunker,
     write_chunks,
 )

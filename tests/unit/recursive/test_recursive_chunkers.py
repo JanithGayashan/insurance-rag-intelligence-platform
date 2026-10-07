@@ -1,7 +1,7 @@
-from src.chunking.recursive_custom import (
+from src.chunking.recursive.custom import (
     RecursiveChunker,
 )
-from src.chunking.recursive_llamaindex import (
+from src.chunking.recursive.llamaindex import (
     LlamaIndexRecursiveChunker,
 )
 

@@ -1,6 +1,6 @@
 import json
 
-from src.chunking.structure_pipeline import (
+from src.chunking.structure_aware.pipeline import (
     discover_documents,
     run_structure_chunking_pipeline,
 )

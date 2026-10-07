@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from statistics import mean
 
-from src.chunking.fixed import FixedTokenChunker
+from src.chunking.fixed.fixed import FixedTokenChunker
 
 
 PROCESSED_DATA_DIR = Path("data/processed/allianz")
