@@ -19,7 +19,11 @@ def discover_pdfs(
     """
 
     pdf_files = sorted(
-        raw_directory.rglob("*.pdf")
+        raw_directory.rglob("*.pdf"),
+        key=lambda path: (
+            len(path.relative_to(raw_directory).parts),
+            path.as_posix().casefold(),
+        ),
     )
 
     return pdf_files

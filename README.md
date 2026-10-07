@@ -41,11 +41,19 @@ Current capabilities include:
 
 ### Phase 2 — Chunking 🔄
 
-Planned work:
+Implemented:
 
 - Baseline token-based chunking.
-- Recursive chunking.
-- Structure-aware chunking using Docling document hierarchy.
+- Custom and LlamaIndex recursive chunking.
+- Structure-aware chunking using Docling reading order and document hierarchy.
+- Preservation of section paths, page numbers, and native source references.
+- List-aware formatting and table-preserving chunk boundaries.
+- Token-budget fallback splitting for oversized structural elements.
+- Batch chunking for validated `PASS` and `REVIEW` documents.
+- Per-document chunk artifacts and corpus-level chunking summaries.
+
+Planned work:
+
 - Semantic chunking.
 - Parent-child / hierarchical chunking.
 - Controlled comparison of chunking strategies.
