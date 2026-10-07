@@ -1,4 +1,4 @@
-from src.chunking.fixed import FixedTokenChunker
+from src.chunking.fixed.fixed import FixedTokenChunker
 
 
 def test_fixed_token_chunking():

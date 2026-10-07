@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from src.chunking.fixed import FixedTokenChunker
+from src.chunking.fixed.fixed import FixedTokenChunker
 
 
 PROCESSED_DATA_DIR = Path("data/processed")
