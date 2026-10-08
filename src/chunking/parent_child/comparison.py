@@ -9,11 +9,17 @@ from typing import Any
 import tiktoken
 
 from src.chunking.parent_child.custom import CustomParentChildChunker
+from src.chunking.parent_child.evaluation import (
+    evaluate_question_retrieval,
+    evaluate_section_retrieval,
+    unavailable_answer_evaluation,
+)
 from src.chunking.parent_child.llamaindex import LlamaIndexParentChildChunker
 from src.chunking.parent_child.models import (
     HierarchicalChunk,
     ParentChildHierarchy,
 )
+from src.chunking.parent_child.structured import StructuredParentChildChunker
 
 
 def compare_document(
@@ -23,8 +29,10 @@ def compare_document(
     child_size: int = 300,
     child_overlap: int = 50,
     document_id: str | None = None,
+    structured_document_path: Path | None = None,
+    evaluation_questions: Sequence[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
-    """Build and compare custom and LlamaIndex two-level hierarchies."""
+    """Build baseline and production-oriented parent-child hierarchies."""
 
     document_path = Path(document_path)
     output_directory = output_directory or (
@@ -34,6 +42,13 @@ def compare_document(
     resolved_document_id = document_id or document_path.parent.name
     text = document_path.read_text(encoding="utf-8")
     source_tokens = len(tiktoken.get_encoding("cl100k_base").encode(text))
+    structured_document_path = structured_document_path or (
+        document_path.parent / "document.json"
+    )
+    if not structured_document_path.exists():
+        raise FileNotFoundError(
+            f"Docling document JSON was not found: {structured_document_path}"
+        )
 
     custom = CustomParentChildChunker(
         parent_size=parent_size,
@@ -45,11 +60,32 @@ def compare_document(
         child_size=child_size,
         child_overlap=child_overlap,
     ).chunk_text(text, resolved_document_id)
+    industry = StructuredParentChildChunker(
+        parent_size=parent_size,
+        child_size=child_size,
+    ).chunk_file(structured_document_path, resolved_document_id)
 
     custom_path = output_directory / "custom_hierarchy.json"
     llamaindex_path = output_directory / "llamaindex_hierarchy.json"
+    industry_path = output_directory / "industry_hierarchy.json"
     _write_hierarchy(custom, custom_path)
     _write_hierarchy(llamaindex, llamaindex_path)
+    _write_hierarchy(industry, industry_path)
+    _write_text_hierarchy(custom, output_directory / "custom_chunks.txt")
+    _write_text_hierarchy(llamaindex, output_directory / "llamaindex_chunks.txt")
+    _write_text_hierarchy(industry, output_directory / "industry_chunks.txt")
+
+    industry_metrics = hierarchy_metrics(industry, source_tokens)
+    industry_metrics.update(
+        {
+            "structure_quality": industry.metadata.get("quality", {}),
+            "section_retrieval_evaluation": evaluate_section_retrieval(industry),
+            "question_retrieval_evaluation": evaluate_question_retrieval(
+                industry, evaluation_questions or []
+            ),
+            "answer_evaluation": unavailable_answer_evaluation(),
+        }
+    )
 
     comparison = {
         "document": str(document_path),
@@ -61,6 +97,7 @@ def compare_document(
             "child_size": child_size,
             "child_overlap": child_overlap,
             "source_tokens": source_tokens,
+            "industry_child_overlap": 0,
         },
         "custom": {
             "implementation": "project recursive splitter",
@@ -72,6 +109,11 @@ def compare_document(
             "output": str(llamaindex_path),
             **hierarchy_metrics(llamaindex, source_tokens),
         },
+        "industry": {
+            "implementation": "Docling section parents with paragraph/sentence children",
+            "output": str(industry_path),
+            **industry_metrics,
+        },
     }
     comparison_path = output_directory / "comparison.json"
     report_path = output_directory / "comparison.md"
@@ -80,7 +122,7 @@ def compare_document(
         encoding="utf-8",
     )
     report_path.write_text(
-        render_document_report(comparison, custom, llamaindex),
+        render_document_report(comparison, custom, llamaindex, industry),
         encoding="utf-8",
     )
     comparison["comparison_output"] = str(comparison_path)
@@ -136,6 +178,7 @@ def render_document_report(
     comparison: dict[str, Any],
     custom: ParentChildHierarchy,
     llamaindex: ParentChildHierarchy,
+    industry: ParentChildHierarchy,
 ) -> str:
     lines = [
         "# Parent-child chunking comparison",
@@ -144,12 +187,13 @@ def render_document_report(
         "",
         (
             "Each method creates larger parent chunks for context and smaller "
-            "child chunks for future retrieval. This phase records relationships; "
-            "it does not run a retriever."
+            "child chunks for retrieval. The industry method also runs a labeled "
+            "section-title BM25 probe; reviewed business questions remain a "
+            "separate evaluation input."
         ),
         "",
-        "| Metric | Custom | LlamaIndex |",
-        "| --- | ---: | ---: |",
+        "| Metric | Custom baseline | LlamaIndex baseline | Industry structured |",
+        "| --- | ---: | ---: | ---: |",
     ]
     for key, label in (
         ("parent_count", "Parents"),
@@ -163,17 +207,40 @@ def render_document_report(
     ):
         lines.append(
             f"| {label} | {comparison['custom'][key]} | "
-            f"{comparison['llamaindex'][key]} |"
+            f"{comparison['llamaindex'][key]} | "
+            f"{comparison['industry'][key]} |"
         )
 
     lines.extend(_sample_section("Custom", custom))
     lines.extend(_sample_section("LlamaIndex", llamaindex))
+    lines.extend(_sample_section("Industry structured", industry))
+    quality = comparison["industry"]["structure_quality"]
+    retrieval = comparison["industry"]["section_retrieval_evaluation"]
     lines.extend(
         [
+            "## Industry quality checks",
+            "",
+            f"- Children crossing sections: {quality['children_crossing_sections']}",
+            f"- Missing-word rate: {quality['missing_word_rate']}",
+            f"- Duplicate-word rate: {quality['duplicate_word_rate']}",
+            (
+                "- Sentence-boundary break rate: "
+                f"{quality['sentence_boundary_break_rate']}"
+            ),
+            (
+                "- Token-fallback chunks requiring review: "
+                f"{quality['fallback_token_split_chunks']}"
+            ),
+            f"- Section retrieval MRR: {retrieval.get('mean_reciprocal_rank')}",
+            f"- Section retrieval Recall@5: {retrieval.get('recall_at_k', {}).get('5')}",
+            "",
             "## Complete outputs",
             "",
             "- `custom_hierarchy.json` contains every custom parent and child.",
             "- `llamaindex_hierarchy.json` contains every LlamaIndex parent and child.",
+            "- `industry_hierarchy.json` contains every section-aware parent and child.",
+            "- `custom_chunks.txt` and `llamaindex_chunks.txt` show baseline text.",
+            "- `industry_chunks.txt` shows the complete readable hierarchy.",
             "- `comparison.json` contains validation and size metrics.",
             "",
         ]
@@ -237,3 +304,26 @@ def _write_hierarchy(hierarchy: ParentChildHierarchy, path: Path) -> None:
         json.dumps(hierarchy.model_dump(mode="json"), indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
+
+
+def _write_text_hierarchy(hierarchy: ParentChildHierarchy, path: Path) -> None:
+    """Write full parent and child text in an easy-to-read hierarchy."""
+
+    children_by_id = {child.chunk_id: child for child in hierarchy.children}
+    sections: list[str] = []
+    for parent_number, parent in enumerate(hierarchy.parents, start=1):
+        sections.extend(
+            [
+                f"{'=' * 24} PARENT {parent_number} {'=' * 24}",
+                parent.text,
+            ]
+        )
+        for child_number, child_id in enumerate(parent.children_ids, start=1):
+            child = children_by_id[child_id]
+            sections.extend(
+                [
+                    f"{'-' * 24} CHILD {parent_number}.{child_number} {'-' * 24}",
+                    child.text,
+                ]
+            )
+    path.write_text("\n\n".join(sections) + "\n", encoding="utf-8")

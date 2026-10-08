@@ -16,6 +16,9 @@ class HierarchicalChunk(BaseModel):
     level: Literal[0, 1]
     text: str = Field(min_length=1)
     token_count: int = Field(ge=1)
+    page_numbers: list[int] = Field(default_factory=list)
+    section_path: list[str] = Field(default_factory=list)
+    source_refs: list[str] = Field(default_factory=list)
     parent_id: str | None = None
     children_ids: list[str] = Field(default_factory=list)
     is_leaf: bool
