@@ -50,6 +50,8 @@ def compare_document(
     llamaindex_path = output_directory / "llamaindex_hierarchy.json"
     _write_hierarchy(custom, custom_path)
     _write_hierarchy(llamaindex, llamaindex_path)
+    _write_text_hierarchy(custom, output_directory / "custom_chunks.txt")
+    _write_text_hierarchy(llamaindex, output_directory / "llamaindex_chunks.txt")
 
     comparison = {
         "document": str(document_path),
@@ -237,3 +239,26 @@ def _write_hierarchy(hierarchy: ParentChildHierarchy, path: Path) -> None:
         json.dumps(hierarchy.model_dump(mode="json"), indent=2, ensure_ascii=False),
         encoding="utf-8",
     )
+
+
+def _write_text_hierarchy(hierarchy: ParentChildHierarchy, path: Path) -> None:
+    """Write full parent and child text in an easy-to-read hierarchy."""
+
+    children_by_id = {child.chunk_id: child for child in hierarchy.children}
+    sections: list[str] = []
+    for parent_number, parent in enumerate(hierarchy.parents, start=1):
+        sections.extend(
+            [
+                f"{'=' * 24} PARENT {parent_number} {'=' * 24}",
+                parent.text,
+            ]
+        )
+        for child_number, child_id in enumerate(parent.children_ids, start=1):
+            child = children_by_id[child_id]
+            sections.extend(
+                [
+                    f"{'-' * 24} CHILD {parent_number}.{child_number} {'-' * 24}",
+                    child.text,
+                ]
+            )
+    path.write_text("\n\n".join(sections) + "\n", encoding="utf-8")

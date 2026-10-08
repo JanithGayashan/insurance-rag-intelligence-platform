@@ -127,6 +127,8 @@ def test_comparison_writes_complete_hierarchies_and_readable_samples(tmp_path):
     for name in (
         "custom_hierarchy.json",
         "llamaindex_hierarchy.json",
+        "custom_chunks.txt",
+        "llamaindex_chunks.txt",
         "comparison.json",
         "comparison.md",
     ):
@@ -138,6 +140,12 @@ def test_comparison_writes_complete_hierarchies_and_readable_samples(tmp_path):
         )
     )
     report = (output_directory / "comparison.md").read_text(encoding="utf-8")
+    text_output = (output_directory / "llamaindex_chunks.txt").read_text(
+        encoding="utf-8"
+    )
     assert stored["parents"][0]["children_ids"]
     assert stored["children"][0]["parent_id"]
     assert "actual hierarchy sample" in report
+    assert "PARENT 1" in text_output
+    assert "CHILD 1.1" in text_output
+    assert stored["parents"][0]["text"] in text_output
