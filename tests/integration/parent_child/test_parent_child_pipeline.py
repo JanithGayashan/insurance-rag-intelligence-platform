@@ -14,6 +14,40 @@ def _write_document(root, name, status):
         for section in range(5)
     )
     (document_directory / "document.txt").write_text(text, encoding="utf-8")
+    docling_texts = [
+        {
+            "self_ref": "#/texts/0",
+            "children": [],
+            "label": "section_header",
+            "text": "Coverage",
+            "prov": [{"page_no": 1}],
+        },
+        {
+            "self_ref": "#/texts/1",
+            "children": [],
+            "label": "text",
+            "text": text,
+            "prov": [{"page_no": 1}],
+        },
+    ]
+    (document_directory / "document.json").write_text(
+        json.dumps(
+            {
+                "name": name,
+                "body": {
+                    "self_ref": "#/body",
+                    "children": [{"$ref": "#/texts/0"}, {"$ref": "#/texts/1"}],
+                },
+                "texts": docling_texts,
+                "groups": [],
+                "tables": [],
+                "pictures": [],
+                "key_value_items": [],
+                "form_items": [],
+            }
+        ),
+        encoding="utf-8",
+    )
     (document_directory / "validation_report.json").write_text(
         json.dumps({"status": status}), encoding="utf-8"
     )
@@ -40,6 +74,8 @@ def test_pipeline_processes_valid_documents_and_skips_failed_validation(tmp_path
     assert result["failed_documents"] == 0
     assert result["corpus"]["custom"]["relationship_errors"] == 0
     assert result["corpus"]["llamaindex"]["relationship_errors"] == 0
+    assert result["corpus"]["industry"]["relationship_errors"] == 0
+    assert result["corpus"]["industry"]["children_crossing_sections"] == 0
     assert (tmp_path / "parent_child_summary.json").exists()
     assert (tmp_path / "parent_child_summary.md").exists()
     assert (

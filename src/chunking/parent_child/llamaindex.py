@@ -12,11 +12,11 @@ from llama_index.core.node_parser import (
 )
 from llama_index.core.schema import MetadataMode, NodeRelationship
 
-from src.chunking.parent_child.custom import _validate_configuration
 from src.chunking.parent_child.models import (
     HierarchicalChunk,
     ParentChildHierarchy,
 )
+from src.chunking.parent_child.validation import validate_configuration
 
 
 class LlamaIndexParentChildChunker:
@@ -31,7 +31,7 @@ class LlamaIndexParentChildChunker:
         child_overlap: int = 50,
         encoding_name: str = "cl100k_base",
     ) -> None:
-        _validate_configuration(parent_size, child_size, child_overlap)
+        validate_configuration(parent_size, child_size, child_overlap)
         self.parent_size = parent_size
         self.child_size = child_size
         self.child_overlap = child_overlap

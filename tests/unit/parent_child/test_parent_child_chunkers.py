@@ -4,8 +4,10 @@ import pytest
 
 from src.chunking.parent_child.comparison import compare_document
 from src.chunking.parent_child.custom import CustomParentChildChunker
+from src.chunking.parent_child.evaluation import evaluate_question_retrieval
 from src.chunking.parent_child.llamaindex import LlamaIndexParentChildChunker
 from src.chunking.parent_child.models import ParentChildHierarchy
+from src.chunking.parent_child.structured import StructuredParentChildChunker
 
 
 LONG_TEXT = "\n\n".join(
@@ -18,6 +20,50 @@ LONG_TEXT = "\n\n".join(
     )
     for section in range(8)
 )
+
+
+def _docling_text(index, text, label="text", page=1):
+    return {
+        "self_ref": f"#/texts/{index}",
+        "children": [],
+        "label": label,
+        "text": text,
+        "prov": [{"page_no": page}],
+    }
+
+
+def _docling_document():
+    texts = [
+        _docling_text(0, "Motor Policy", "title"),
+        _docling_text(1, "Coverage", "section_header"),
+        _docling_text(2, "Section 1", "section_header"),
+        _docling_text(3, "Accidental Damage", "section_header"),
+        _docling_text(
+            4,
+            "Accidental collision damage is covered. Fire damage is also covered.",
+            page=2,
+        ),
+        _docling_text(5, "Flood damage is covered.", "list_item", page=2),
+        _docling_text(6, "General Exclusions", "section_header", page=3),
+        _docling_text(
+            7,
+            "Wear and tear is excluded. Mechanical breakdown is excluded.",
+            page=3,
+        ),
+    ]
+    return {
+        "name": "motor-policy",
+        "body": {
+            "self_ref": "#/body",
+            "children": [{"$ref": f"#/texts/{index}"} for index in range(8)],
+        },
+        "texts": texts,
+        "groups": [],
+        "tables": [],
+        "pictures": [],
+        "key_value_items": [],
+        "form_items": [],
+    }
 
 
 @pytest.mark.parametrize(
@@ -107,10 +153,82 @@ def test_custom_chunker_enforces_limits_after_recursive_separator_joining():
     assert all(child.token_count <= 30 for child in hierarchy.children)
 
 
+def test_structured_chunker_uses_sections_and_preserves_provenance():
+    hierarchy = StructuredParentChildChunker(
+        parent_size=120,
+        child_size=60,
+    ).chunk_document(_docling_document(), "policy")
+
+    coverage = next(
+        child
+        for child in hierarchy.children
+        if "Accidental collision damage" in child.text
+    )
+    exclusion = next(
+        child for child in hierarchy.children if "Wear and tear" in child.text
+    )
+    assert coverage.section_path == ["Coverage", "Section 1", "Accidental Damage"]
+    assert exclusion.section_path == ["General Exclusions"]
+    assert coverage.page_numbers == [2]
+    assert "#/texts/4" in coverage.source_refs
+    assert coverage.parent_id != exclusion.parent_id
+    assert hierarchy.metadata["quality"]["children_crossing_sections"] == 0
+    assert hierarchy.metadata["quality"]["missing_word_rate"] == 0
+    assert hierarchy.metadata["quality"]["duplicate_word_rate"] == 0
+
+
+def test_structured_chunker_marks_unavoidable_token_fallbacks():
+    document = _docling_document()
+    document["texts"][4]["text"] = "word " * 300
+    hierarchy = StructuredParentChildChunker(
+        parent_size=100,
+        child_size=40,
+    ).chunk_document(document, "policy")
+
+    fallback = [
+        child
+        for child in hierarchy.children
+        if child.metadata["fallback_token_split"]
+    ]
+    assert fallback
+    assert all(child.metadata["fallback_reason"] for child in fallback)
+    assert all(child.token_count <= 40 for child in hierarchy.children)
+    assert all(parent.token_count <= 100 for parent in hierarchy.parents)
+
+
+def test_labeled_questions_produce_recall_and_mrr_metrics():
+    hierarchy = StructuredParentChildChunker(
+        parent_size=120,
+        child_size=60,
+    ).chunk_document(_docling_document(), "policy")
+    result = evaluate_question_retrieval(
+        hierarchy,
+        [
+            {
+                "document_id": "policy",
+                "question": "What accidental damage is covered?",
+                "relevant_section_path": [
+                    "Coverage",
+                    "Section 1",
+                    "Accidental Damage",
+                ],
+            }
+        ],
+    )
+
+    assert result["status"] == "COMPLETED"
+    assert result["query_count"] == 1
+    assert result["recall_at_k"]["5"] == 1
+    assert result["mean_reciprocal_rank"] == 1
+
+
 def test_comparison_writes_complete_hierarchies_and_readable_samples(tmp_path):
     document_path = tmp_path / "policy" / "document.txt"
     document_path.parent.mkdir()
     document_path.write_text(LONG_TEXT, encoding="utf-8")
+    (document_path.parent / "document.json").write_text(
+        json.dumps(_docling_document()), encoding="utf-8"
+    )
 
     result = compare_document(
         document_path,
@@ -124,11 +242,17 @@ def test_comparison_writes_complete_hierarchies_and_readable_samples(tmp_path):
     assert result["llamaindex"]["orphan_children"] == 0
     assert result["custom"]["missing_child_references"] == 0
     assert result["llamaindex"]["missing_child_references"] == 0
+    assert result["industry"]["structure_quality"]["children_crossing_sections"] == 0
+    assert result["industry"]["section_retrieval_evaluation"]["status"] == (
+        "COMPLETED"
+    )
     for name in (
         "custom_hierarchy.json",
         "llamaindex_hierarchy.json",
+        "industry_hierarchy.json",
         "custom_chunks.txt",
         "llamaindex_chunks.txt",
+        "industry_chunks.txt",
         "comparison.json",
         "comparison.md",
     ):
