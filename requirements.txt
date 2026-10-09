@@ -97,6 +97,7 @@ msoffcrypto-tool==6.0.0
 multidict==6.9.1
 multiprocess==0.70.19
 murmurhash==1.0.15
+narwhals==2.26.0
 mypy_extensions==1.1.0
 nest-asyncio==1.6.0
 networkx==3.6.1
@@ -163,7 +164,9 @@ rpds-py==2026.6.3
 rtree==1.4.1
 safetensors==0.8.0
 scipy==1.18.0
+scikit-learn==1.9.1
 semchunk==3.2.5
+sentence-transformers==6.1.0
 setuptools==84.0.0
 shapely==2.1.2
 shellingham==1.5.4
@@ -180,6 +183,7 @@ sympy==1.14.0
 tabulate==0.10.0
 tenacity==9.1.4
 thinc==8.3.13
+threadpoolctl==3.7.0
 tiktoken==0.14.0
 timm==1.0.28
 tinytag==2.3.2

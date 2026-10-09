@@ -49,14 +49,18 @@ Implemented:
 - Preservation of section paths, page numbers, and native source references.
 - List-aware formatting and table-preserving chunk boundaries.
 - Token-budget fallback splitting for oversized structural elements.
+- Parent-child chunking with Docling section parents and paragraph/sentence children.
+- Structure-constrained semantic chunking using local BGE embeddings.
+- Custom and LlamaIndex semantic breakpoint implementations using the same model.
+- Semantic cohesion, boundary separation, text coverage, size, and section retrieval metrics.
+- Readable text and JSON comparison outputs for every validated document.
 - Batch chunking for validated `PASS` and `REVIEW` documents.
 - Per-document chunk artifacts and corpus-level chunking summaries.
 
 Planned work:
 
-- Semantic chunking.
-- Parent-child / hierarchical chunking.
-- Controlled comparison of chunking strategies.
+- Reviewed insurance retrieval question set.
+- Controlled retrieval evaluation across all chunking strategies.
 
 ### Upcoming Phases
 
