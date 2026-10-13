@@ -39,7 +39,7 @@ Current capabilities include:
 - Page- and document-level `PASS`, `REVIEW`, and `FAIL` quality decisions.
 - JSON validation reports for individual documents and the complete corpus.
 
-### Phase 2 — Chunking 🔄
+### Phase 2 — Chunking ✅
 
 Implemented:
 
@@ -61,6 +61,39 @@ Planned work:
 
 - Reviewed insurance retrieval question set.
 - Controlled retrieval evaluation across all chunking strategies.
+
+### Phase 3 — Dense Embeddings & Vector Retrieval 🔄
+
+Implemented:
+
+- Loading and validation of structure-aware chunk artifacts.
+- Normalized document and query embeddings with `BAAI/bge-small-en-v1.5`.
+- Deterministic Qdrant point identifiers derived from chunk IDs.
+- Local persistent Qdrant indexing with optional remote Qdrant configuration.
+- Cosine-similarity dense retrieval with metadata filters.
+- Index completeness, vector-dimension, duplicate-ID, and normalization checks.
+- Example insurance-query retrieval reports with complete source metadata.
+
+Run the complete local indexing pipeline:
+
+```bash
+python -m src.indexing.pipeline
+```
+
+Query the persisted Qdrant index:
+
+```bash
+python -m src.retrieval.cli "What accidental damage is covered?" --top-k 5
+```
+
+Set `QDRANT_URL` and optionally `QDRANT_API_KEY` to use a server or Qdrant
+Cloud instead of the local persistent index.
+
+Planned work:
+
+- Reviewed insurance retrieval questions and relevance labels.
+- Recall@K, Hit Rate@K, MRR, and nDCG evaluation.
+- Embedding-model comparison using the reviewed question set.
 
 ### Upcoming Phases
 

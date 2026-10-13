@@ -58,11 +58,14 @@ griffelib==2.3.0
 grpcio==1.83.0
 grpcio-status==1.83.0
 h11==0.16.0
+h2==4.4.1
 hf-xet==1.6.0
+hpack==4.2.0
 html5lib==1.1
 httpcore==1.0.9
 httpx==0.28.1
 huggingface_hub==1.27.0
+hyperframe==6.1.0
 idna==3.19
 iniconfig==2.3.0
 installer==0.7.0
@@ -122,6 +125,7 @@ pikepdf==10.12.0
 pillow==12.3.0
 platformdirs==4.12.3
 pluggy==1.6.0
+portalocker==3.2.0
 polyfactory==3.3.0
 preshed==3.0.13
 propcache==0.5.4
@@ -153,6 +157,7 @@ python-pptx==1.0.2
 pytz==2026.3.post1
 pywin32==312; sys_platform == "win32"
 PyYAML==6.0.3
+qdrant-client==1.19.1
 RapidFuzz==3.14.5
 rapidocr==3.9.2
 referencing==0.37.0
