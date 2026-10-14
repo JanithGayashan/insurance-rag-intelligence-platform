@@ -100,10 +100,22 @@ v2 collection is `insurance_structure_bge_small_en_v1_5_v2`; the previous
 collection is preserved. See [the pipeline v2 guide](docs/embedding_pipeline_v2.md)
 for cache/recovery behavior, update examples, and operating limits.
 
+Retrieval evaluation now includes 40 source-checked questions across the 11
+policies, original-PDF evidence checks, and Hit Rate@K, Recall@K, and MRR@K.
+Unfiltered search and search with a known policy selected are reported separately.
+Labels remain provisional until a human reviewer approves them.
+
+```bash
+python -m src.evaluation.retrieval.cli --include-source-checked
+```
+
+See [the retrieval evaluation guide](docs/retrieval_evaluation.md) for the
+question dataset, review process, metric definitions, and generated reports.
+
 Planned work:
 
-- Reviewed insurance retrieval questions and relevance labels.
-- Recall@K, Hit Rate@K, MRR, and nDCG evaluation.
+- Human approval and expansion of the source-checked insurance question set.
+- nDCG evaluation and a held-out test set for subsequent retrieval tuning.
 - Embedding-model comparison using the reviewed question set.
 
 ### Upcoming Phases

@@ -1,0 +1,1088 @@
+{
+  "dataset_id": "allianz-insurance-retrieval",
+  "version": 1,
+  "description": "40 assistant-prepared, source-grounded questions across 11 Allianz policies; human review is required before production benchmarking.",
+  "label_scope": "Binary labels for complete cited evidence in the specified policy version and PDF pages. Known-policy search context is provided explicitly and evaluated separately from unfiltered search. Labels are not exhaustive relevance judgments.",
+  "questions": [
+    {
+      "question_id": "INS-001",
+      "question": "Under the Allianz Motor Insurance Policy (English), is flood damage to the vehicle included in the listed coverage?",
+      "category": "coverage",
+      "expected_answer": "Flood is included among the listed natural perils, subject to the policy terms.",
+      "evidence": [
+        {
+          "evidence_id": "INS-001-E1",
+          "source_file": "motor/Allianz_Motor_Insurance_Policy_(English).pdf",
+          "source_sha256": "32e9d82a98341616a814483c277032fb463662072c155171f6b596eb3ff707e0",
+          "pdf_pages": [
+            1
+          ],
+          "quotes": [
+            "earthquake, earth slip, landslide, rockslide, flood"
+          ],
+          "section": "Section 1 : Coverage for your vehicle"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Insurance_Policy_(English).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-002",
+      "question": "Under the Allianz Motor Insurance Policy (English), are damaged tyres paid for when the rest of the vehicle is undamaged?",
+      "category": "exclusions",
+      "expected_answer": "No. Other vehicle damage must occur at the same time; when payable, tyre/tube replacement liability is capped at 50%.",
+      "evidence": [
+        {
+          "evidence_id": "INS-002-E1",
+          "source_file": "motor/Allianz_Motor_Insurance_Policy_(English).pdf",
+          "source_sha256": "32e9d82a98341616a814483c277032fb463662072c155171f6b596eb3ff707e0",
+          "pdf_pages": [
+            1,
+            2
+          ],
+          "quotes": [
+            "for damages to tyres and tubes unless the vehicle also sustains other damage at the same time",
+            "50% of the cost of replacement"
+          ],
+          "section": "2. However, we do not pay;"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Insurance_Policy_(English).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-003",
+      "question": "Under the Allianz Motor Insurance Policy (English), may repairs start after an accident before the insurer gives written approval?",
+      "category": "claims",
+      "expected_answer": "The insured must not dismantle parts or start repairs without prior written approval.",
+      "evidence": [
+        {
+          "evidence_id": "INS-003-E1",
+          "source_file": "motor/Allianz_Motor_Insurance_Policy_(English).pdf",
+          "source_sha256": "32e9d82a98341616a814483c277032fb463662072c155171f6b596eb3ff707e0",
+          "pdf_pages": [
+            3,
+            4
+          ],
+          "quotes": [
+            "not dismantle any part of the vehicle or start any repair without our prior written approval"
+          ],
+          "section": "1. Claims"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Insurance_Policy_(English).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-004",
+      "question": "How much notice does Allianz give when cancelling the Motor Insurance Policy (English), and how is unused premium refunded?",
+      "category": "cancellation",
+      "expected_answer": "Seven days by registered post; prorated premium is refunded for the unexpired period.",
+      "evidence": [
+        {
+          "evidence_id": "INS-004-E1",
+          "source_file": "motor/Allianz_Motor_Insurance_Policy_(English).pdf",
+          "source_sha256": "32e9d82a98341616a814483c277032fb463662072c155171f6b596eb3ff707e0",
+          "pdf_pages": [
+            4
+          ],
+          "quotes": [
+            "giving 7 days notice by registered post",
+            "refund the prorated premium for the unexpired policy period"
+          ],
+          "section": "4. Cancelation"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Insurance_Policy_(English).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-005",
+      "question": "In the Allianz Motor Insurance Policy (English) no-claim-bonus table, what are the maximum percentages for motorcycles and other vehicles excluding trade plates?",
+      "category": "limits",
+      "expected_answer": "The table lists a 35% maximum for motorcycles and 70% for the other listed vehicles.",
+      "evidence": [
+        {
+          "evidence_id": "INS-005-E1",
+          "source_file": "motor/Allianz_Motor_Insurance_Policy_(English).pdf",
+          "source_sha256": "32e9d82a98341616a814483c277032fb463662072c155171f6b596eb3ff707e0",
+          "pdf_pages": [
+            6
+          ],
+          "quotes": [
+            "For motor cycles",
+            "35% (max)",
+            "70% (max)"
+          ],
+          "section": "Other than motor cycles and Trade plate"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Insurance_Policy_(English).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-006",
+      "question": "In the Allianz modular motor policy, do the partial-loss limited-liability clauses apply automatically?",
+      "category": "conditions",
+      "expected_answer": "They apply only if indicated on the policy schedule.",
+      "evidence": [
+        {
+          "evidence_id": "INS-006-E1",
+          "source_file": "motor/Allianz_Motor_Fle_ (Modular Product).pdf",
+          "source_sha256": "9b62a84666ed170fd68c3744d599e2954e34216ea75e366de9284aba77b4acdc",
+          "pdf_pages": [
+            6
+          ],
+          "quotes": [
+            "The following clauses shall apply only if indicated on your policy schedule"
+          ],
+          "section": "Coverage for your vehicle - Limited Liability on Claims (Partial Loss)"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Fle_ (Modular Product).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-007",
+      "question": "What cancellation notice does the Allianz modular motor policy require from the policyholder?",
+      "category": "cancellation",
+      "expected_answer": "The policyholder may cancel by giving seven days notice; the stated refund depends on there being no claim made or arisen in the current period.",
+      "evidence": [
+        {
+          "evidence_id": "INS-007-E1",
+          "source_file": "motor/Allianz_Motor_Fle_ (Modular Product).pdf",
+          "source_sha256": "9b62a84666ed170fd68c3744d599e2954e34216ea75e366de9284aba77b4acdc",
+          "pdf_pages": [
+            11
+          ],
+          "quotes": [
+            "You may also cancel your policy at any time by giving 7 days notice to us",
+            "if there is no claim made or arisen for the current period"
+          ],
+          "section": "2. Cancelation"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Fle_ (Modular Product).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-008",
+      "question": "In the Allianz modular motor policy, what approval is needed before offering payment or admitting liability after an accident?",
+      "category": "claims",
+      "expected_answer": "Prior written approval from the insurer is required.",
+      "evidence": [
+        {
+          "evidence_id": "INS-008-E1",
+          "source_file": "motor/Allianz_Motor_Fle_ (Modular Product).pdf",
+          "source_sha256": "9b62a84666ed170fd68c3744d599e2954e34216ea75e366de9284aba77b4acdc",
+          "pdf_pages": [
+            17,
+            18
+          ],
+          "quotes": [
+            "You shall not offer, promise, make payment or admit liability without our prior written approval"
+          ],
+          "section": "Claims Handling Procedure"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Fle_ (Modular Product).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-009",
+      "question": "In the Allianz modular motor policy complaints table, how long is allowed to resolve a service-related complaint?",
+      "category": "complaints",
+      "expected_answer": "Eight working days.",
+      "evidence": [
+        {
+          "evidence_id": "INS-009-E1",
+          "source_file": "motor/Allianz_Motor_Fle_ (Modular Product).pdf",
+          "source_sha256": "9b62a84666ed170fd68c3744d599e2954e34216ea75e366de9284aba77b4acdc",
+          "pdf_pages": [
+            22
+          ],
+          "quotes": [
+            "Resolution for the service related complaints",
+            "Within 8 working days"
+          ],
+          "section": "1.2.4 Timelines in complaints handling and communicating resolution"
+        }
+      ],
+      "query_filters": {
+        "source_file": "motor\\Allianz_Motor_Fle_ (Modular Product).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-010",
+      "question": "Does the Allianz Contractors Plant and Machinery policy exclude damage caused by nuclear radiation?",
+      "category": "exclusions",
+      "expected_answer": "Nuclear reaction, nuclear radiation and radioactive contamination are listed exclusions.",
+      "evidence": [
+        {
+          "evidence_id": "INS-010-E1",
+          "source_file": "non_motor_retail/Contactors Plant and Machinery (V2 2026).pdf",
+          "source_sha256": "c72670e4d7fc488ce299e742f66a52dc809d63376b9b46817f2574de9ef155d0",
+          "pdf_pages": [
+            2
+          ],
+          "quotes": [
+            "loss or damage directly or indirectly caused by, or arising out of, or aggravated by nuclear reaction, nuclear radiation or radioactive contamination"
+          ],
+          "section": "Exclusions"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Contactors Plant and Machinery (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-011",
+      "question": "Under the Allianz Contractors Plant and Machinery policy, what is the latest stated time for the insurer to receive notice of a loss?",
+      "category": "claims",
+      "expected_answer": "The claims condition states no liability for a loss for which notice is not received within 14 days of its occurrence.",
+      "evidence": [
+        {
+          "evidence_id": "INS-011-E1",
+          "source_file": "non_motor_retail/Contactors Plant and Machinery (V2 2026).pdf",
+          "source_sha256": "c72670e4d7fc488ce299e742f66a52dc809d63376b9b46817f2574de9ef155d0",
+          "pdf_pages": [
+            3,
+            4
+          ],
+          "quotes": [
+            "no notice has been received by the Insurers within 14 days of its occurrence"
+          ],
+          "section": "Claims"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Contactors Plant and Machinery (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-012",
+      "question": "How much cancellation notice must the insurer give under the Allianz Contractors Plant and Machinery policy?",
+      "category": "cancellation",
+      "expected_answer": "Seven days notice.",
+      "evidence": [
+        {
+          "evidence_id": "INS-012-E1",
+          "source_file": "non_motor_retail/Contactors Plant and Machinery (V2 2026).pdf",
+          "source_sha256": "c72670e4d7fc488ce299e742f66a52dc809d63376b9b46817f2574de9ef155d0",
+          "pdf_pages": [
+            4
+          ],
+          "quotes": [
+            "terminated at the option of the Insurers by seven days"
+          ],
+          "section": "Cancellation"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Contactors Plant and Machinery (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-013",
+      "question": "Under the Allianz Fire Dwelling House policy, does the base risks-not-covered list include theft during or after a fire?",
+      "category": "exclusions",
+      "expected_answer": "Yes. Theft during or after the occurrence of a fire is listed as not covered.",
+      "evidence": [
+        {
+          "evidence_id": "INS-013-E1",
+          "source_file": "non_motor_retail/Fire Dwelling House Policy (V2 2026).pdf",
+          "source_sha256": "819326c3c9ca756fb87fc79b3e7488038b32d3247bf52c049399c2566e7e428c",
+          "pdf_pages": [
+            1,
+            2
+          ],
+          "quotes": [
+            "Loss by theft during or after the occurrence of a fire"
+          ],
+          "section": "RISKS NOT COVERED"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Fire Dwelling House Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-014",
+      "question": "Under the Allianz Fire Dwelling House policy, what premium refund is described if the company terminates the insurance?",
+      "category": "cancellation",
+      "expected_answer": "A rateable proportion of the premium for the unexpired term is repayable when the company terminates the insurance.",
+      "evidence": [
+        {
+          "evidence_id": "INS-014-E1",
+          "source_file": "non_motor_retail/Fire Dwelling House Policy (V2 2026).pdf",
+          "source_sha256": "819326c3c9ca756fb87fc79b3e7488038b32d3247bf52c049399c2566e7e428c",
+          "pdf_pages": [
+            3
+          ],
+          "quotes": [
+            "repay on demand a rateable proportion of the premium for the unexpired term"
+          ],
+          "section": "CANCELLATION OF THE INSURANCE",
+          "alternatives": [
+            {
+              "pdf_pages": [
+                6
+              ],
+              "quotes": [
+                "the Company shall be liable to repay a ratable proportion of the premium for the unexpired term"
+              ],
+              "section": "Condition 10"
+            }
+          ]
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Fire Dwelling House Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending. Source review also identified equivalent company-cancellation refund evidence in Condition 10 on PDF page 6. This alternative is included; policyholder cancellation has different conditions and is not the question."
+    },
+    {
+      "question_id": "INS-015",
+      "question": "In Condition 6 of Allianz's House Holder's policy, are losses caused by civil war covered?",
+      "category": "exclusions",
+      "expected_answer": "Civil war is included in the events for which loss or damage is not covered.",
+      "evidence": [
+        {
+          "evidence_id": "INS-015-E1",
+          "source_file": "non_motor_retail/House Holder's Policy (V2 2026).pdf",
+          "source_sha256": "4b5542d5fe59a4a68cbd797083ee0bc60cdf0b9f72a9ee826becb37055b5546c",
+          "pdf_pages": [
+            5
+          ],
+          "quotes": [
+            "This insurance does not cover any loss or damage",
+            "War, invasion, act of foreign enemy",
+            "civil war"
+          ],
+          "section": "Condition 6"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\House Holder's Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-016",
+      "question": "Under Allianz's House Holder's policy, must notices to the company be written or can they be oral?",
+      "category": "conditions",
+      "expected_answer": "Notices and other required communications must be written or printed.",
+      "evidence": [
+        {
+          "evidence_id": "INS-016-E1",
+          "source_file": "non_motor_retail/House Holder's Policy (V2 2026).pdf",
+          "source_sha256": "4b5542d5fe59a4a68cbd797083ee0bc60cdf0b9f72a9ee826becb37055b5546c",
+          "pdf_pages": [
+            4
+          ],
+          "quotes": [
+            "Every notice and other communications to the Company required by these Conditions must be written or printed"
+          ],
+          "section": "NOTICES"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\House Holder's Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-017",
+      "question": "Under the Allianz Global Medical policy, how long must the policy have been in force before sickness begins?",
+      "category": "waiting_period",
+      "expected_answer": "The preamble states not less than 30 days for sickness; accidental bodily injury is described separately.",
+      "evidence": [
+        {
+          "evidence_id": "INS-017-E1",
+          "source_file": "non_motor_retail/Global Medical Policy (V2 2026).pdf",
+          "source_sha256": "16986344d3076349f000ad7691db941f7341d6a7bfc2072531e74890eb75e9a2",
+          "pdf_pages": [
+            1
+          ],
+          "quotes": [
+            "not less than thirty (30) days"
+          ],
+          "section": "PREAMBLE"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Global Medical Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-018",
+      "question": "What overall maximum benefits are listed for the Classic and Gold plans in the Allianz Global Medical policy?",
+      "category": "limits",
+      "expected_answer": "Classic: USD 800,000. Gold: USD 1,000,000, subject to the policy limits and terms.",
+      "evidence": [
+        {
+          "evidence_id": "INS-018-E1",
+          "source_file": "non_motor_retail/Global Medical Policy (V2 2026).pdf",
+          "source_sha256": "16986344d3076349f000ad7691db941f7341d6a7bfc2072531e74890eb75e9a2",
+          "pdf_pages": [
+            2
+          ],
+          "quotes": [
+            "Overall maximum benefits",
+            "USD 800,000",
+            "USD 1,000,000"
+          ],
+          "section": "ALLIANZ GLOBAL HEALTHCARE BENEFIT TABLE"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Global Medical Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-019",
+      "question": "Does the Gold plan in the Allianz Global Medical benefit table include the USA and Canada in its geographical coverage?",
+      "category": "geography",
+      "expected_answer": "The Gold plan states worldwide excluding USA/Canada.",
+      "evidence": [
+        {
+          "evidence_id": "INS-019-E1",
+          "source_file": "non_motor_retail/Global Medical Policy (V2 2026).pdf",
+          "source_sha256": "16986344d3076349f000ad7691db941f7341d6a7bfc2072531e74890eb75e9a2",
+          "pdf_pages": [
+            2
+          ],
+          "quotes": [
+            "Geographical coverage",
+            "Worldwide excluding USA/Canada"
+          ],
+          "section": "ALLIANZ GLOBAL HEALTHCARE BENEFIT TABLE"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Global Medical Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-020",
+      "question": "What yearly inpatient psychiatric-treatment sublimits are shown for the Classic and Gold plans in the Allianz Global Medical policy?",
+      "category": "limits",
+      "expected_answer": "Classic: USD 5,000. Gold: USD 10,000 per year for the listed inpatient benefit.",
+      "evidence": [
+        {
+          "evidence_id": "INS-020-E1",
+          "source_file": "non_motor_retail/Global Medical Policy (V2 2026).pdf",
+          "source_sha256": "16986344d3076349f000ad7691db941f7341d6a7bfc2072531e74890eb75e9a2",
+          "pdf_pages": [
+            2
+          ],
+          "quotes": [
+            "Psychiatric Treatment (Inpatient Only) Sublimit Per Year",
+            "USD 5,000",
+            "USD 10,000"
+          ],
+          "section": "ALLIANZ GLOBAL HEALTHCARE BENEFIT TABLE"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Global Medical Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-021",
+      "question": "In the Allianz Global Medical policy, what overseas-treatment co-payment percentages apply above ages 60 and 70?",
+      "category": "limits",
+      "expected_answer": "The table lists 10% above age 60 and 20% above age 70.",
+      "evidence": [
+        {
+          "evidence_id": "INS-021-E1",
+          "source_file": "non_motor_retail/Global Medical Policy (V2 2026).pdf",
+          "source_sha256": "16986344d3076349f000ad7691db941f7341d6a7bfc2072531e74890eb75e9a2",
+          "pdf_pages": [
+            3
+          ],
+          "quotes": [
+            "Insured above the age of 60 years",
+            "Insured above the age of 70 years",
+            "10%",
+            "20%"
+          ],
+          "section": "Government Hospitalization Cover"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Global Medical Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-022",
+      "question": "Under the Allianz Global Medical maternity benefit, what minimum coverage period is required before medical expenses are incurred?",
+      "category": "waiting_period",
+      "expected_answer": "A minimum period of 12 months under the plan is stated.",
+      "evidence": [
+        {
+          "evidence_id": "INS-022-E1",
+          "source_file": "non_motor_retail/Global Medical Policy (V2 2026).pdf",
+          "source_sha256": "16986344d3076349f000ad7691db941f7341d6a7bfc2072531e74890eb75e9a2",
+          "pdf_pages": [
+            7,
+            8
+          ],
+          "quotes": [
+            "a minimum period of 12 months before incurring medical expenses"
+          ],
+          "section": "MATERNITY BENEFIT"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Global Medical Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-023",
+      "question": "In the Allianz Local Health policy, what is the maximum number of days per year described for a non-paying ward in a government hospital?",
+      "category": "coverage",
+      "expected_answer": "A maximum of 50 days per annum, with the daily amount stated in the schedule.",
+      "evidence": [
+        {
+          "evidence_id": "INS-023-E1",
+          "source_file": "non_motor_retail/Local Health Policy (V2 2026).pdf",
+          "source_sha256": "6e4d2a01eb16d7f01c8ad9c10498be1d94818c7e2d19391a0c3983cda5e3ffba",
+          "pdf_pages": [
+            1
+          ],
+          "quotes": [
+            "Whilst in a non-paying ward of a Government hospital",
+            "a maximum of 50 days per annum"
+          ],
+          "section": "WHAT THIS POLICY COVER"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Local Health Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-024",
+      "question": "Does the Allianz Local Health policy cover a disease suffered during the first 60 days after commencement?",
+      "category": "waiting_period",
+      "expected_answer": "The first sixty days are listed under what the policy does not cover.",
+      "evidence": [
+        {
+          "evidence_id": "INS-024-E1",
+          "source_file": "non_motor_retail/Local Health Policy (V2 2026).pdf",
+          "source_sha256": "6e4d2a01eb16d7f01c8ad9c10498be1d94818c7e2d19391a0c3983cda5e3ffba",
+          "pdf_pages": [
+            1
+          ],
+          "quotes": [
+            "Any disease suffered by the life insured during the first sixty (60) days from the date of commencement of the Policy"
+          ],
+          "section": "WHAT THIS POLICY DOES NOT COVER"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Local Health Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-025",
+      "question": "Under the Allianz Local Health policy, when must written notice and documentary proof be submitted after hospital discharge?",
+      "category": "claims",
+      "expected_answer": "Within one month of the discharge date.",
+      "evidence": [
+        {
+          "evidence_id": "INS-025-E1",
+          "source_file": "non_motor_retail/Local Health Policy (V2 2026).pdf",
+          "source_sha256": "6e4d2a01eb16d7f01c8ad9c10498be1d94818c7e2d19391a0c3983cda5e3ffba",
+          "pdf_pages": [
+            3
+          ],
+          "quotes": [
+            "within one month of date of discharge in case of hospitalization"
+          ],
+          "section": "Notice"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Local Health Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-026",
+      "question": "What accident-related death and disablement events are listed as covered in the Allianz PAB Premier policy?",
+      "category": "coverage",
+      "expected_answer": "Accidental death and total and permanent disablement are listed, including loss of eyesight, hand, feet or an organ due to an accident.",
+      "evidence": [
+        {
+          "evidence_id": "INS-026-E1",
+          "source_file": "non_motor_retail/PAB Premier Policy (V2 2026).pdf",
+          "source_sha256": "d844530adbd0dad63fc75b255cca83016287020f88597590cf88395b3303329c",
+          "pdf_pages": [
+            1
+          ],
+          "quotes": [
+            "Accidental Death",
+            "Total and Permanent Disablement"
+          ],
+          "section": "WHAT THIS POLICY COVERS"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\PAB Premier Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-027",
+      "question": "What lower and upper ages are excluded by the Allianz PAB Premier policy?",
+      "category": "eligibility",
+      "expected_answer": "Persons under 18 and over 75 are stated as not covered.",
+      "evidence": [
+        {
+          "evidence_id": "INS-027-E1",
+          "source_file": "non_motor_retail/PAB Premier Policy (V2 2026).pdf",
+          "source_sha256": "d844530adbd0dad63fc75b255cca83016287020f88597590cf88395b3303329c",
+          "pdf_pages": [
+            1
+          ],
+          "quotes": [
+            "aged more than seventy-five years and less than 18 years"
+          ],
+          "section": "WHAT THIS POLICY DOES NOT COVER"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\PAB Premier Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-028",
+      "question": "Under the Allianz PAB Premier policy, how soon must the company receive notice after an accident?",
+      "category": "claims",
+      "expected_answer": "Within 15 days of the accident.",
+      "evidence": [
+        {
+          "evidence_id": "INS-028-E1",
+          "source_file": "non_motor_retail/PAB Premier Policy (V2 2026).pdf",
+          "source_sha256": "d844530adbd0dad63fc75b255cca83016287020f88597590cf88395b3303329c",
+          "pdf_pages": [
+            2
+          ],
+          "quotes": [
+            "Notice shall be given to the Company within 15 days of the accident"
+          ],
+          "section": "CONDITIONS"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\PAB Premier Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-029",
+      "question": "What age range is stated for Section 6 personal accident benefits in Allianz's Shop Keeper's policy?",
+      "category": "eligibility",
+      "expected_answer": "The section heading states an age limit of 18-60.",
+      "evidence": [
+        {
+          "evidence_id": "INS-029-E1",
+          "source_file": "non_motor_retail/Shop Keeper's Policy (V2 2026).pdf",
+          "source_sha256": "fa2e202cbd2295a59adc5b6e807076d44f4fa5c5b168cae7fece967d47194650",
+          "pdf_pages": [
+            12
+          ],
+          "quotes": [
+            "PERSONAL ACCIDENT BENEFIT",
+            "AGE LIMIT: 18 - 60"
+          ],
+          "section": "SECTION 6 - PERSONAL ACCIDENT BENEFIT (AGE LIMIT: 18 - 60)"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Shop Keeper's Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-030",
+      "question": "Do the general exclusions of Allianz's Shop Keeper's policy include losses caused by war or civil war?",
+      "category": "exclusions",
+      "expected_answer": "War and civil war are listed among the general exclusions, subject to the stated policy wording.",
+      "evidence": [
+        {
+          "evidence_id": "INS-030-E1",
+          "source_file": "non_motor_retail/Shop Keeper's Policy (V2 2026).pdf",
+          "source_sha256": "fa2e202cbd2295a59adc5b6e807076d44f4fa5c5b168cae7fece967d47194650",
+          "pdf_pages": [
+            14
+          ],
+          "quotes": [
+            "war, invasion, act of foreign enemy, hostilities or warlike operations",
+            "civil war"
+          ],
+          "section": "GENERAL EXCLUSIONS APPLICABLE TO ALL SECTIONS"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Shop Keeper's Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-031",
+      "question": "How much written notice must the company give when cancelling Allianz's Shop Keeper's policy?",
+      "category": "cancellation",
+      "expected_answer": "At least seven days written notice by registered post to the last known address.",
+      "evidence": [
+        {
+          "evidence_id": "INS-031-E1",
+          "source_file": "non_motor_retail/Shop Keeper's Policy (V2 2026).pdf",
+          "source_sha256": "fa2e202cbd2295a59adc5b6e807076d44f4fa5c5b168cae7fece967d47194650",
+          "pdf_pages": [
+            17
+          ],
+          "quotes": [
+            "at least 7 days written notice under registered post"
+          ],
+          "section": "8. CANCELLATION"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Shop Keeper's Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-032",
+      "question": "Under Allianz's Shop Keeper's policy, what other-insurance information must accompany a written claim?",
+      "category": "claims",
+      "expected_answer": "Particulars of all other insurances, if any, are required.",
+      "evidence": [
+        {
+          "evidence_id": "INS-032-E1",
+          "source_file": "non_motor_retail/Shop Keeper's Policy (V2 2026).pdf",
+          "source_sha256": "fa2e202cbd2295a59adc5b6e807076d44f4fa5c5b168cae7fece967d47194650",
+          "pdf_pages": [
+            18
+          ],
+          "quotes": [
+            "Particulars of all other insurances (if any)"
+          ],
+          "section": "9. CLAIMS PROCEDURE"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Shop Keeper's Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-033",
+      "question": "Under the Allianz Travel policy, how long must checked baggage be delayed for the stated emergency-purchase benefit?",
+      "category": "coverage",
+      "expected_answer": "More than six hours beyond arrival at the intended destination outside Sri Lanka.",
+      "evidence": [
+        {
+          "evidence_id": "INS-033-E1",
+          "source_file": "non_motor_retail/Travel Policy (V2 2026).pdf",
+          "source_sha256": "b1bfbbbd2b24b12ff6a8ac95d00ec37af406e4e43fabea0f354fe095e7ad4d03",
+          "pdf_pages": [
+            8
+          ],
+          "quotes": [
+            "delayed by more than 06 hours",
+            "intended destination outside of Sri Lanka"
+          ],
+          "section": "4. Section D : Delay of Common Carrier Checked in Baggage"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Travel Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-034",
+      "question": "What receipt and delay evidence does the Allianz Travel policy require for a delayed checked-baggage claim?",
+      "category": "claims",
+      "expected_answer": "Original purchase receipts and evidence proving the period of delay.",
+      "evidence": [
+        {
+          "evidence_id": "INS-034-E1",
+          "source_file": "non_motor_retail/Travel Policy (V2 2026).pdf",
+          "source_sha256": "b1bfbbbd2b24b12ff6a8ac95d00ec37af406e4e43fabea0f354fe095e7ad4d03",
+          "pdf_pages": [
+            8
+          ],
+          "quotes": [
+            "submission of the original purchase receipts and evidence to prove the period of delay"
+          ],
+          "section": "Special Conditions applicable for section D"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Travel Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-035",
+      "question": "Under the Allianz Travel policy passport-loss benefit, is obtaining a replacement passport described outside Sri Lanka?",
+      "category": "coverage",
+      "expected_answer": "The clause describes obtaining a duplicate or fresh passport outside the geographical limits of Sri Lanka, subject to the policy terms.",
+      "evidence": [
+        {
+          "evidence_id": "INS-035-E1",
+          "source_file": "non_motor_retail/Travel Policy (V2 2026).pdf",
+          "source_sha256": "b1bfbbbd2b24b12ff6a8ac95d00ec37af406e4e43fabea0f354fe095e7ad4d03",
+          "pdf_pages": [
+            8
+          ],
+          "quotes": [
+            "obtaining a duplicate or fresh passport outside the geographical limits of Sri Lanka"
+          ],
+          "section": "5. Section E: Loss of Passport"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Travel Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-036",
+      "question": "Under the Allianz Travel policy trip-delay section, is departure delay caused by a strike already known when booking payable?",
+      "category": "exclusions",
+      "expected_answer": "A strike or industrial action known to exist or anticipated when the trip was booked is listed as not payable.",
+      "evidence": [
+        {
+          "evidence_id": "INS-036-E1",
+          "source_file": "non_motor_retail/Travel Policy (V2 2026).pdf",
+          "source_sha256": "b1bfbbbd2b24b12ff6a8ac95d00ec37af406e4e43fabea0f354fe095e7ad4d03",
+          "pdf_pages": [
+            10,
+            11
+          ],
+          "quotes": [
+            "delayed departure caused by strike or industrial action known to exist or was anticipated at the time the trip was booked"
+          ],
+          "section": "8. . Section H H : Trip Delay"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Travel Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-037",
+      "question": "Under the Allianz Travel policy tuition-fee claim provisions, what payment receipt must be supplied?",
+      "category": "claims",
+      "expected_answer": "A copy of the receipt for advance tuition-fee payment, alongside the other listed claim documents.",
+      "evidence": [
+        {
+          "evidence_id": "INS-037-E1",
+          "source_file": "non_motor_retail/Travel Policy (V2 2026).pdf",
+          "source_sha256": "b1bfbbbd2b24b12ff6a8ac95d00ec37af406e4e43fabea0f354fe095e7ad4d03",
+          "pdf_pages": [
+            13
+          ],
+          "quotes": [
+            "Copy of the receipt of payment of advance tuitions fee"
+          ],
+          "section": "Documents required for admission of a claim"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Travel Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-038",
+      "question": "Under the Allianz Hotelliers Combined policy liability claims conditions, can the insured admit liability or promise payment without company consent?",
+      "category": "claims",
+      "expected_answer": "No admission, offer, promise or payment may be made without company consent.",
+      "evidence": [
+        {
+          "evidence_id": "INS-038-E1",
+          "source_file": "non_motor_retail/Hotelliers Combined Policy (V2 2026).pdf",
+          "source_sha256": "51d287d5f494a854e6d3c4848cda84a4ecd6143ae3a18752486a98577ab69ee2",
+          "pdf_pages": [
+            29
+          ],
+          "quotes": [
+            "No admission offer promise or payment shall be made",
+            "without the consent of the Company"
+          ],
+          "section": "4. Claims"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Hotelliers Combined Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-039",
+      "question": "How much notice does the company give when cancelling under Condition 6 of the Allianz Hotelliers Combined policy?",
+      "category": "cancellation",
+      "expected_answer": "Seven days by registered letter to the last known address.",
+      "evidence": [
+        {
+          "evidence_id": "INS-039-E1",
+          "source_file": "non_motor_retail/Hotelliers Combined Policy (V2 2026).pdf",
+          "source_sha256": "51d287d5f494a854e6d3c4848cda84a4ecd6143ae3a18752486a98577ab69ee2",
+          "pdf_pages": [
+            29
+          ],
+          "quotes": [
+            "sending seven days notice by registered letter"
+          ],
+          "section": "6. Cancellation"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Hotelliers Combined Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    },
+    {
+      "question_id": "INS-040",
+      "question": "Under the automatic additional-equipment cover in the Allianz Hotelliers Combined policy, what maximum proportion of the section sum insured is stated?",
+      "category": "limits",
+      "expected_answer": "Additional equipment purchased during the year is limited to 25% of that section sum insured, subject to notification and additional-premium conditions.",
+      "evidence": [
+        {
+          "evidence_id": "INS-040-E1",
+          "source_file": "non_motor_retail/Hotelliers Combined Policy (V2 2026).pdf",
+          "source_sha256": "51d287d5f494a854e6d3c4848cda84a4ecd6143ae3a18752486a98577ab69ee2",
+          "pdf_pages": [
+            33
+          ],
+          "quotes": [
+            "maximum value of 25% of the sum insured under this Section"
+          ],
+          "section": "1. Automatic Cover"
+        }
+      ],
+      "query_filters": {
+        "source_file": "non_motor_retail\\Hotelliers Combined Policy (V2 2026).pdf"
+      },
+      "review_status": "source_checked",
+      "reviewer": null,
+      "review_notes": "Assistant-authored and checked against source PDF text and indexed-source text; human approval pending."
+    }
+  ]
+}
