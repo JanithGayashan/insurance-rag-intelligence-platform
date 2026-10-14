@@ -19,6 +19,7 @@ class DenseRetriever:
             raise ValueError("query and indexed-document embedding models must match")
         if embedder.dimension != vector_store.vector_dimension:
             raise ValueError("query and Qdrant vector dimensions must match")
+        vector_store.check_configuration(embedder.configuration)
         self.embedder = embedder
         self.vector_store = vector_store
 

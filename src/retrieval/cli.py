@@ -23,11 +23,12 @@ def retrieve_question(
     local_qdrant_path: Path = LOCAL_QDRANT_PATH,
     collection_name: str = DEFAULT_COLLECTION,
     embedding_model: str = DEFAULT_EMBEDDING_MODEL,
+    revision: str | None = None,
 ) -> list[dict[str, object]]:
     """Query the persisted dense index and return serializable results."""
 
     load_dotenv()
-    embedder = DenseEmbeddingService(embedding_model)
+    embedder = DenseEmbeddingService(embedding_model, revision=revision)
     qdrant_url = os.getenv("QDRANT_URL", "").strip()
     if qdrant_url:
         store = QdrantVectorStore.remote(
@@ -76,6 +77,7 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument("--qdrant-path", type=Path, default=LOCAL_QDRANT_PATH)
     parser.add_argument("--collection", default=DEFAULT_COLLECTION)
     parser.add_argument("--embedding-model", default=DEFAULT_EMBEDDING_MODEL)
+    parser.add_argument("--revision", help="Must match the revision used to build the index.")
     return parser.parse_args()
 
 
@@ -90,5 +92,6 @@ if __name__ == "__main__":
         local_qdrant_path=arguments.qdrant_path,
         collection_name=arguments.collection,
         embedding_model=arguments.embedding_model,
+        revision=arguments.revision,
     )
     print(json.dumps(results, indent=2, ensure_ascii=False))

@@ -17,11 +17,14 @@ def discover_structure_chunk_files(processed_directory: Path) -> list[Path]:
 
 def load_structure_records(
     processed_directory: Path,
+    *, allow_empty: bool = False,
 ) -> tuple[list[IndexRecord], dict[str, int]]:
     """Load and validate every structure-aware chunk in the corpus."""
 
     files = discover_structure_chunk_files(processed_directory)
-    if not files:
+    if not Path(processed_directory).is_dir():
+        raise FileNotFoundError(f"processed corpus directory does not exist: {processed_directory}")
+    if not files and not allow_empty:
         raise FileNotFoundError(
             f"no structure_chunks.json files found under {processed_directory}"
         )
@@ -33,6 +36,8 @@ def load_structure_records(
         value = json.loads(path.read_text(encoding="utf-8"))
         if not isinstance(value, list):
             raise ValueError(f"{path} must contain a JSON array")
+        if not value and not allow_empty:
+            raise ValueError(f"{path} contains no chunks; explicit allow_empty is required")
         for position, item in enumerate(value):
             try:
                 chunk = Chunk.model_validate(item)
