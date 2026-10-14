@@ -3,6 +3,7 @@
 data/raw/*
 data/processed/*
 data/indexes/*
+data/evaluation/*
 
 venv/
 

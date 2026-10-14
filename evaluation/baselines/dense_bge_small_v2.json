@@ -1,0 +1,108 @@
+{
+  "status": "PROVISIONAL_BASELINE",
+  "dataset_id": "allianz-insurance-retrieval",
+  "dataset_version": 1,
+  "dataset_sha256": "88763d353bb44b9a7afcee83f83910979a427eed256b5a76dd6f932539bf38ba",
+  "corpus_sha256": "c2140b1d050a4f2de652c278af534976f6674160a8944c1056d312a292509ce6",
+  "collection_name": "insurance_structure_bge_small_en_v1_5_v2",
+  "embedding_configuration": {
+    "model_name": "BAAI/bge-small-en-v1.5",
+    "model_revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "tokenizer_sha256": "0d1764e0999486aeb7852c49ce3bacbd28b16b3297394bd98ceb9afbe4202208",
+    "dimension": 384,
+    "max_sequence_length": 512,
+    "document_instruction": "",
+    "query_instruction": "Represent this sentence for searching relevant passages: ",
+    "pooling": "{\"embedding_dimension\": 384, \"include_prompt\": true, \"pooling_mode\": \"cls\"}",
+    "normalize": true,
+    "precision": "float32",
+    "backend": "sentence-transformers/6.1.0;transformers/5.15.0"
+  },
+  "embedding_fingerprint": "d5a8ef1d0052c2ce2a0d7a432da99cbdbb4e5eee937db5657a1901d2a95a00fa",
+  "indexed_chunks": 812,
+  "questions_evaluated": 40,
+  "review_status_counts": {
+    "source_checked": 40
+  },
+  "k_values": [
+    1,
+    3,
+    5,
+    10
+  ],
+  "label_scope": "Binary labels for complete cited evidence in the specified policy version and PDF pages. Known-policy search context is provided explicitly and evaluated separately from unfiltered search. Labels are not exhaustive relevance judgments.",
+  "pdf_source_validation": {
+    "status": "PASS",
+    "pdf_documents_checked": 11,
+    "evidence_passages_checked": 41
+  },
+  "limitations": [
+    "Source-checked labels are assistant-prepared until a named human approves them.",
+    "This small hand-authored question set is a development baseline, not a representative production or held-out accuracy estimate.",
+    "Recall measures annotated chunk labels; unannotated useful evidence may count as irrelevant.",
+    "Policy-scoped results assume the application already knows the selected policy; they are separate from unfiltered search.",
+    "This evaluates retrieval, not generated-answer accuracy or source faithfulness."
+  ],
+  "results": {
+    "unfiltered": {
+      "metrics": {
+        "evidence_coverage@1": 0.4,
+        "evidence_coverage@10": 0.775,
+        "evidence_coverage@3": 0.6,
+        "evidence_coverage@5": 0.725,
+        "hit_rate@1": 0.4,
+        "hit_rate@10": 0.775,
+        "hit_rate@3": 0.6,
+        "hit_rate@5": 0.725,
+        "mrr@1": 0.4,
+        "mrr@10": 0.527738,
+        "mrr@3": 0.491667,
+        "mrr@5": 0.521667,
+        "recall@1": 0.4,
+        "recall@10": 0.7625,
+        "recall@3": 0.6,
+        "recall@5": 0.725
+      },
+      "failures_at_5": {
+        "supporting_evidence_not_in_top5": 11
+      }
+    },
+    "policy_scoped": {
+      "metrics": {
+        "evidence_coverage@1": 0.55,
+        "evidence_coverage@10": 1.0,
+        "evidence_coverage@3": 0.95,
+        "evidence_coverage@5": 1.0,
+        "hit_rate@1": 0.55,
+        "hit_rate@10": 1.0,
+        "hit_rate@3": 0.95,
+        "hit_rate@5": 1.0,
+        "mrr@1": 0.55,
+        "mrr@10": 0.741667,
+        "mrr@3": 0.729167,
+        "mrr@5": 0.741667,
+        "recall@1": 0.55,
+        "recall@10": 1.0,
+        "recall@3": 0.9375,
+        "recall@5": 0.9875
+      },
+      "failures_at_5": {}
+    }
+  },
+  "questions_missing_labeled_evidence_at_5": {
+    "unfiltered": [
+      "INS-001",
+      "INS-003",
+      "INS-007",
+      "INS-008",
+      "INS-010",
+      "INS-011",
+      "INS-012",
+      "INS-014",
+      "INS-027",
+      "INS-032",
+      "INS-038"
+    ],
+    "policy_scoped": []
+  }
+}
