@@ -31,6 +31,8 @@ class IndexRecord(BaseModel):
     source_sha256: str | None = None
     validation_status: str | None = None
     content_sha256: str
+    embedding_token_count: int | None = Field(default=None, ge=0)
+    parent_chunk_id: str | None = None
     metadata: dict[str, Any] = Field(default_factory=dict)
 
     @classmethod
@@ -48,7 +50,7 @@ class IndexRecord(BaseModel):
                 f"chunk {chunk.chunk_id!r} document fingerprint does not match metadata"
             )
         return cls(
-            point_id=str(uuid.uuid5(_POINT_NAMESPACE, chunk.chunk_id)),
+            point_id=point_id_for_chunk(chunk.chunk_id),
             chunk_id=chunk.chunk_id,
             document_id=chunk.document_id,
             chunk_index=chunk.chunk_index,
@@ -82,6 +84,8 @@ class IndexRecord(BaseModel):
             "source_sha256": self.source_sha256,
             "validation_status": self.validation_status,
             "content_sha256": self.content_sha256,
+            "embedding_token_count": self.embedding_token_count,
+            "parent_chunk_id": self.parent_chunk_id,
             "embedding_model": embedding_model,
             "metadata": self.metadata,
         }
@@ -109,3 +113,8 @@ class RetrievalHit(BaseModel):
 
 def _optional_string(value: Any) -> str | None:
     return value if isinstance(value, str) and value.strip() else None
+
+
+def point_id_for_chunk(chunk_id: str) -> str:
+    """Use the same stable point identity for source and fallback chunks."""
+    return str(uuid.uuid5(_POINT_NAMESPACE, chunk_id))

@@ -5,6 +5,7 @@ import pytest
 from qdrant_client import QdrantClient
 
 from src.chunking.models import Chunk
+from src.indexing.configuration import EmbeddingConfiguration
 from src.indexing.models import IndexRecord
 from src.indexing.qdrant_store import QdrantVectorStore
 from src.retrieval.dense import DenseRetriever
@@ -13,6 +14,13 @@ from src.retrieval.dense import DenseRetriever
 class KeywordEmbedder:
     model_name = "keyword-test-model"
     dimension = 6
+    configuration = EmbeddingConfiguration(
+        model_name=model_name, model_revision="test-v1", tokenizer_sha256="test-tokenizer-v1",
+        dimension=dimension, max_sequence_length=512, backend="test",
+    )
+
+    def count_tokens(self, text, *, query=False):
+        return len(text.split()) + 2
 
     def embed_documents(self, texts):
         return np.asarray([self._vector(text) for text in texts], dtype=np.float32)
@@ -79,7 +87,7 @@ def test_index_validation_retrieval_and_metadata_filtering():
         embedder.dimension,
         local_mode=True,
     )
-    store.ensure_collection()
+    store.ensure_collection(configuration=embedder.configuration)
     store.upsert(records, embedder.embed_documents([record.text for record in records]))
 
     assert store.validate(records)["status"] == "PASS"

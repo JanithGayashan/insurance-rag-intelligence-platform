@@ -8,6 +8,7 @@ import numpy as np
 from qdrant_client import QdrantClient, models
 
 from src.indexing.models import IndexRecord, RetrievalHit
+from src.indexing.configuration import EmbeddingConfiguration, json_sha256
 
 
 class QdrantVectorStore:
@@ -30,6 +31,7 @@ class QdrantVectorStore:
         self.embedding_model = embedding_model
         self.vector_dimension = vector_dimension
         self.local_mode = local_mode
+        self.embedding_fingerprint: str | None = None
 
     @classmethod
     def local(
@@ -66,7 +68,11 @@ class QdrantVectorStore:
             local_mode=False,
         )
 
-    def ensure_collection(self, recreate: bool = False) -> None:
+    def ensure_collection(
+        self, recreate: bool = False,
+        configuration: EmbeddingConfiguration | None = None,
+        ingestion_scope: str | None = None,
+    ) -> None:
         exists = self.client.collection_exists(self.collection_name)
         if exists and recreate:
             self.client.delete_collection(self.collection_name)
@@ -78,7 +84,13 @@ class QdrantVectorStore:
                     size=self.vector_dimension,
                     distance=models.Distance.COSINE,
                 ),
-                metadata={"embedding_model": self.embedding_model},
+                metadata={
+                    "embedding_model": self.embedding_model,
+                    **({"embedding_fingerprint": configuration.fingerprint,
+                        "embedding_configuration": configuration.model_dump(),
+                        "pipeline_version": 2,
+                        "ingestion_scope": ingestion_scope} if configuration else {}),
+                },
             )
         else:
             information = self.client.get_collection(self.collection_name)
@@ -92,6 +104,11 @@ class QdrantVectorStore:
                 )
             if vector_config.distance != models.Distance.COSINE:
                 raise ValueError("existing Qdrant collection does not use cosine distance")
+        if configuration:
+            self.check_configuration(configuration)
+            information = self.client.get_collection(self.collection_name)
+            if ingestion_scope and information.config.metadata.get("ingestion_scope") != ingestion_scope:
+                raise ValueError("collection belongs to a different corpus; use a separate collection")
         if not self.local_mode:
             for field in (
                 "document_id",
@@ -107,6 +124,35 @@ class QdrantVectorStore:
                     field_schema=models.PayloadSchemaType.KEYWORD,
                     wait=True,
                 )
+
+    def check_configuration(self, configuration: EmbeddingConfiguration) -> None:
+        information = self.client.get_collection(self.collection_name)
+        metadata = information.config.metadata or {}
+        if metadata.get("embedding_fingerprint") != configuration.fingerprint:
+            raise ValueError("embedding configuration differs from the indexed collection; build a new collection")
+        self.embedding_fingerprint = configuration.fingerprint
+
+    def snapshot(self) -> dict[str, dict[str, Any]]:
+        """Read current payloads and vectors so checkpoints never hide index loss."""
+        result = {}
+        offset = None
+        while True:
+            points, offset = self.client.scroll(
+                collection_name=self.collection_name, limit=256, offset=offset,
+                with_payload=True, with_vectors=True,
+            )
+            for point in points:
+                result[str(point.id)] = {"payload": dict(point.payload or {}), "vector": point.vector}
+            if offset is None:
+                return result
+
+    def delete_points(self, point_ids: Sequence[str]) -> None:
+        for start in range(0, len(point_ids), 256):
+            self.client.delete(
+                collection_name=self.collection_name,
+                points_selector=models.PointIdsList(points=list(point_ids[start:start + 256])),
+                wait=True,
+            )
 
     def upsert(
         self,
@@ -128,7 +174,11 @@ class QdrantVectorStore:
                 models.PointStruct(
                     id=record.point_id,
                     vector=vector.tolist(),
-                    payload=record.to_payload(self.embedding_model),
+                    payload={
+                        **record.to_payload(self.embedding_model),
+                        "embedding_fingerprint": self.embedding_fingerprint,
+                        "record_sha256": json_sha256(record.to_payload(self.embedding_model)),
+                    },
                 )
                 for record, vector in zip(batch_records, batch_vectors)
             ]
@@ -138,7 +188,7 @@ class QdrantVectorStore:
                 wait=True,
             )
 
-    def validate(self, expected_records: Sequence[IndexRecord]) -> dict[str, Any]:
+    def validate(self, expected_records: Sequence[IndexRecord], *, allow_unexpected: bool = False) -> dict[str, Any]:
         count = self.client.count(self.collection_name, exact=True).count
         expected_ids = {record.point_id for record in expected_records}
         stored_ids: set[str] = set()
@@ -157,7 +207,7 @@ class QdrantVectorStore:
         missing = expected_ids - stored_ids
         unexpected = stored_ids - expected_ids
         return {
-            "status": "PASS" if not missing and not unexpected else "FAIL",
+            "status": "PASS" if not missing and (allow_unexpected or not unexpected) else "FAIL",
             "expected_points": len(expected_records),
             "stored_points": count,
             "missing_points": len(missing),

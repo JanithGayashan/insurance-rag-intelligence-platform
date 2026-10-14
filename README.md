@@ -73,6 +73,12 @@ Implemented:
 - Cosine-similarity dense retrieval with metadata filters.
 - Index completeness, vector-dimension, duplicate-ID, and normalization checks.
 - Example insurance-query retrieval reports with complete source metadata.
+- **Embedding and indexing pipeline v2** using our custom Python orchestration.
+- Persistent SQLite embedding cache keyed by text and full embedding configuration.
+- Incremental document/chunk updates, durable checkpoints, and automatic restart recovery.
+- Pinned BGE model revision and query/document configuration compatibility checks.
+- BGE-tokenizer input validation and lossless, marked fallback splits for oversized chunks.
+- Removal of outdated vectors after replacements are stored and the source snapshot is rechecked.
 
 Run the complete local indexing pipeline:
 
@@ -89,6 +95,11 @@ python -m src.retrieval.cli "What accidental damage is covered?" --top-k 5
 Set `QDRANT_URL` and optionally `QDRANT_API_KEY` to use a server or Qdrant
 Cloud instead of the local persistent index.
 
+Repeated runs skip unchanged points and embed only uncached text. The default
+v2 collection is `insurance_structure_bge_small_en_v1_5_v2`; the previous
+collection is preserved. See [the pipeline v2 guide](docs/embedding_pipeline_v2.md)
+for cache/recovery behavior, update examples, and operating limits.
+
 Planned work:
 
 - Reviewed insurance retrieval questions and relevance labels.
@@ -97,8 +108,6 @@ Planned work:
 
 ### Upcoming Phases
 
-- Embedding generation and analysis.
-- Vector indexing with Qdrant.
 - BM25 sparse retrieval.
 - Hybrid retrieval.
 - Metadata filtering.
