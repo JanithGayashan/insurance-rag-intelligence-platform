@@ -92,7 +92,7 @@ class IndexRecord(BaseModel):
 
 
 class RetrievalHit(BaseModel):
-    """One ranked dense, BM25 or hybrid retrieval result with source provenance."""
+    """One ranked dense, BM25, hybrid or reranked result with source provenance."""
 
     model_config = ConfigDict(extra="forbid")
 

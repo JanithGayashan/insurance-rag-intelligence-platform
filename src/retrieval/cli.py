@@ -26,6 +26,10 @@ def retrieve_question(
     revision: str | None = None,
     method: str = "dense",
     candidate_k: int = 20,
+    rerank_candidates: int = 20,
+    reranker_model: str | None = None,
+    reranker_revision: str | None = None,
+    reranker_device: str = "cpu",
 ) -> list[dict[str, object]]:
     """Query the persisted dense index and return serializable results."""
 
@@ -62,7 +66,15 @@ def retrieve_question(
             hits = dense.retrieve(question, top_k=top_k, filters=filters or None)
         else:
             from src.retrieval.hybrid import LlamaIndexRetrievalSuite
-            hits = LlamaIndexRetrievalSuite(dense, candidate_k=candidate_k).retrieve(
+            reranker = None
+            if method == "hybrid_reranked":
+                from src.retrieval.reranking import DEFAULT_RERANKER_MODEL, LlamaIndexCrossEncoderReranker
+                reranker = LlamaIndexCrossEncoderReranker(
+                    model_name=reranker_model or DEFAULT_RERANKER_MODEL,
+                    revision=reranker_revision, device=reranker_device,
+                )
+            hits = LlamaIndexRetrievalSuite(dense, candidate_k=candidate_k, reranker=reranker,
+                                            rerank_candidates=rerank_candidates).retrieve(
                 question, top_k=top_k, filters=filters or None, method=method,
             )
         return [hit.model_dump(mode="json") for hit in hits]
@@ -83,8 +95,12 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument("--collection", default=DEFAULT_COLLECTION)
     parser.add_argument("--embedding-model", default=DEFAULT_EMBEDDING_MODEL)
     parser.add_argument("--revision", help="Must match the revision used to build the index.")
-    parser.add_argument("--method", choices=["dense", "bm25", "hybrid"], default="dense")
+    parser.add_argument("--method", choices=["dense", "bm25", "hybrid", "hybrid_reranked"], default="dense")
     parser.add_argument("--candidate-k", type=int, default=20)
+    parser.add_argument("--rerank-candidates", type=int, default=20)
+    parser.add_argument("--reranker-model")
+    parser.add_argument("--reranker-revision", help="Immutable model revision; required for a custom model.")
+    parser.add_argument("--reranker-device", default="cpu")
     return parser.parse_args()
 
 
@@ -102,5 +118,9 @@ if __name__ == "__main__":
         revision=arguments.revision,
         method=arguments.method,
         candidate_k=arguments.candidate_k,
+        rerank_candidates=arguments.rerank_candidates,
+        reranker_model=arguments.reranker_model,
+        reranker_revision=arguments.reranker_revision,
+        reranker_device=arguments.reranker_device,
     )
     print(json.dumps(results, indent=2, ensure_ascii=False))

@@ -1,5 +1,10 @@
 # LlamaIndex BM25, hybrid retrieval and pooled evaluation
 
+Optional model-based reranking is now available as `hybrid_reranked`. See
+[the reranking guide](reranking.md) for the pinned model, same-candidate comparison,
+temporary pair-length windows and added evaluation artifacts. The default three
+retrieval methods below remain unchanged unless reranking is explicitly requested.
+
 The existing Docling structure-aware chunks, BGE vectors and Qdrant collection
 are reused. This phase adds native LlamaIndex retrieval orchestration; it does
 not regenerate chunks, re-embed documents or generate answers.

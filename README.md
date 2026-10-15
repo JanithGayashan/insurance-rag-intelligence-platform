@@ -134,6 +134,24 @@ are never automatically marked irrelevant.
 See [the LlamaIndex retrieval and pooling guide](docs/llamaindex_retrieval.md) for
 review/import commands, metric definitions, reproducibility and operating limits.
 
+### LlamaIndex reranking
+
+The optional `hybrid_reranked` method uses native `SentenceTransformerRerank`
+with a pinned local MS MARCO MiniLM cross-encoder. It scores the same fixed
+hybrid shortlist, preserves full chunk text/provenance and covers oversized
+question/passage pairs with temporary scoring windows. Existing retrieval
+defaults and stored document embeddings are preserved.
+
+```bash
+python -m src.retrieval.cli "Is flood damage covered?" --method hybrid_reranked --top-k 5
+python -m src.evaluation.retrieval.cli --retriever hybrid --rerank --include-source-checked --output data/evaluation/allianz/reranking_comparison
+```
+
+The comparison reports annotated evidence coverage, judgment-aware ranking
+metrics, paired improvements/regressions and CPU timing. High reranker scores
+do not automatically become relevance labels. See [the reranking guide](docs/reranking.md)
+for model configuration, input limits, review and actual ranking artifacts.
+
 Planned work:
 
 - Human approval and expansion of the source-checked insurance question set.
@@ -144,7 +162,6 @@ Planned work:
 
 - Query rewriting and multi-query retrieval.
 - HyDE and advanced query transformation.
-- Reranking.
 - Context construction and compression.
 - Grounded generation with citations.
 - Retrieval and generation evaluation.
@@ -178,7 +195,7 @@ pdfplumber is used as an independent validation signal rather than absolute grou
 - **Python**
 - **Docling**
 - **pdfplumber**
-- **LlamaIndex** — chunking experiments, BM25 and hybrid retrieval
+- **LlamaIndex** — chunking experiments, BM25, hybrid retrieval and cross-encoder reranking
 - **Qdrant** — dense vector indexing and metadata filters
 - **BGE / Sentence Transformers** — document and query embeddings
 - **BM25** — keyword retrieval through LlamaIndex
@@ -216,5 +233,7 @@ Chunking
 BGE Embeddings + Qdrant Index
         ↓
 Dense / BM25 / Hybrid Retrieval (LlamaIndex)
+        ↓
+Optional Cross-Encoder Reranking
         ↓
 Pooled Retrieval Evaluation + Evidence Review
