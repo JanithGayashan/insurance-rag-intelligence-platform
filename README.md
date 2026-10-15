@@ -112,6 +112,28 @@ python -m src.evaluation.retrieval.cli --include-source-checked
 See [the retrieval evaluation guide](docs/retrieval_evaluation.md) for the
 question dataset, review process, metric definitions, and generated reports.
 
+### LlamaIndex BM25, hybrid retrieval and pooled evaluation
+
+Native LlamaIndex `BM25Retriever` and `QueryFusionRetriever` now reuse the same
+812 structure-aware index records. Hybrid retrieval combines BGE/Qdrant dense
+results with BM25 using reciprocal rank fusion, without an LLM call.
+
+```bash
+python -m src.retrieval.cli "Is flood damage covered?" --method bm25
+python -m src.retrieval.cli "Is flood damage covered?" --method hybrid
+python -m src.evaluation.retrieval.cli --include-source-checked --retriever all --output data/evaluation/allianz/llamaindex_comparison
+```
+
+The evaluator builds deduplicated pools from all methods and exports a review
+file with positive, negative and unjudged states. Precision@5, Hit Rate@5 and
+MRR@5 expose unknown judgments through N/A values and bounds. Pooled Recall@5
+and evidence coverage are explicitly relative to annotated evidence. Original
+positive labels remain provisional until human review; unjudged candidates
+are never automatically marked irrelevant.
+
+See [the LlamaIndex retrieval and pooling guide](docs/llamaindex_retrieval.md) for
+review/import commands, metric definitions, reproducibility and operating limits.
+
 Planned work:
 
 - Human approval and expansion of the source-checked insurance question set.
@@ -120,9 +142,6 @@ Planned work:
 
 ### Upcoming Phases
 
-- BM25 sparse retrieval.
-- Hybrid retrieval.
-- Metadata filtering.
 - Query rewriting and multi-query retrieval.
 - HyDE and advanced query transformation.
 - Reranking.
@@ -159,13 +178,13 @@ pdfplumber is used as an independent validation signal rather than absolute grou
 - **Python**
 - **Docling**
 - **pdfplumber**
+- **LlamaIndex** — chunking experiments, BM25 and hybrid retrieval
+- **Qdrant** — dense vector indexing and metadata filters
+- **BGE / Sentence Transformers** — document and query embeddings
+- **BM25** — keyword retrieval through LlamaIndex
 
 ### Planned / Upcoming
 
-- **LlamaIndex**
-- **Qdrant**
-- **BM25**
-- **BGE / Sentence Transformers**
 - **RAGAS**
 - **FastAPI**
 - **PostgreSQL**
@@ -194,4 +213,8 @@ Validated Documents
         ↓
 Chunking
         ↓
-Future RAG Pipeline
+BGE Embeddings + Qdrant Index
+        ↓
+Dense / BM25 / Hybrid Retrieval (LlamaIndex)
+        ↓
+Pooled Retrieval Evaluation + Evidence Review
