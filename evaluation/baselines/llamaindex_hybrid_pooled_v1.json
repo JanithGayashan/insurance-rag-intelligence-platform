@@ -1,0 +1,245 @@
+{
+  "status": "PROVISIONAL_BASELINE",
+  "dataset_id": "allianz-insurance-retrieval",
+  "dataset_sha256": "88763d353bb44b9a7afcee83f83910979a427eed256b5a76dd6f932539bf38ba",
+  "corpus_sha256": "c2140b1d050a4f2de652c278af534976f6674160a8944c1056d312a292509ce6",
+  "embedding_fingerprint": "d5a8ef1d0052c2ce2a0d7a432da99cbdbb4e5eee937db5657a1901d2a95a00fa",
+  "collection_name": "insurance_structure_bge_small_en_v1_5_v2",
+  "indexed_chunks": 812,
+  "questions_evaluated": 40,
+  "pool_depth": 20,
+  "fusion_candidate_k": 20,
+  "fusion": "LlamaIndex reciprocal_rerank; equal contribution; rank constant 60; num_queries=1",
+  "libraries": {
+    "llama-index-core": "0.14.25",
+    "llama-index-retrievers-bm25": "0.8.0",
+    "bm25s": "0.3.13",
+    "PyStemmer": "2.2.0.3"
+  },
+  "pdf_source_validation": {
+    "status": "PASS",
+    "pdf_documents_checked": 11,
+    "evidence_passages_checked": 41
+  },
+  "pool": {
+    "question_chunk_pairs": 2176,
+    "top5_pairs": 574,
+    "unjudged_top5_pairs": 533,
+    "outside_pool_sample_per_question": 2,
+    "judgment_status_counts": {
+      "unjudged": 2135,
+      "source_checked": 41
+    },
+    "accepted_relevant_pairs": 41,
+    "accepted_irrelevant_pairs": 0
+  },
+  "limitations": [
+    "Unjudged pairs remain unknown; null top-K metrics are unresolved, not zero. Bounds reflect only missing judgments, not annotation errors.",
+    "Pooled recall measures accepted annotated positives, not all relevant chunks in the corpus.",
+    "Evidence coverage counts reviewed/reference evidence units once; it is not generated-answer accuracy or exhaustive semantic matching.",
+    "Source-checked labels are assistant-prepared until a named human approves them; pool membership is not a relevance judgment.",
+    "The outside-pool audit is a diagnostic sample, not a statistical estimate of full-corpus recall.",
+    "Known-policy results receive explicit policy context and are reported separately from unfiltered search.",
+    "Forty development questions are not a held-out production benchmark. BM25 statistics are recomputed within each filtered corpus."
+  ],
+  "results_at_5": {
+    "dense": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.725,
+          "evidence_coverage@5": 0.725,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.725,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.145,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.521667,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.725,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.145,
+          "precision_upper_bound@5": 1.0
+        },
+        "determined_question_counts": {
+          "precision@5": 0,
+          "precision_lower_bound@5": 40,
+          "precision_upper_bound@5": 40,
+          "hit_rate@5": 29,
+          "hit_rate_lower_bound@5": 40,
+          "hit_rate_upper_bound@5": 40,
+          "mrr@5": 16,
+          "mrr_lower_bound@5": 40,
+          "mrr_upper_bound@5": 40,
+          "judged_fraction@5": 40,
+          "pooled_recall@5": 40,
+          "evidence_coverage@5": 40,
+          "complete_evidence_coverage@5": 40
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.2,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.741667,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.9875,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.2,
+          "precision_upper_bound@5": 1.0
+        },
+        "determined_question_counts": {
+          "precision@5": 0,
+          "precision_lower_bound@5": 40,
+          "precision_upper_bound@5": 40,
+          "hit_rate@5": 40,
+          "hit_rate_lower_bound@5": 40,
+          "hit_rate_upper_bound@5": 40,
+          "mrr@5": 22,
+          "mrr_lower_bound@5": 40,
+          "mrr_upper_bound@5": 40,
+          "judged_fraction@5": 40,
+          "pooled_recall@5": 40,
+          "evidence_coverage@5": 40,
+          "complete_evidence_coverage@5": 40
+        }
+      }
+    },
+    "bm25": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.7,
+          "evidence_coverage@5": 0.7,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.7,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.14,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.5425,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.7,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.14,
+          "precision_upper_bound@5": 1.0
+        },
+        "determined_question_counts": {
+          "precision@5": 0,
+          "precision_lower_bound@5": 40,
+          "precision_upper_bound@5": 40,
+          "hit_rate@5": 28,
+          "hit_rate_lower_bound@5": 40,
+          "hit_rate_upper_bound@5": 40,
+          "mrr@5": 17,
+          "mrr_lower_bound@5": 40,
+          "mrr_upper_bound@5": 40,
+          "judged_fraction@5": 40,
+          "pooled_recall@5": 40,
+          "evidence_coverage@5": 40,
+          "complete_evidence_coverage@5": 40
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.205,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.870833,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 1.0,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.205,
+          "precision_upper_bound@5": 1.0
+        },
+        "determined_question_counts": {
+          "precision@5": 0,
+          "precision_lower_bound@5": 40,
+          "precision_upper_bound@5": 40,
+          "hit_rate@5": 40,
+          "hit_rate_lower_bound@5": 40,
+          "hit_rate_upper_bound@5": 40,
+          "mrr@5": 31,
+          "mrr_lower_bound@5": 40,
+          "mrr_upper_bound@5": 40,
+          "judged_fraction@5": 40,
+          "pooled_recall@5": 40,
+          "evidence_coverage@5": 40,
+          "complete_evidence_coverage@5": 40
+        }
+      }
+    },
+    "hybrid": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.825,
+          "evidence_coverage@5": 0.825,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.825,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.165,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.5925,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.825,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.165,
+          "precision_upper_bound@5": 1.0
+        },
+        "determined_question_counts": {
+          "precision@5": 0,
+          "precision_lower_bound@5": 40,
+          "precision_upper_bound@5": 40,
+          "hit_rate@5": 33,
+          "hit_rate_lower_bound@5": 40,
+          "hit_rate_upper_bound@5": 40,
+          "mrr@5": 18,
+          "mrr_lower_bound@5": 40,
+          "mrr_upper_bound@5": 40,
+          "judged_fraction@5": 40,
+          "pooled_recall@5": 40,
+          "evidence_coverage@5": 40,
+          "complete_evidence_coverage@5": 40
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.205,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.879167,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 1.0,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.205,
+          "precision_upper_bound@5": 1.0
+        },
+        "determined_question_counts": {
+          "precision@5": 0,
+          "precision_lower_bound@5": 40,
+          "precision_upper_bound@5": 40,
+          "hit_rate@5": 40,
+          "hit_rate_lower_bound@5": 40,
+          "hit_rate_upper_bound@5": 40,
+          "mrr@5": 31,
+          "mrr_lower_bound@5": 40,
+          "mrr_upper_bound@5": 40,
+          "judged_fraction@5": 40,
+          "pooled_recall@5": 40,
+          "evidence_coverage@5": 40,
+          "complete_evidence_coverage@5": 40
+        }
+      }
+    }
+  }
+}

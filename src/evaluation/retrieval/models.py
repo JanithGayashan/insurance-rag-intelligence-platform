@@ -67,3 +67,51 @@ class QuestionDataset(BaseModel):
         if len(set(ids)) != len(ids):
             raise ValueError("duplicate question IDs")
         return self
+
+
+class PoolJudgment(BaseModel):
+    """An assessment of a question/chunk pair; unknown is never a negative."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    question_id: str = Field(min_length=1)
+    chunk_id: str = Field(min_length=1)
+    text_sha256: str = Field(min_length=1)
+    relevance: Literal[0, 1] | None = None
+    review_status: Literal["unjudged", "source_checked", "approved"] = "unjudged"
+    reviewer: str | None = None
+    rationale: str = ""
+    supporting_quotes: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+
+    @model_validator(mode="after")
+    def validate_judgment(self):
+        if self.relevance is None:
+            if self.review_status != "unjudged" or self.evidence_ids or self.supporting_quotes:
+                raise ValueError("unjudged pairs cannot claim relevance or evidence")
+        else:
+            if self.review_status == "unjudged" or not self.rationale.strip():
+                raise ValueError("judged pairs require a review status and rationale")
+            if self.relevance == 1 and not self.supporting_quotes:
+                raise ValueError("positive judgments require supporting quotations")
+            if self.relevance == 0 and self.evidence_ids:
+                raise ValueError("negative judgments cannot support evidence units")
+        if self.review_status == "approved" and not (self.reviewer or "").strip():
+            raise ValueError("approved judgments require a named human reviewer")
+        return self
+
+
+class JudgmentSet(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    schema_version: Literal[1] = 1
+    dataset_sha256: str
+    corpus_sha256: str
+    judgments: list[PoolJudgment]
+
+    @model_validator(mode="after")
+    def unique_pairs(self):
+        pairs = [(item.question_id, item.chunk_id) for item in self.judgments]
+        if len(pairs) != len(set(pairs)):
+            raise ValueError("duplicate question/chunk judgments")
+        return self

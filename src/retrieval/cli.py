@@ -24,6 +24,8 @@ def retrieve_question(
     collection_name: str = DEFAULT_COLLECTION,
     embedding_model: str = DEFAULT_EMBEDDING_MODEL,
     revision: str | None = None,
+    method: str = "dense",
+    candidate_k: int = 20,
 ) -> list[dict[str, object]]:
     """Query the persisted dense index and return serializable results."""
 
@@ -55,11 +57,14 @@ def retrieve_question(
         if value is not None
     }
     try:
-        hits = DenseRetriever(embedder, store).retrieve(
-            question,
-            top_k=top_k,
-            filters=filters or None,
-        )
+        dense = DenseRetriever(embedder, store)
+        if method == "dense":
+            hits = dense.retrieve(question, top_k=top_k, filters=filters or None)
+        else:
+            from src.retrieval.hybrid import LlamaIndexRetrievalSuite
+            hits = LlamaIndexRetrievalSuite(dense, candidate_k=candidate_k).retrieve(
+                question, top_k=top_k, filters=filters or None, method=method,
+            )
         return [hit.model_dump(mode="json") for hit in hits]
     finally:
         store.close()
@@ -78,6 +83,8 @@ def _parse_arguments() -> argparse.Namespace:
     parser.add_argument("--collection", default=DEFAULT_COLLECTION)
     parser.add_argument("--embedding-model", default=DEFAULT_EMBEDDING_MODEL)
     parser.add_argument("--revision", help="Must match the revision used to build the index.")
+    parser.add_argument("--method", choices=["dense", "bm25", "hybrid"], default="dense")
+    parser.add_argument("--candidate-k", type=int, default=20)
     return parser.parse_args()
 
 
@@ -93,5 +100,7 @@ if __name__ == "__main__":
         collection_name=arguments.collection,
         embedding_model=arguments.embedding_model,
         revision=arguments.revision,
+        method=arguments.method,
+        candidate_k=arguments.candidate_k,
     )
     print(json.dumps(results, indent=2, ensure_ascii=False))

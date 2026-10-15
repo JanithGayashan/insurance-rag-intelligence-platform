@@ -1,5 +1,12 @@
 # Insurance retrieval evaluation
 
+The default CLI now compares dense, BM25 and hybrid retrieval with judgment-aware
+pooling. See [the LlamaIndex retrieval guide](llamaindex_retrieval.md) for current
+commands, Precision@5, missing-judgment bounds and review artifacts. The original
+positive-only baseline described below can be reproduced with `--retriever dense
+--legacy-dense`; its recall is relative to the annotated chunks, not exhaustive
+corpus relevance. Existing numeric snapshots remain historical development data.
+
 This phase evaluates the existing dense retriever against a fixed question set.
 It does not regenerate the corpus, change chunking, add BM25, or generate answers.
 
