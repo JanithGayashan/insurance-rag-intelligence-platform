@@ -1,0 +1,287 @@
+{
+  "status": "PROVISIONAL_BASELINE",
+  "dataset_id": "allianz-insurance-retrieval",
+  "dataset_sha256": "88763d353bb44b9a7afcee83f83910979a427eed256b5a76dd6f932539bf38ba",
+  "corpus_sha256": "c2140b1d050a4f2de652c278af534976f6674160a8944c1056d312a292509ce6",
+  "embedding_fingerprint": "d5a8ef1d0052c2ce2a0d7a432da99cbdbb4e5eee937db5657a1901d2a95a00fa",
+  "collection_name": "insurance_structure_bge_small_en_v1_5_v2",
+  "indexed_chunks": 812,
+  "questions_evaluated": 40,
+  "pool_depth": 20,
+  "fusion_candidate_k": 20,
+  "fusion": "LlamaIndex reciprocal_rerank; equal contribution; rank constant 60; num_queries=1",
+  "libraries": {
+    "llama-index-core": "0.14.25",
+    "llama-index-retrievers-bm25": "0.8.0",
+    "bm25s": "0.3.13",
+    "PyStemmer": "2.2.0.3"
+  },
+  "reranker": {
+    "configuration": {
+      "model_name": "cross-encoder/ms-marco-MiniLM-L6-v2",
+      "model_revision": "fbf9045f293a58fa68636213c5e0cb8a2de5d45e",
+      "device": "cpu",
+      "max_sequence_length": 512,
+      "window_overlap_tokens": 32,
+      "window_aggregation": "max",
+      "source_context": "source_file",
+      "trust_remote_code": false,
+      "tokenizer_sha256": "9114256b104cca80e04367526f03f46aa3c443c2ed174904142a73bbf13b9fbb",
+      "backend": {
+        "llama-index-core": "0.14.25",
+        "sentence-transformers": "6.1.0",
+        "transformers": "5.15.0",
+        "torch": "2.13.0"
+      }
+    },
+    "fingerprint": "02de6630210b15ef64698096d661f00a940890b132a6da1a9f464b56061c0591",
+    "load_seconds": 0.24096770000323886,
+    "candidates": 20
+  },
+  "pdf_source_validation": {
+    "status": "PASS",
+    "pdf_documents_checked": 11,
+    "evidence_passages_checked": 41
+  },
+  "pool": {
+    "question_chunk_pairs": 2176,
+    "top5_pairs": 637,
+    "unjudged_top5_pairs": 596,
+    "outside_pool_sample_per_question": 2,
+    "judgment_status_counts": {
+      "unjudged": 2135,
+      "source_checked": 41
+    },
+    "accepted_relevant_pairs": 41,
+    "accepted_irrelevant_pairs": 0
+  },
+  "limitations": [
+    "Unjudged pairs remain unknown; null top-K metrics are unresolved, not zero. Bounds reflect only missing judgments, not annotation errors.",
+    "Pooled recall measures accepted annotated positives, not all relevant chunks in the corpus.",
+    "Evidence coverage counts reviewed/reference evidence units once; it is not generated-answer accuracy or exhaustive semantic matching.",
+    "Source-checked labels are assistant-prepared until a named human approves them; pool membership is not a relevance judgment.",
+    "The outside-pool audit is a diagnostic sample, not a statistical estimate of full-corpus recall.",
+    "Known-policy results receive explicit policy context and are reported separately from unfiltered search.",
+    "Forty development questions are not a held-out production benchmark. BM25 statistics are recomputed within each filtered corpus.",
+    "Reranking reorders the same fixed hybrid candidate set; it cannot recover passages missing from that set.",
+    "Oversized query/passage pairs use temporary token windows and maximum-score aggregation. More windows can affect scoring.",
+    "Latency uses shared sequential component timings, includes first-use BM25 work, and excludes reranker startup. It is not API or production latency."
+  ],
+  "results_at_5": {
+    "dense": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.725,
+          "evidence_coverage@5": 0.725,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.725,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.145,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.521667,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.725,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.145,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 0.06468124749953859,
+          "median": 0.059909149997110944,
+          "p95": 0.09514694999888888
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.2,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.741667,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.9875,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.2,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 0.0997843200004354,
+          "median": 0.07979470000282163,
+          "p95": 0.1573426299986749
+        }
+      }
+    },
+    "bm25": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.7,
+          "evidence_coverage@5": 0.7,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.7,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.14,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.5425,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.7,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.14,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 0.008728722499654396,
+          "median": 0.0030483999980788212,
+          "p95": 0.004882279997400473
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.205,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.870833,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 1.0,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.205,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 0.015356612499635958,
+          "median": 0.0032257500024570618,
+          "p95": 0.06673481000361785
+        }
+      }
+    },
+    "hybrid": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.825,
+          "evidence_coverage@5": 0.825,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.825,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.165,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.5925,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.825,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.165,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 0.07721105750006245,
+          "median": 0.06687654999404913,
+          "p95": 0.10380887000246726
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.205,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.879167,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 1.0,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.205,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 0.1194256150005458,
+          "median": 0.0894381500002055,
+          "p95": 0.20054894000204496
+        }
+      }
+    },
+    "hybrid_reranked": {
+      "unfiltered": {
+        "metrics": {
+          "complete_evidence_coverage@5": 0.925,
+          "evidence_coverage@5": 0.925,
+          "hit_rate@5": null,
+          "hit_rate_lower_bound@5": 0.925,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.185,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.825,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 0.9125,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.185,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 3.147973562500556,
+          "median": 3.090381600002729,
+          "p95": 4.358825985001383
+        }
+      },
+      "policy_scoped": {
+        "metrics": {
+          "complete_evidence_coverage@5": 1.0,
+          "evidence_coverage@5": 1.0,
+          "hit_rate@5": 1.0,
+          "hit_rate_lower_bound@5": 1.0,
+          "hit_rate_upper_bound@5": 1.0,
+          "judged_fraction@5": 0.205,
+          "mrr@5": null,
+          "mrr_lower_bound@5": 0.922917,
+          "mrr_upper_bound@5": 1.0,
+          "pooled_recall@5": 1.0,
+          "precision@5": null,
+          "precision_lower_bound@5": 0.205,
+          "precision_upper_bound@5": 1.0
+        },
+        "latency_seconds": {
+          "mean": 3.145375442500517,
+          "median": 3.0921297500026412,
+          "p95": 4.654098774999146
+        }
+      }
+    }
+  },
+  "paired_hybrid_comparison": {
+    "unfiltered": {
+      "improved_questions": 4,
+      "regressed_questions": 0,
+      "tied_questions": 36,
+      "questions_missing_candidate_evidence": [
+        "INS-007",
+        "INS-010",
+        "INS-027"
+      ],
+      "mean_candidate_evidence_coverage": 0.925,
+      "mean_rerank_seconds": 3.0707625050004936,
+      "improved_question_ids": [
+        "INS-011",
+        "INS-012",
+        "INS-014",
+        "INS-038"
+      ],
+      "regressed_question_ids": []
+    },
+    "policy_scoped": {
+      "improved_questions": 0,
+      "regressed_questions": 0,
+      "tied_questions": 40,
+      "questions_missing_candidate_evidence": [],
+      "mean_candidate_evidence_coverage": 1.0,
+      "mean_rerank_seconds": 3.0259498274999714,
+      "improved_question_ids": [],
+      "regressed_question_ids": []
+    }
+  }
+}
