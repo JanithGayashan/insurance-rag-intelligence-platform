@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 from src.chunking.structure_aware.pipeline import (
     discover_documents,
@@ -94,3 +95,64 @@ def test_structure_chunking_pipeline_processes_validated_documents(tmp_path):
     assert (
         processed_directory / "structure_chunking_summary.json"
     ).exists()
+
+
+def test_structure_pipeline_discovers_nested_categories_and_preserves_classification(tmp_path):
+    sources = ["motor/book.pdf", "general/travel/nested/book.pdf", "general/health/book.pdf"]
+    for index, source in enumerate(sources):
+        directory = tmp_path / Path(source).with_suffix("")
+        _write_document(directory, "PASS")
+        (directory / "metadata.json").write_text(json.dumps({"source": {
+            "relative_path": source, "sha256": str(index) * 64,
+        }}), encoding="utf-8")
+    summary = run_structure_chunking_pipeline(tmp_path)
+    assert summary["processed_documents"] == 3 and summary["failed_documents"] == 0
+    for source in sources:
+        directory = tmp_path / Path(source).with_suffix("")
+        chunk = json.loads((directory / "structure_chunks.json").read_text(encoding="utf-8"))[0]
+        assert chunk["metadata"]["insurer"] == "slic"
+        assert chunk["metadata"]["source_file"] == source
+        expected_category = source.split("/")[1] if source.startswith("general/") else "motor"
+        assert chunk["metadata"]["category_key"] == f"general/{expected_category}"
+
+
+def test_failed_validation_removes_active_chunks_and_preserves_history(tmp_path):
+    from src.indexing.loader import load_structure_records, discover_structure_chunk_files
+    directory = tmp_path / "motor" / "policy"
+    _write_document(directory, "PASS")
+    run_structure_chunking_pipeline(tmp_path)
+    original = (directory / "structure_chunks.json").read_bytes()
+    (directory / "validation_report.json").write_text(json.dumps({"status": "FAIL"}), encoding="utf-8")
+    summary = run_structure_chunking_pipeline(tmp_path)
+    assert summary["skipped_documents"] == 1
+    assert not (directory / "structure_chunks.json").exists()
+    assert any(path.read_bytes() == original for path in (directory / ".chunk_history").rglob("structure_chunks.json"))
+    assert discover_structure_chunk_files(tmp_path) == []
+    assert load_structure_records(tmp_path, allow_empty=True)[0] == []
+
+
+def test_index_loader_rejects_changed_validation_and_parsed_input(tmp_path):
+    import pytest
+    from src.indexing.loader import load_structure_records
+    directory = tmp_path / "policy"
+    _write_document(directory, "PASS")
+    run_structure_chunking_pipeline(tmp_path)
+    (directory / "validation_report.json").write_text(json.dumps({"status": "FAIL"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="validation"):
+        load_structure_records(tmp_path)
+    (directory / "validation_report.json").write_text(json.dumps({"status": "PASS"}), encoding="utf-8")
+    document = json.loads((directory / "document.json").read_text(encoding="utf-8"))
+    document["texts"][1]["text"] = "The policy terms changed."
+    (directory / "document.json").write_text(json.dumps(document), encoding="utf-8")
+    with pytest.raises(ValueError, match="parsed document changed"):
+        load_structure_records(tmp_path)
+
+
+def test_chunking_failure_invalidates_previous_output(tmp_path):
+    directory = tmp_path / "policy"
+    _write_document(directory, "PASS")
+    run_structure_chunking_pipeline(tmp_path)
+    (directory / "document.json").write_text(json.dumps({"name": "broken"}), encoding="utf-8")
+    result = run_structure_chunking_pipeline(tmp_path)
+    assert result["failed_documents"] == 1
+    assert not (directory / "structure_chunks.json").exists()

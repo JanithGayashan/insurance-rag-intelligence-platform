@@ -4,6 +4,16 @@ A production-oriented **Retrieval-Augmented Generation (RAG)** platform for insu
 
 The project focuses on reliable ingestion of insurance policies and regulatory documents, high-quality retrieval, grounded answer generation, source citation, and systematic evaluation of RAG components.
 
+The active dataset is **Sri Lanka Insurance (SLIC)**. Shared dataset configuration
+automatically discovers motor, travel, health, and additional category folders
+across parsing, chunking, indexing, retrieval, generation, and the local frontend.
+See [dataset configuration and processing commands](docs/datasets.md).
+Existing Allianz benchmark results below describe the earlier corpus.
+
+Compare Docling, pdfplumber, PyMuPDF, Unstructured and LlamaParse on the same SLIC
+PDF with the [five-parser comparison pipeline](docs/parser_comparison.md), including
+saved outputs, per-page diagnostics and reference checks in the local frontend.
+
 ## 🎯 Project Goals
 
 - Build an end-to-end RAG pipeline for insurance knowledge retrieval.
@@ -115,13 +125,13 @@ question dataset, review process, metric definitions, and generated reports.
 ### LlamaIndex BM25, hybrid retrieval and pooled evaluation
 
 Native LlamaIndex `BM25Retriever` and `QueryFusionRetriever` now reuse the same
-812 structure-aware index records. Hybrid retrieval combines BGE/Qdrant dense
+structure-aware index records (812 in the earlier Allianz benchmark). Hybrid retrieval combines BGE/Qdrant dense
 results with BM25 using reciprocal rank fusion, without an LLM call.
 
 ```bash
 python -m src.retrieval.cli "Is flood damage covered?" --method bm25
 python -m src.retrieval.cli "Is flood damage covered?" --method hybrid
-python -m src.evaluation.retrieval.cli --include-source-checked --retriever all --output data/evaluation/allianz/llamaindex_comparison
+python -m src.evaluation.retrieval.cli --include-source-checked --retriever all
 ```
 
 The evaluator builds deduplicated pools from all methods and exports a review
@@ -144,7 +154,7 @@ defaults and stored document embeddings are preserved.
 
 ```bash
 python -m src.retrieval.cli "Is flood damage covered?" --method hybrid_reranked --top-k 5
-python -m src.evaluation.retrieval.cli --retriever hybrid --rerank --include-source-checked --output data/evaluation/allianz/reranking_comparison
+python -m src.evaluation.retrieval.cli --retriever hybrid --rerank --include-source-checked
 ```
 
 The comparison reports annotated evidence coverage, judgment-aware ranking
@@ -152,21 +162,61 @@ metrics, paired improvements/regressions and CPU timing. High reranker scores
 do not automatically become relevance labels. See [the reranking guide](docs/reranking.md)
 for model configuration, input limits, review and actual ranking artifacts.
 
+### Context preparation and grounded answers
+
+Native LlamaIndex `OpenAIResponses` now generates answers from token-budgeted
+structure-aware evidence after hybrid retrieval and optional reranking. Claims
+require source IDs and supporting verbatim quotes; the application validates
+quotations and renders citations with original filenames and PDF pages.
+
+Add only `OPENAI_API_KEY` to your local `.env`, then run:
+
+```bash
+python -m src.generation.cli "Under the Allianz Motor Insurance Policy (English), is flood damage included in the listed coverage?"
+python -m src.generation.cli "Is flood damage covered?" --dry-run
+```
+
+The configurable default is `gpt-5-nano` with minimal reasoning and bounded
+context/output. OpenAI schedules its removal for December 11, 2026; the guide
+documents the supported `gpt-6-luna` alternative. Each run saves complete context,
+prompt, readable answer and JSON diagnostics under `data/outputs/answers/`.
+Dry runs require no key and make no API call. Citation checks do not establish
+semantic answer correctness; live generation quality still needs evaluation.
+See [the answer generation guide](docs/answer_generation.md) and `.env.example`.
+
 Planned work:
 
 - Human approval and expansion of the source-checked insurance question set.
 - nDCG evaluation and a held-out test set for subsequent retrieval tuning.
 - Embedding-model comparison using the reviewed question set.
 
+### Portfolio backend API
+
+FastAPI now exposes authenticated `POST /v1/chat` and `GET /v1/documents`, plus
+public liveness/readiness checks. Models and retrieval resources load once at
+startup. A dedicated worker serializes inference for the local Qdrant index;
+requests have body/question limits, process-local request budgets, safe errors
+and a public response containing only the answer and citations.
+
+```powershell
+.\venv\Scripts\python.exe -m src.api.setup
+.\venv\Scripts\python.exe -m uvicorn src.api.app:app --host 127.0.0.1 --port 8000 --workers 1
+```
+
+Open `http://127.0.0.1:8000/docs`. Your Next.js portfolio should call this API
+through its own server route using the separate `RAG_BACKEND_API_KEY`; neither
+that token nor the OpenAI key belongs in browser code. See
+[the portfolio backend guide](docs/portfolio_backend.md) for the API contract,
+a Vercel/Next.js proxy example and the deployment/storage requirements.
+
 ### Upcoming Phases
 
 - Query rewriting and multi-query retrieval.
 - HyDE and advanced query transformation.
-- Context construction and compression.
-- Grounded generation with citations.
+- Advanced context compression and conversation handling.
 - Retrieval and generation evaluation.
 - RAG observability and failure analysis.
-- FastAPI service and containerized deployment.
+- Hosted deployment, shared request budgets and container packaging.
 
 ## 🔍 Parsing Validation Strategy
 
@@ -195,15 +245,16 @@ pdfplumber is used as an independent validation signal rather than absolute grou
 - **Python**
 - **Docling**
 - **pdfplumber**
-- **LlamaIndex** — chunking experiments, BM25, hybrid retrieval and cross-encoder reranking
+- **LlamaIndex** — chunking experiments, retrieval, reranking and OpenAI answer generation
 - **Qdrant** — dense vector indexing and metadata filters
 - **BGE / Sentence Transformers** — document and query embeddings
 - **BM25** — keyword retrieval through LlamaIndex
+- **OpenAI** — grounded answer generation through LlamaIndex
+- **FastAPI / Uvicorn** — portfolio backend API
 
 ### Planned / Upcoming
 
 - **RAGAS**
-- **FastAPI**
 - **PostgreSQL**
 - **Docker**
 
@@ -235,5 +286,6 @@ BGE Embeddings + Qdrant Index
 Dense / BM25 / Hybrid Retrieval (LlamaIndex)
         ↓
 Optional Cross-Encoder Reranking
+        ├── Pooled Retrieval Evaluation + Evidence Review
         ↓
-Pooled Retrieval Evaluation + Evidence Review
+Token-Budgeted Context + Grounded OpenAI Answer (LlamaIndex)
