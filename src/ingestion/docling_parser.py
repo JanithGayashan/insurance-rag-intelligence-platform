@@ -12,6 +12,8 @@ from docling.document_converter import (
     PdfFormatOption,
 )
 
+from src.configuration.dataset import DatasetConfiguration, get_dataset_configuration
+
 
 def create_converter() -> DocumentConverter:
     """
@@ -60,6 +62,7 @@ def parse_pdf(
     raw_root: Path,
     processed_root: Path,
     converter: DocumentConverter,
+    dataset: DatasetConfiguration | None = None,
 ) -> dict:
     """
     Parse one PDF using Docling and store its outputs.
@@ -76,12 +79,13 @@ def parse_pdf(
     # Example:
     #
     # raw:
-    # data/raw/allianz/motor/policy.pdf
+    # data/raw/slic/general/motor/policy.pdf
     #
     # output:
-    # data/processed/allianz/motor/policy/
+    # data/processed/slic/general/motor/policy/
 
     relative_path = pdf_path.relative_to(raw_root)
+    dataset = dataset or get_dataset_configuration()
 
     output_dir = (
         processed_root
@@ -159,6 +163,7 @@ def parse_pdf(
 
         metadata = {
             "source": {
+                **dataset.source_metadata(relative_path.as_posix()),
                 "file_name": pdf_path.name,
                 "relative_path": str(relative_path),
                 "file_size_bytes": pdf_path.stat().st_size,
@@ -207,6 +212,7 @@ def parse_pdf(
 
         error_metadata = {
             "source": {
+                **dataset.source_metadata(relative_path.as_posix()),
                 "file_name": pdf_path.name,
                 "relative_path": str(relative_path),
             },

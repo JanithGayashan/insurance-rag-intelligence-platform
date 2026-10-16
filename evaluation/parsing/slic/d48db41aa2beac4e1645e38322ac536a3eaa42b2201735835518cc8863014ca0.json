@@ -1,0 +1,1378 @@
+{
+  "schema_version": 2,
+  "source_sha256": "d48db41aa2beac4e1645e38322ac536a3eaa42b2201735835518cc8863014ca0",
+  "source_file": "motor/motor-english-policy-book-2023.pdf",
+  "review_status": "AGENT_VISUALLY_CHECKED_PENDING_HUMAN_REVIEW",
+  "review_method": "Agent transcription and manual region selection from Poppler renders of original PDF pages at 216 DPI; not generated from parser predictions.",
+  "scope": "Six complete provisional transcriptions: PDF pages 4, 10, 16, 20, 27, 29. Heading/list/table annotations are exhaustive for those classes on those pages. Reading order uses selected unique block/cell anchors.",
+  "limitations": [
+    "All new annotations remain pending human review; no human review has been performed by this implementation.",
+    "Selected pages from one document do not establish full-corpus or whole-document accuracy.",
+    "Spatial boxes and semantic block granularity require human review before interpreting layout AP as a reliable benchmark.",
+    "Reading-order anchors sample block/cell order and cannot detect every within-block ordering error."
+  ],
+  "checks": [
+    {
+      "id": "PDF-04-01",
+      "kind": "table_cell",
+      "page_number": 4,
+      "text": "Insured/Policy holder"
+    },
+    {
+      "id": "PDF-04-02",
+      "kind": "table_cell",
+      "page_number": 4,
+      "text": "Who holds a valid motor insurance in relation to the insured vehicle."
+    },
+    {
+      "id": "PDF-04-03",
+      "kind": "table_cell",
+      "page_number": 4,
+      "text": "Sri Lanka Insurance Corporation Limited"
+    },
+    {
+      "id": "PDF-04-04",
+      "kind": "table_cell",
+      "page_number": 4,
+      "text": "The value to be covered"
+    },
+    {
+      "id": "PDF-04-05",
+      "kind": "table_cell",
+      "page_number": 4,
+      "text": "An amendment to the policy."
+    },
+    {
+      "id": "PDF-10-06",
+      "kind": "passage",
+      "page_number": 10,
+      "text": "The Company will pay all costs and expenses incurred with its written consent."
+    },
+    {
+      "id": "PDF-10-07",
+      "kind": "heading",
+      "page_number": 10,
+      "text": "SECTION 3: MEDICAL EXPENSES"
+    },
+    {
+      "id": "PDF-10-08",
+      "kind": "heading",
+      "page_number": 10,
+      "text": "AVOIDANCE OF CERTAIN TERMS AND RIGHT OF RECOVERY"
+    },
+    {
+      "id": "PDF-10-09",
+      "kind": "passage",
+      "page_number": 10,
+      "text": "This Clause shall be limited to Rs. 1500/- in respect of any one accident."
+    },
+    {
+      "id": "PDF-16-10",
+      "kind": "heading",
+      "page_number": 16,
+      "text": "CLAUSE 6 - COMPULSORY EXCESS"
+    },
+    {
+      "id": "PDF-16-11",
+      "kind": "heading",
+      "page_number": 16,
+      "text": "CLAUSE 7 - PERSONAL ACCIDENT BENEFITS"
+    },
+    {
+      "id": "PDF-16-12",
+      "kind": "heading",
+      "page_number": 16,
+      "text": "SCALE OF COMPENSATION"
+    },
+    {
+      "id": "PDF-16-13",
+      "kind": "table_cell",
+      "page_number": 16,
+      "text": "Death"
+    },
+    {
+      "id": "PDF-16-14",
+      "kind": "table_cell",
+      "page_number": 16,
+      "text": "100%"
+    },
+    {
+      "id": "PDF-16-15",
+      "kind": "table_cell",
+      "page_number": 16,
+      "text": "50%"
+    },
+    {
+      "id": "PDF-16-16",
+      "kind": "passage",
+      "page_number": 16,
+      "text": "Such person is not less than 16 or more than 65 years of age at the time of such death or injury."
+    },
+    {
+      "id": "PDF-20-17",
+      "kind": "heading",
+      "page_number": 20,
+      "text": "CLAUSE 18 - LEARNER DRIVER/RIDER"
+    },
+    {
+      "id": "PDF-20-18",
+      "kind": "heading",
+      "page_number": 20,
+      "text": "CLAUSE 19 – AIR BAG EXTENSION"
+    },
+    {
+      "id": "PDF-20-19",
+      "kind": "passage",
+      "page_number": 20,
+      "text": "If the expenditure incurred by the Company shall include the amount for which the insured is responsible hereunder, such amount shall be repaid by the insured to the Company forthwith."
+    },
+    {
+      "id": "PDF-27-20",
+      "kind": "heading",
+      "page_number": 27,
+      "text": "CLAUSE 26 - DUTY FREE VEHICLES"
+    },
+    {
+      "id": "PDF-27-21",
+      "kind": "heading",
+      "page_number": 27,
+      "text": "CLAUSE 27 - SPECIAL TYPE CLAUSES"
+    },
+    {
+      "id": "PDF-27-22",
+      "kind": "passage",
+      "page_number": 27,
+      "text": "Shall have entered into a Hire Contract with the Insured."
+    },
+    {
+      "id": "PDF-27-23",
+      "kind": "table_cell",
+      "page_number": 27,
+      "text": "Passenger Indemnity – (Ambulance & Hearses)"
+    },
+    {
+      "id": "PDF-29-24",
+      "kind": "passage",
+      "page_number": 29,
+      "text": "Sri Lanka Insurance"
+    },
+    {
+      "id": "PDF-29-25",
+      "kind": "passage",
+      "page_number": 29,
+      "text": "No. 21, Vauxhall Street, Colombo 02, Sri Lanka."
+    },
+    {
+      "id": "PDF-29-26",
+      "kind": "passage",
+      "page_number": 29,
+      "text": "www.srilankainsurance.com"
+    }
+  ],
+  "full_pages": [
+    {
+      "page_number": 4,
+      "text": "Insured/Policy holder\nWho holds a valid motor insurance in relation to the insured vehicle.\nInsurer / Company\nSri Lanka Insurance Corporation Limited\nEstimate Value\nValue of the insured vehicle which may have decided by the Insured/recognized valuation provider.\nSum Insured\nThe value to be covered\nMarket Value\nCurrent price of similar type of vehicle in the market.\nPeriod of Insurance\nPeriod of cover shown in the schedule and for any following period that renewal will be effected.\nPolicy\nThe document consisting of the Proposal Form, the Policy Book, the Schedule, Certificate of Insurance and any Endorsement related to the insurance cover.\nProposal Form\nThe basis of the contact between insured and insurer\nRenewal Notice\nThe letter, SMS or email which is sent inviting the insured for renewal of the insurance cover.\nEndorsement\nAn amendment to the policy.\nNo Claim Bonus\nThe special reward / discount from the premium received by the insured at the next renewal in return for not claiming during the previous policy period.\nCertificate of Insurance\nThe document which provides, evidence that an insurance contact is in force.\nWarranty\nA written special conditions, issued to the insured of an article by insurer.\nLimits\nThe maximum amount of money that insurance Company will pay for a covered loss\nExclusions/Exceptions\nProvision within an insurance policy that eliminates Coverage for certain acts.\nConditions\nAny terms or rules which are mentioned in written in a policy.\nOwner's contribution/ Owner's Account\nThe portion which insured shall bear in an event of a claim.\nSalvage\nVehicle body parts, wreck that is left after a loss or damage.\n01",
+      "reading_order": "Top-to-bottom blocks; row-major table cells; printed page label included."
+    },
+    {
+      "page_number": 10,
+      "text": "f. Damage to property caused by sparks or ashes from such vehicle or caused by or arising out of the explosion of the boiler of such vehicle:\ng. Death of or bodily injury caused by or arising out of the explosion of the boiler of such vehicle unless such death or injury is caused by, or arises out of the use of such vehicle on a highway as defined in the Motor Traffic Act No 14 of 1951 and amendments.\n2. The Company will pay all costs and expenses incurred with its written consent.\n3. In terms of and subject to the limitation of the indemnity which is granted by this Section to the Insured the Company will indemnify any person who is driving such vehicle provided that such person.\na. Is not entitled to indemnity under any other Policy.\nb. Shall as though, he was the insured observe, fulfill and be subject to the terms. exceptions and conditions of this Policy in so far as they can apply\n4. In the event of the death of any person entitled to indemnity under this Section the Company will in respect of the liability incurred by such person indemnify his personal representatives in terms of and subject to the limitations of this Section provided that such personal representatives shall as though they were the insured observe, fulfil and be subject to the terms, exceptions and conditions of this Policy in so far as they can apply.\n5. The Company may at its own option arrange for representation at any inquest or Fatal Inquiry in respect of any death which may be the subject of indemnity under this Section and may undertake the defence of proceedings in any Magistrate's Court or court of First Instance in respect of any act or alleged offence causing or relating to any event which may be the subject of indemnity under this Section.\nLIMITS OF LIABILITY\nALL VEHICLES OTHER THAN PRIVATE CARS AND MOTOR CYCLES\nLimit of the Company's liability under Section 2(C)\n(i)a - Unlimited\nLimit of the Company's liability under Section 2(C)\n(i) b - Rs. 15,000/-\nIn respect of any claim or series of claims out of one event.\nof one event\nSECTION 3: MEDICAL EXPENSES\n(APPLICABLE TO PRIVATE CARS ONLY)\nThe Company will pay to the insured the reasonable medical expenses incurred in connection with any bodily injury by violent, accidental, external and visible means sustained by the insured or any occupant of any Motor Car described in the said Schedule(s) other than a paid driver and/or attendant and/or cleaner as the direct and immediate result of an accident to such Motor Car provided that the total liability of the Company under this Clause shall be limited to Rs. 1500/- in respect of anyone accident.\nAVOIDANCE OF CERTAIN TERMS AND RIGHT OF RECOVERY\nNothing in this Policy or any Clause herein shall affect the right of any person indemnified by this Policy or any other person to recover an amount. Under or by virtue of the provisions of the Motor Traffic Act No: 14 of 1951 (as amended) Sections 102 and 105.\nBUT the insured shall repay to the Company all sums paid by the Company, which the Company would not have been liable to pay under this Policy but for the said provisions.\n07",
+      "reading_order": "Top-to-bottom blocks; row-major table cells; printed page label included."
+    },
+    {
+      "page_number": 16,
+      "text": "CLAUSE 6 - COMPULSORY EXCESS\nIn consideration of the payment of an additional it is hereby understood and agreed that notwithstanding anything to the contrary contained In Section 1 of this Policy the insured in respect of each and every event shall be responsible for the sum specified in the Schedule(s) (or any less expenditure which may be incurred) of any expenditure for which provision is made thereunder (including any payments in respect of costs and expenses) and of any expenditure by the Company in the exercise of its discretion under Condition 4 of this Policy\nIf the expenditure incurred by the Company shall include the amount for which the insured is responsible hereunder such amount shall be repaid by the insured to the Company forthwith.\nFor the purposes of this clause the expression 'event' shall mean an event or series of events arising out of one cause in connection with any one Motor vehicle in respect of, or in connection with which indemnity is granted under this Policy.\nCLAUSE 7 - PERSONAL ACCIDENT BENEFITS\nIn consideration of the payment of an additional premiums it is hereby understood and agreed that the Company undertakes to pay compensation on the scale provided below for bodily injury as hereinafter defined sustained by any person stated in the Schedule whilst mounting into, dismounting from or travelling in any vehicle described in the Schedule(s) hereto and caused by violent, accidental, external and visible means independently of any other cause (excepting medical or surgical treatment consequent upon such injury) which shall within three calendar months of the occurrence of such injury result in:\nSCALE OF COMPENSATION\n(Applicable on the Sum Insured mentioned in the Schedule of the Policy)\n1. Death\n100%\n2. Total and irrecoverable loss of all sight in both eyes or total loss by physical severance at or above the wrist or ankle of both hands or both feet or of one hand together with one foot\n100%\n3. Total loss by physical severance at or above the wrist or ankle, of one hand or one foot or the total and irrecoverable loss of all sight in one eye.\n50%\nProvided always that:\na. Compensation shall be payable under one only of items (1) to (3) above in respect of any such person arising out of any one occurrence and the total liability of the Company shall not in the aggregate exceed the amount payable under items of the scale of compensation or the multiples thereof as stated in the Schedule(s).\nb. No compensation shall be payable in respect of death or bodily injury directly or indirectly wholly or in part arising or resulting from or traceable to (1) intentional self-injury, suicide or attempted suicide physical defect or infirmity or (2) an accident happening whilst such person has consumed intoxicating liquor or drugs.\nc. Such compensation shall be payable only with the approval of the insured and directly to the insured person or to his legal personal representatives whose receipt shall be a full discharge of liability in respect of the injury to such person.\nd. Not more than the numbers of persons specified in the schedule are in the said vehicle at the time of occurrence of such injury.\ne. Such person is not less than 16 or more than 65 years of age at the time of such death or injury.\n13",
+      "reading_order": "Top-to-bottom blocks; row-major table cells; printed page label included."
+    },
+    {
+      "page_number": 20,
+      "text": "CLAUSE 16-BREAKAGE OF GLASS WINDSCREEN/ WINDOWS\nIn consideration of insured having paid an additional premium, it is hereby agreed that if any glass in the windscreen or windows of the insured vehicle shall be broken not involving other damage to body work, the Company will pay the cost of reinstatement of such windscreen/windows and scratched body work irrespective of cause of breakage up to but not exceeding the sum so stated in the Schedule of the Policy for any one occurrence. Further such payment will be made without prejudice to any No Claim Bonus otherwise due and irrespective of any \"Excess\" operative under the Policy. Subject otherwise to the terms, exceptions and conditions of this Policy.\nCLAUSE17 - OMNI BUSES WITH ROUTE PERMITS\nIt is hereby understood and agreed that notwithstanding anything to the contrary contained in Section 2(C) of this Policy but subject otherwise to the terms, exceptions and conditions of this Policy, the Company will indemnify the insured or any other person indemnified under Section 2 of this Policy against all sums including claimants costs and expenses which he shall become legally liable to pay in respect of death of or bodily injury to any passenger being carried in or upon or entering or getting on to or alighting from any vehicle described in the Schedule hereto.\nProvided always that in the event of an accident occurring whilst such vehicle is carrying more than the seating capacity stated in the Certificate of Registration (in addition to the Conductor/Attendant if any and the Driver) the insured shall repay to the Company a rateable proportion of the total amount payable by the Company by reason of this Clause in respect of such accident in connection with such vehicle.\nThe maximum age of the driver who is competent to drive such vehicles, should not exceed 65 years and any such vehicle driven by a driver below 30 year of age is subject to a compulsory excess of Rs. 1,000/- irrespective of any other excess under the policy.\nIn consideration of this extension the insured shall bear compulsory excess of Rs. 500/- on each and every claim irrespective of any other excess under Section 1 of the Policy.\nCLAUSE 18 - LEARNER DRIVER/RIDER\nIt is hereby declared and agreed that, notwithstanding to the contrary the within written. Policy is extended to be operative whilst the person(s) described in the Schedule(s) learns to drive the vehicle, described in the Schedule(s) provided that the Insured shall have conformed to the requirements of the Motor Traffic Act, in regard to Learner Driver/Riders.\nIn consideration of this extension, the insured shall be responsible, for the first Rs. 2,500/- (or any less expenditure which may be incurred) of any expenditure for which Provision is made under Sections 1 and 2 of this Policy (including any payments in respect of costs and expenses) and of any expenditure by the Company in the exercise of its discretion under Condition 2 of this Policy, in respect of each and every event whilst the person(s) described in the Schedule(s) is learning to drive.\nIf the expenditure incurred by the Company shall include the amount for which the insured is responsible hereunder, such amount shall be repaid by the insured to the Company forthwith.\nFor the purposes of this Clause the expression 'event' shall mean an event or a series of events arising out of one cause in connection with any one vehicle in respect of which indemnity is granted under this Policy.\nThe amount for which the insured is responsible under this Clause shall be considered in addition to any excess Clauses already in the Policy\nCLAUSE 19 – AIR BAG EXTENSION\nIn consideration of the payment of an additional premium, it is hereby declared and agreed that the within written Policy is extended to include cover for new air bag replacements as a result of loss/damage caused to the vehicle but not exceeding the sum specified in the Schedule of the within written Policy in respect of any one occurrence.\n17",
+      "reading_order": "Top-to-bottom blocks; row-major table cells; printed page label included."
+    },
+    {
+      "page_number": 27,
+      "text": "CLAUSE 25 - HIRE VEHICLES-HIRER DRIVING\nIn consideration of the insured having paid an additional premium, it is hereby understood and agreed that notwithstanding anything to the contrary contained in this Policy unless the vehicle described in this Schedule(s) hereto is being driven by or is for the purpose of being driven by him in the charge of the insured or a person in his employment the Policy shall be operative only while such vehicle is let on hire by the insured to any person (hereinafter called the \"Hirer\") who:-\n1. Shall have entered into a Hire Contract with the Insured.\n2. Shall have satisfied the Insured\na. That such vehicle will be driven only by a person duly licensed to drive\nb. That such person has not been refused Motor insurance or had his Insurance Policy cancelled or had special conditions imposed or and increased premium asked for by reason of claims experience.\nWhile such vehicle is let on hire to the Hirer the Company shall not be liable for any loss, damage or liability due to or arising from theft or conversion by the Hirer.\nCLAUSE 26 - DUTY FREE VEHICLES\nIt is hereby declared and agreed that the Estimated Value which includes accessories and spare parts appearing in the Schedule(s) of the within Policy as declared by the insured, excludes the local Customs Duty.\nIn Consideration of the above it is hereby declared and agreed that in the event of a claim under Section 1 of this Policy necessitating the replacement of parts, the liability of the company for such parts shall exclude the local customs duty of such parts.\nCLAUSE 27 - SPECIAL TYPE CLAUSES\n1. Notwithstanding anything to the contrary contained in sub section 1 (ii) (c) of section 2 (C) of this Policy but subject otherwise to the terms exceptions and conditions of this Policy the Corporation will indemnify the Insured or any other person indemnified under Section 2 of this Policy against all sum including claimants cost and expenses which he shall become legally liable to pay in respect of death of or bodily injury to any passenger (Excluding Patient/s) being carried in or upon entering or getting on to or alighting from any vehicle described in the Schedule thereto but such indemnity is limited to the sum specified in the schedule in respect of any one such passenger.\nProvided always that is the event of an accident occurring whilst such Vehicle is carrying more than .............. persons (in addition to the conductor if any and the driver) the Insured shall repay to the Corporation a rateable proportion of the total amount payable by the corporation by reason of this Clause in respect of such accident in connection with such Vehicle.\nPassenger Indemnity – (Ambulance& Hearses)\n2. The Corporation shall not be liable under Section 1 of this policy in respect of loss of or damage to the Vehicle described in the Schedule hereto arising out of tipping or operation as a tool of such Vehicle or of any plant forming part of such vehicle or attached thereto including overturning risks except for loss or damage arising directly from fire external explosion, self-ignition, lighting, burglary, house breaking or theft.\nExclusion of losses resulting from working risk while in use as a tool of trade-all vehicles\n24",
+      "reading_order": "Top-to-bottom blocks; row-major table cells; printed page label included."
+    },
+    {
+      "page_number": 29,
+      "text": "SLIC\nSri Lanka Insurance\nLike a father - Like a mother\nNo. 21, Vauxhall Street, Colombo 02, Sri Lanka.\nwww.srilankainsurance.com",
+      "reading_order": "Top-to-bottom blocks; row-major table cells; printed page label included."
+    }
+  ],
+  "annotation_version": "slic-motor-v2",
+  "annotation_policy": [
+    "Consecutive lines forming one heading are one block; table cell titles and row numbering remain table content.",
+    "Numbered/lettered clauses outside tables are list items. Parent item text excludes nested child items.",
+    "Provided always that is a paragraph lead-in, not a heading. The boxed LIMITS OF LIABILITY title is a heading.",
+    "Tables are transcribed by visible/semantic rows and columns; captions are outside tables.",
+    "Bboxes are manually selected normalized top-left coordinates from original page renders, not parser boxes.",
+    "Text boxes use manual source-render regions tightened to visible dark pixels with a one-pixel margin. Table boxes use the selected full table extent."
+  ],
+  "elements": [
+    {
+      "id": "p4-b1",
+      "page_number": 4,
+      "kind": "text",
+      "text": "01"
+    },
+    {
+      "id": "p10-b1",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "f. Damage to property caused by sparks or ashes from such vehicle or caused by or arising out of the explosion of the boiler of such vehicle:",
+      "bbox": [
+        0.099285,
+        0.028555,
+        0.946783,
+        0.057111
+      ]
+    },
+    {
+      "id": "p10-b2",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "g. Death of or bodily injury caused by or arising out of the explosion of the boiler of such vehicle unless such death or injury is caused by, or arises out of the use of such vehicle on a highway as defined in the Motor Traffic Act No 14 of 1951 and amendments.",
+      "bbox": [
+        0.099285,
+        0.077268,
+        0.947577,
+        0.119821
+      ]
+    },
+    {
+      "id": "p10-b3",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "2. The Company will pay all costs and expenses incurred with its written consent.",
+      "bbox": [
+        0.057188,
+        0.141097,
+        0.696585,
+        0.154535
+      ]
+    },
+    {
+      "id": "p10-b4",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "3. In terms of and subject to the limitation of the indemnity which is granted by this Section to the Insured the Company will indemnify any person who is driving such vehicle provided that such person.",
+      "bbox": [
+        0.057188,
+        0.173572,
+        0.945989,
+        0.203247
+      ]
+    },
+    {
+      "id": "p10-b5",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "a. Is not entitled to indemnity under any other Policy.",
+      "bbox": [
+        0.099285,
+        0.220045,
+        0.518666,
+        0.233483
+      ]
+    },
+    {
+      "id": "p10-b6",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "b. Shall as though, he was the insured observe, fulfill and be subject to the terms. exceptions and conditions of this Policy in so far as they can apply",
+      "bbox": [
+        0.100079,
+        0.25252,
+        0.861795,
+        0.281635
+      ]
+    },
+    {
+      "id": "p10-b7",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "4. In the event of the death of any person entitled to indemnity under this Section the Company will in respect of the liability incurred by such person indemnify his personal representatives in terms of and subject to the limitations of this Section provided that such personal representatives shall as though they were the insured observe, fulfil and be subject to the terms, exceptions and conditions of this Policy in so far as they can apply.",
+      "bbox": [
+        0.056394,
+        0.297312,
+        0.948372,
+        0.359462
+      ]
+    },
+    {
+      "id": "p10-b8",
+      "page_number": 10,
+      "kind": "list_item",
+      "text": "5. The Company may at its own option arrange for representation at any inquest or Fatal Inquiry in respect of any death which may be the subject of indemnity under this Section and may undertake the defence of proceedings in any Magistrate's Court or court of First Instance in respect of any act or alleged offence causing or relating to any event which may be the subject of indemnity under this Section.",
+      "bbox": [
+        0.057188,
+        0.37794,
+        0.950755,
+        0.44009
+      ]
+    },
+    {
+      "id": "p10-b9",
+      "page_number": 10,
+      "kind": "heading",
+      "text": "LIMITS OF LIABILITY",
+      "bbox": [
+        0.069102,
+        0.464726,
+        0.225576,
+        0.474804
+      ]
+    },
+    {
+      "id": "p10-b10",
+      "page_number": 10,
+      "kind": "text",
+      "text": "ALL VEHICLES OTHER THAN PRIVATE CARS AND MOTOR CYCLES\nLimit of the Company's liability under Section 2(C)\n(i)a - Unlimited\nLimit of the Company's liability under Section 2(C)\n(i) b - Rs. 15,000/-\nIn respect of any claim or series of claims out of one event.\nof one event"
+    },
+    {
+      "id": "p10-b11",
+      "page_number": 10,
+      "kind": "heading",
+      "text": "SECTION 3: MEDICAL EXPENSES\n(APPLICABLE TO PRIVATE CARS ONLY)",
+      "bbox": [
+        0.054805,
+        0.647816,
+        0.471803,
+        0.68477
+      ]
+    },
+    {
+      "id": "p10-b12",
+      "page_number": 10,
+      "kind": "text",
+      "text": "The Company will pay to the insured the reasonable medical expenses incurred in connection with any bodily injury by violent, accidental, external and visible means sustained by the insured or any occupant of any Motor Car described in the said Schedule(s) other than a paid driver and/or attendant and/or cleaner as the direct and immediate result of an accident to such Motor Car provided that the total liability of the Company under this Clause shall be limited to Rs. 1500/- in respect of anyone accident."
+    },
+    {
+      "id": "p10-b13",
+      "page_number": 10,
+      "kind": "heading",
+      "text": "AVOIDANCE OF CERTAIN TERMS AND RIGHT OF RECOVERY",
+      "bbox": [
+        0.054011,
+        0.800672,
+        0.698173,
+        0.81411
+      ]
+    },
+    {
+      "id": "p10-b14",
+      "page_number": 10,
+      "kind": "text",
+      "text": "Nothing in this Policy or any Clause herein shall affect the right of any person indemnified by this Policy or any other person to recover an amount. Under or by virtue of the provisions of the Motor Traffic Act No: 14 of 1951 (as amended) Sections 102 and 105."
+    },
+    {
+      "id": "p10-b15",
+      "page_number": 10,
+      "kind": "text",
+      "text": "BUT the insured shall repay to the Company all sums paid by the Company, which the Company would not have been liable to pay under this Policy but for the said provisions."
+    },
+    {
+      "id": "p10-b16",
+      "page_number": 10,
+      "kind": "text",
+      "text": "07"
+    },
+    {
+      "id": "p16-b1",
+      "page_number": 16,
+      "kind": "heading",
+      "text": "CLAUSE 6 - COMPULSORY EXCESS",
+      "bbox": [
+        0.054805,
+        0.030795,
+        0.337569,
+        0.040873
+      ]
+    },
+    {
+      "id": "p16-b2",
+      "page_number": 16,
+      "kind": "text",
+      "text": "In consideration of the payment of an additional it is hereby understood and agreed that notwithstanding anything to the contrary contained In Section 1 of this Policy the insured in respect of each and every event shall be responsible for the sum specified in the Schedule(s) (or any less expenditure which may be incurred) of any expenditure for which provision is made thereunder (including any payments in respect of costs and expenses) and of any expenditure by the Company in the exercise of its discretion under Condition 4 of this Policy"
+    },
+    {
+      "id": "p16-b3",
+      "page_number": 16,
+      "kind": "text",
+      "text": "If the expenditure incurred by the Company shall include the amount for which the insured is responsible hereunder such amount shall be repaid by the insured to the Company forthwith."
+    },
+    {
+      "id": "p16-b4",
+      "page_number": 16,
+      "kind": "text",
+      "text": "For the purposes of this clause the expression 'event' shall mean an event or series of events arising out of one cause in connection with any one Motor vehicle in respect of, or in connection with which indemnity is granted under this Policy."
+    },
+    {
+      "id": "p16-b5",
+      "page_number": 16,
+      "kind": "heading",
+      "text": "CLAUSE 7 - PERSONAL ACCIDENT BENEFITS",
+      "bbox": [
+        0.054805,
+        0.267637,
+        0.416998,
+        0.277716
+      ]
+    },
+    {
+      "id": "p16-b6",
+      "page_number": 16,
+      "kind": "text",
+      "text": "In consideration of the payment of an additional premiums it is hereby understood and agreed that the Company undertakes to pay compensation on the scale provided below for bodily injury as hereinafter defined sustained by any person stated in the Schedule whilst mounting into, dismounting from or travelling in any vehicle described in the Schedule(s) hereto and caused by violent, accidental, external and visible means independently of any other cause (excepting medical or surgical treatment consequent upon such injury) which shall within three calendar months of the occurrence of such injury result in:"
+    },
+    {
+      "id": "p16-b7",
+      "page_number": 16,
+      "kind": "heading",
+      "text": "SCALE OF COMPENSATION",
+      "bbox": [
+        0.054805,
+        0.412094,
+        0.278793,
+        0.422172
+      ]
+    },
+    {
+      "id": "p16-b8",
+      "page_number": 16,
+      "kind": "text",
+      "text": "(Applicable on the Sum Insured mentioned in the Schedule of the Policy)"
+    },
+    {
+      "id": "p16-b9",
+      "page_number": 16,
+      "kind": "text",
+      "text": "Provided always that:"
+    },
+    {
+      "id": "p16-b10",
+      "page_number": 16,
+      "kind": "list_item",
+      "text": "a. Compensation shall be payable under one only of items (1) to (3) above in respect of any such person arising out of any one occurrence and the total liability of the Company shall not in the aggregate exceed the amount payable under items of the scale of compensation or the multiples thereof as stated in the Schedule(s).",
+      "bbox": [
+        0.090548,
+        0.644457,
+        0.96664,
+        0.704927
+      ]
+    },
+    {
+      "id": "p16-b11",
+      "page_number": 16,
+      "kind": "list_item",
+      "text": "b. No compensation shall be payable in respect of death or bodily injury directly or indirectly wholly or in part arising or resulting from or traceable to (1) intentional self-injury, suicide or attempted suicide physical defect or infirmity or (2) an accident happening whilst such person has consumed intoxicating liquor or drugs.",
+      "bbox": [
+        0.091342,
+        0.725084,
+        0.967434,
+        0.786674
+      ]
+    },
+    {
+      "id": "p16-b12",
+      "page_number": 16,
+      "kind": "list_item",
+      "text": "c. Such compensation shall be payable only with the approval of the insured and directly to the insured person or to his legal personal representatives whose receipt shall be a full discharge of liability in respect of the injury to such person.",
+      "bbox": [
+        0.090548,
+        0.805711,
+        0.965052,
+        0.851064
+      ]
+    },
+    {
+      "id": "p16-b13",
+      "page_number": 16,
+      "kind": "list_item",
+      "text": "d. Not more than the numbers of persons specified in the schedule are in the said vehicle at the time of occurrence of such injury.",
+      "bbox": [
+        0.090548,
+        0.870101,
+        0.904686,
+        0.899776
+      ]
+    },
+    {
+      "id": "p16-b14",
+      "page_number": 16,
+      "kind": "list_item",
+      "text": "e. Such person is not less than 16 or more than 65 years of age at the time of such death or injury.",
+      "bbox": [
+        0.090548,
+        0.918253,
+        0.857029,
+        0.931691
+      ]
+    },
+    {
+      "id": "p16-b15",
+      "page_number": 16,
+      "kind": "text",
+      "text": "13"
+    },
+    {
+      "id": "p20-b1",
+      "page_number": 20,
+      "kind": "heading",
+      "text": "CLAUSE 16-BREAKAGE OF GLASS WINDSCREEN/ WINDOWS",
+      "bbox": [
+        0.068308,
+        0.030795,
+        0.56394,
+        0.041433
+      ]
+    },
+    {
+      "id": "p20-b2",
+      "page_number": 20,
+      "kind": "text",
+      "text": "In consideration of insured having paid an additional premium, it is hereby agreed that if any glass in the windscreen or windows of the insured vehicle shall be broken not involving other damage to body work, the Company will pay the cost of reinstatement of such windscreen/windows and scratched body work irrespective of cause of breakage up to but not exceeding the sum so stated in the Schedule of the Policy for any one occurrence. Further such payment will be made without prejudice to any No Claim Bonus otherwise due and irrespective of any \"Excess\" operative under the Policy. Subject otherwise to the terms, exceptions and conditions of this Policy."
+    },
+    {
+      "id": "p20-b3",
+      "page_number": 20,
+      "kind": "heading",
+      "text": "CLAUSE17 - OMNI BUSES WITH ROUTE PERMITS",
+      "bbox": [
+        0.068308,
+        0.18869,
+        0.467832,
+        0.198768
+      ]
+    },
+    {
+      "id": "p20-b4",
+      "page_number": 20,
+      "kind": "text",
+      "text": "It is hereby understood and agreed that notwithstanding anything to the contrary contained in Section 2(C) of this Policy but subject otherwise to the terms, exceptions and conditions of this Policy, the Company will indemnify the insured or any other person indemnified under Section 2 of this Policy against all sums including claimants costs and expenses which he shall become legally liable to pay in respect of death of or bodily injury to any passenger being carried in or upon or entering or getting on to or alighting from any vehicle described in the Schedule hereto."
+    },
+    {
+      "id": "p20-b5",
+      "page_number": 20,
+      "kind": "text",
+      "text": "Provided always that in the event of an accident occurring whilst such vehicle is carrying more than the seating capacity stated in the Certificate of Registration (in addition to the Conductor/Attendant if any and the Driver) the insured shall repay to the Company a rateable proportion of the total amount payable by the Company by reason of this Clause in respect of such accident in connection with such vehicle."
+    },
+    {
+      "id": "p20-b6",
+      "page_number": 20,
+      "kind": "text",
+      "text": "The maximum age of the driver who is competent to drive such vehicles, should not exceed 65 years and any such vehicle driven by a driver below 30 year of age is subject to a compulsory excess of Rs. 1,000/- irrespective of any other excess under the policy."
+    },
+    {
+      "id": "p20-b7",
+      "page_number": 20,
+      "kind": "text",
+      "text": "In consideration of this extension the insured shall bear compulsory excess of Rs. 500/- on each and every claim irrespective of any other excess under Section 1 of the Policy."
+    },
+    {
+      "id": "p20-b8",
+      "page_number": 20,
+      "kind": "heading",
+      "text": "CLAUSE 18 - LEARNER DRIVER/RIDER",
+      "bbox": [
+        0.068308,
+        0.522956,
+        0.378078,
+        0.533595
+      ]
+    },
+    {
+      "id": "p20-b9",
+      "page_number": 20,
+      "kind": "text",
+      "text": "It is hereby declared and agreed that, notwithstanding to the contrary the within written. Policy is extended to be operative whilst the person(s) described in the Schedule(s) learns to drive the vehicle, described in the Schedule(s) provided that the Insured shall have conformed to the requirements of the Motor Traffic Act, in regard to Learner Driver/Riders."
+    },
+    {
+      "id": "p20-b10",
+      "page_number": 20,
+      "kind": "text",
+      "text": "In consideration of this extension, the insured shall be responsible, for the first Rs. 2,500/- (or any less expenditure which may be incurred) of any expenditure for which Provision is made under Sections 1 and 2 of this Policy (including any payments in respect of costs and expenses) and of any expenditure by the Company in the exercise of its discretion under Condition 2 of this Policy, in respect of each and every event whilst the person(s) described in the Schedule(s) is learning to drive."
+    },
+    {
+      "id": "p20-b11",
+      "page_number": 20,
+      "kind": "text",
+      "text": "If the expenditure incurred by the Company shall include the amount for which the insured is responsible hereunder, such amount shall be repaid by the insured to the Company forthwith."
+    },
+    {
+      "id": "p20-b12",
+      "page_number": 20,
+      "kind": "text",
+      "text": "For the purposes of this Clause the expression 'event' shall mean an event or a series of events arising out of one cause in connection with any one vehicle in respect of which indemnity is granted under this Policy."
+    },
+    {
+      "id": "p20-b13",
+      "page_number": 20,
+      "kind": "text",
+      "text": "The amount for which the insured is responsible under this Clause shall be considered in addition to any excess Clauses already in the Policy"
+    },
+    {
+      "id": "p20-b14",
+      "page_number": 20,
+      "kind": "heading",
+      "text": "CLAUSE 19 – AIR BAG EXTENSION",
+      "bbox": [
+        0.068308,
+        0.871781,
+        0.348689,
+        0.881859
+      ]
+    },
+    {
+      "id": "p20-b15",
+      "page_number": 20,
+      "kind": "text",
+      "text": "In consideration of the payment of an additional premium, it is hereby declared and agreed that the within written Policy is extended to include cover for new air bag replacements as a result of loss/damage caused to the vehicle but not exceeding the sum specified in the Schedule of the within written Policy in respect of any one occurrence."
+    },
+    {
+      "id": "p20-b16",
+      "page_number": 20,
+      "kind": "text",
+      "text": "17"
+    },
+    {
+      "id": "p27-b1",
+      "page_number": 27,
+      "kind": "heading",
+      "text": "CLAUSE 25 - HIRE VEHICLES-HIRER DRIVING",
+      "bbox": [
+        0.058777,
+        0.043113,
+        0.42494,
+        0.053191
+      ]
+    },
+    {
+      "id": "p27-b2",
+      "page_number": 27,
+      "kind": "text",
+      "text": "In consideration of the insured having paid an additional premium, it is hereby understood and agreed that notwithstanding anything to the contrary contained in this Policy unless the vehicle described in this Schedule(s) hereto is being driven by or is for the purpose of being driven by him in the charge of the insured or a person in his employment the Policy shall be operative only while such vehicle is let on hire by the insured to any person (hereinafter called the \"Hirer\") who:-"
+    },
+    {
+      "id": "p27-b3",
+      "page_number": 27,
+      "kind": "list_item",
+      "text": "1. Shall have entered into a Hire Contract with the Insured.",
+      "bbox": [
+        0.100874,
+        0.171333,
+        0.559968,
+        0.181971
+      ]
+    },
+    {
+      "id": "p27-b4",
+      "page_number": 27,
+      "kind": "list_item",
+      "text": "2. Shall have satisfied the Insured",
+      "bbox": [
+        0.099285,
+        0.203247,
+        0.360604,
+        0.213886
+      ]
+    },
+    {
+      "id": "p27-b5",
+      "page_number": 27,
+      "kind": "list_item",
+      "text": "a. That such vehicle will be driven only by a person duly licensed to drive",
+      "bbox": [
+        0.123114,
+        0.236842,
+        0.694996,
+        0.25028
+      ]
+    },
+    {
+      "id": "p27-b6",
+      "page_number": 27,
+      "kind": "list_item",
+      "text": "b. That such person has not been refused Motor insurance or had his Insurance Policy cancelled or had special conditions imposed or and increased premium asked for by reason of claims experience.",
+      "bbox": [
+        0.123908,
+        0.268757,
+        0.962669,
+        0.298432
+      ]
+    },
+    {
+      "id": "p27-b7",
+      "page_number": 27,
+      "kind": "text",
+      "text": "While such vehicle is let on hire to the Hirer the Company shall not be liable for any loss, damage or liability due to or arising from theft or conversion by the Hirer."
+    },
+    {
+      "id": "p27-b8",
+      "page_number": 27,
+      "kind": "heading",
+      "text": "CLAUSE 26 - DUTY FREE VEHICLES",
+      "bbox": [
+        0.058777,
+        0.365622,
+        0.343924,
+        0.3757
+      ]
+    },
+    {
+      "id": "p27-b9",
+      "page_number": 27,
+      "kind": "text",
+      "text": "It is hereby declared and agreed that the Estimated Value which includes accessories and spare parts appearing in the Schedule(s) of the within Policy as declared by the insured, excludes the local Customs Duty."
+    },
+    {
+      "id": "p27-b10",
+      "page_number": 27,
+      "kind": "text",
+      "text": "In Consideration of the above it is hereby declared and agreed that in the event of a claim under Section 1 of this Policy necessitating the replacement of parts, the liability of the company for such parts shall exclude the local customs duty of such parts."
+    },
+    {
+      "id": "p27-b11",
+      "page_number": 27,
+      "kind": "heading",
+      "text": "CLAUSE 27 - SPECIAL TYPE CLAUSES",
+      "bbox": [
+        0.058777,
+        0.506719,
+        0.362192,
+        0.516797
+      ]
+    },
+    {
+      "id": "p27-b12",
+      "page_number": 27,
+      "kind": "text",
+      "text": "24"
+    },
+    {
+      "id": "p29-b1",
+      "page_number": 29,
+      "kind": "text",
+      "text": "SLIC"
+    },
+    {
+      "id": "p29-b2",
+      "page_number": 29,
+      "kind": "text",
+      "text": "Sri Lanka Insurance"
+    },
+    {
+      "id": "p29-b3",
+      "page_number": 29,
+      "kind": "text",
+      "text": "Like a father - Like a mother"
+    },
+    {
+      "id": "p29-b4",
+      "page_number": 29,
+      "kind": "text",
+      "text": "No. 21, Vauxhall Street, Colombo 02, Sri Lanka."
+    },
+    {
+      "id": "p29-b5",
+      "page_number": 29,
+      "kind": "text",
+      "text": "www.srilankainsurance.com"
+    }
+  ],
+  "tables": [
+    {
+      "id": "p4-table1",
+      "page_number": 4,
+      "bbox": [
+        0.057188,
+        0.039754,
+        0.930898,
+        0.850504
+      ],
+      "rows": [
+        [
+          "Insured/Policy holder",
+          "Who holds a valid motor insurance in relation to the insured vehicle."
+        ],
+        [
+          "Insurer / Company",
+          "Sri Lanka Insurance Corporation Limited"
+        ],
+        [
+          "Estimate Value",
+          "Value of the insured vehicle which may have decided by the Insured/recognized valuation provider."
+        ],
+        [
+          "Sum Insured",
+          "The value to be covered"
+        ],
+        [
+          "Market Value",
+          "Current price of similar type of vehicle in the market."
+        ],
+        [
+          "Period of Insurance",
+          "Period of cover shown in the schedule and for any following period that renewal will be effected."
+        ],
+        [
+          "Policy",
+          "The document consisting of the Proposal Form, the Policy Book, the Schedule, Certificate of Insurance and any Endorsement related to the insurance cover."
+        ],
+        [
+          "Proposal Form",
+          "The basis of the contact between insured and insurer"
+        ],
+        [
+          "Renewal Notice",
+          "The letter, SMS or email which is sent inviting the insured for renewal of the insurance cover."
+        ],
+        [
+          "Endorsement",
+          "An amendment to the policy."
+        ],
+        [
+          "No Claim Bonus",
+          "The special reward / discount from the premium received by the insured at the next renewal in return for not claiming during the previous policy period."
+        ],
+        [
+          "Certificate of Insurance",
+          "The document which provides, evidence that an insurance contact is in force."
+        ],
+        [
+          "Warranty",
+          "A written special conditions, issued to the insured of an article by insurer."
+        ],
+        [
+          "Limits",
+          "The maximum amount of money that insurance Company will pay for a covered loss"
+        ],
+        [
+          "Exclusions/Exceptions",
+          "Provision within an insurance policy that eliminates Coverage for certain acts."
+        ],
+        [
+          "Conditions",
+          "Any terms or rules which are mentioned in written in a policy."
+        ],
+        [
+          "Owner's contribution/ Owner's Account",
+          "The portion which insured shall bear in an event of a claim."
+        ],
+        [
+          "Salvage",
+          "Vehicle body parts, wreck that is left after a loss or damage."
+        ]
+      ],
+      "html": "<table><tbody><tr><td>Insured/Policy holder</td><td>Who holds a valid motor insurance in relation to the insured vehicle.</td></tr><tr><td>Insurer / Company</td><td>Sri Lanka Insurance Corporation Limited</td></tr><tr><td>Estimate Value</td><td>Value of the insured vehicle which may have decided by the Insured/recognized valuation provider.</td></tr><tr><td>Sum Insured</td><td>The value to be covered</td></tr><tr><td>Market Value</td><td>Current price of similar type of vehicle in the market.</td></tr><tr><td>Period of Insurance</td><td>Period of cover shown in the schedule and for any following period that renewal will be effected.</td></tr><tr><td>Policy</td><td>The document consisting of the Proposal Form, the Policy Book, the Schedule, Certificate of Insurance and any Endorsement related to the insurance cover.</td></tr><tr><td>Proposal Form</td><td>The basis of the contact between insured and insurer</td></tr><tr><td>Renewal Notice</td><td>The letter, SMS or email which is sent inviting the insured for renewal of the insurance cover.</td></tr><tr><td>Endorsement</td><td>An amendment to the policy.</td></tr><tr><td>No Claim Bonus</td><td>The special reward / discount from the premium received by the insured at the next renewal in return for not claiming during the previous policy period.</td></tr><tr><td>Certificate of Insurance</td><td>The document which provides, evidence that an insurance contact is in force.</td></tr><tr><td>Warranty</td><td>A written special conditions, issued to the insured of an article by insurer.</td></tr><tr><td>Limits</td><td>The maximum amount of money that insurance Company will pay for a covered loss</td></tr><tr><td>Exclusions/Exceptions</td><td>Provision within an insurance policy that eliminates Coverage for certain acts.</td></tr><tr><td>Conditions</td><td>Any terms or rules which are mentioned in written in a policy.</td></tr><tr><td>Owner&#x27;s contribution/ Owner&#x27;s Account</td><td>The portion which insured shall bear in an event of a claim.</td></tr><tr><td>Salvage</td><td>Vehicle body parts, wreck that is left after a loss or damage.</td></tr></tbody></table>"
+    },
+    {
+      "id": "p16-table1",
+      "page_number": 16,
+      "bbox": [
+        0.053217,
+        0.466965,
+        0.79031,
+        0.595745
+      ],
+      "rows": [
+        [
+          "1. Death",
+          "100%"
+        ],
+        [
+          "2. Total and irrecoverable loss of all sight in both eyes or total loss by physical severance at or above the wrist or ankle of both hands or both feet or of one hand together with one foot",
+          "100%"
+        ],
+        [
+          "3. Total loss by physical severance at or above the wrist or ankle, of one hand or one foot or the total and irrecoverable loss of all sight in one eye.",
+          "50%"
+        ]
+      ],
+      "html": "<table><tbody><tr><td>1. Death</td><td>100%</td></tr><tr><td>2. Total and irrecoverable loss of all sight in both eyes or total loss by physical severance at or above the wrist or ankle of both hands or both feet or of one hand together with one foot</td><td>100%</td></tr><tr><td>3. Total loss by physical severance at or above the wrist or ankle, of one hand or one foot or the total and irrecoverable loss of all sight in one eye.</td><td>50%</td></tr></tbody></table>"
+    },
+    {
+      "id": "p27-table1",
+      "page_number": 27,
+      "bbox": [
+        0.057188,
+        0.528555,
+        0.952343,
+        0.961926
+      ],
+      "rows": [
+        [
+          "1. Notwithstanding anything to the contrary contained in sub section 1 (ii) (c) of section 2 (C) of this Policy but subject otherwise to the terms exceptions and conditions of this Policy the Corporation will indemnify the Insured or any other person indemnified under Section 2 of this Policy against all sum including claimants cost and expenses which he shall become legally liable to pay in respect of death of or bodily injury to any passenger (Excluding Patient/s) being carried in or upon entering or getting on to or alighting from any vehicle described in the Schedule thereto but such indemnity is limited to the sum specified in the schedule in respect of any one such passenger.\nProvided always that is the event of an accident occurring whilst such Vehicle is carrying more than .............. persons (in addition to the conductor if any and the driver) the Insured shall repay to the Corporation a rateable proportion of the total amount payable by the corporation by reason of this Clause in respect of such accident in connection with such Vehicle.",
+          "Passenger Indemnity – (Ambulance& Hearses)"
+        ],
+        [
+          "2. The Corporation shall not be liable under Section 1 of this policy in respect of loss of or damage to the Vehicle described in the Schedule hereto arising out of tipping or operation as a tool of such Vehicle or of any plant forming part of such vehicle or attached thereto including overturning risks except for loss or damage arising directly from fire external explosion, self-ignition, lighting, burglary, house breaking or theft.",
+          "Exclusion of losses resulting from working risk while in use as a tool of trade-all vehicles"
+        ]
+      ],
+      "html": "<table><tbody><tr><td>1. Notwithstanding anything to the contrary contained in sub section 1 (ii) (c) of section 2 (C) of this Policy but subject otherwise to the terms exceptions and conditions of this Policy the Corporation will indemnify the Insured or any other person indemnified under Section 2 of this Policy against all sum including claimants cost and expenses which he shall become legally liable to pay in respect of death of or bodily injury to any passenger (Excluding Patient/s) being carried in or upon entering or getting on to or alighting from any vehicle described in the Schedule thereto but such indemnity is limited to the sum specified in the schedule in respect of any one such passenger.\nProvided always that is the event of an accident occurring whilst such Vehicle is carrying more than .............. persons (in addition to the conductor if any and the driver) the Insured shall repay to the Corporation a rateable proportion of the total amount payable by the corporation by reason of this Clause in respect of such accident in connection with such Vehicle.</td><td>Passenger Indemnity – (Ambulance&amp; Hearses)</td></tr><tr><td>2. The Corporation shall not be liable under Section 1 of this policy in respect of loss of or damage to the Vehicle described in the Schedule hereto arising out of tipping or operation as a tool of such Vehicle or of any plant forming part of such vehicle or attached thereto including overturning risks except for loss or damage arising directly from fire external explosion, self-ignition, lighting, burglary, house breaking or theft.</td><td>Exclusion of losses resulting from working risk while in use as a tool of trade-all vehicles</td></tr></tbody></table>"
+    }
+  ],
+  "annotation_pages": [
+    {
+      "page_number": 4,
+      "complete_categories": [
+        "heading",
+        "list_item",
+        "table"
+      ]
+    },
+    {
+      "page_number": 10,
+      "complete_categories": [
+        "heading",
+        "list_item",
+        "table"
+      ]
+    },
+    {
+      "page_number": 16,
+      "complete_categories": [
+        "heading",
+        "list_item",
+        "table"
+      ]
+    },
+    {
+      "page_number": 20,
+      "complete_categories": [
+        "heading",
+        "list_item",
+        "table"
+      ]
+    },
+    {
+      "page_number": 27,
+      "complete_categories": [
+        "heading",
+        "list_item",
+        "table"
+      ]
+    },
+    {
+      "page_number": 29,
+      "complete_categories": [
+        "heading",
+        "list_item",
+        "table"
+      ]
+    }
+  ],
+  "reading_order": [
+    {
+      "page_number": 4,
+      "scope": "Unique block/cell anchors; not all within-block words",
+      "anchors": [
+        {
+          "id": "p4-table1-r1c1",
+          "text": "Insured/Policy holder"
+        },
+        {
+          "id": "p4-table1-r1c2",
+          "text": "Who holds a valid motor insurance in relation to the insured vehicle."
+        },
+        {
+          "id": "p4-table1-r2c1",
+          "text": "Insurer / Company"
+        },
+        {
+          "id": "p4-table1-r2c2",
+          "text": "Sri Lanka Insurance Corporation Limited"
+        },
+        {
+          "id": "p4-table1-r3c1",
+          "text": "Estimate Value"
+        },
+        {
+          "id": "p4-table1-r3c2",
+          "text": "Value of the insured vehicle which may have decided by the Insured/recognized"
+        },
+        {
+          "id": "p4-table1-r4c1",
+          "text": "Sum Insured"
+        },
+        {
+          "id": "p4-table1-r4c2",
+          "text": "The value to be covered"
+        },
+        {
+          "id": "p4-table1-r5c1",
+          "text": "Market Value"
+        },
+        {
+          "id": "p4-table1-r5c2",
+          "text": "Current price of similar type of vehicle in the market."
+        },
+        {
+          "id": "p4-table1-r6c1",
+          "text": "Period of Insurance"
+        },
+        {
+          "id": "p4-table1-r6c2",
+          "text": "Period of cover shown in the schedule and for any following period"
+        },
+        {
+          "id": "p4-table1-r7c2",
+          "text": "The document consisting of the Proposal Form, the Policy Book, the Schedule,"
+        },
+        {
+          "id": "p4-table1-r8c2",
+          "text": "The basis of the contact between insured and insurer"
+        },
+        {
+          "id": "p4-table1-r9c1",
+          "text": "Renewal Notice"
+        },
+        {
+          "id": "p4-table1-r9c2",
+          "text": "The letter, SMS or email which is sent inviting the insured for"
+        },
+        {
+          "id": "p4-table1-r10c2",
+          "text": "An amendment to the policy."
+        },
+        {
+          "id": "p4-table1-r11c1",
+          "text": "No Claim Bonus"
+        },
+        {
+          "id": "p4-table1-r11c2",
+          "text": "The special reward / discount from the premium received by the insured"
+        },
+        {
+          "id": "p4-table1-r12c2",
+          "text": "The document which provides, evidence that an insurance contact is in force."
+        },
+        {
+          "id": "p4-table1-r13c2",
+          "text": "A written special conditions, issued to the insured of an article by"
+        },
+        {
+          "id": "p4-table1-r14c2",
+          "text": "The maximum amount of money that insurance Company will pay for a"
+        },
+        {
+          "id": "p4-table1-r15c1",
+          "text": "Exclusions/Exceptions"
+        },
+        {
+          "id": "p4-table1-r15c2",
+          "text": "Provision within an insurance policy that eliminates Coverage for certain acts."
+        },
+        {
+          "id": "p4-table1-r16c2",
+          "text": "Any terms or rules which are mentioned in written in a policy."
+        },
+        {
+          "id": "p4-table1-r17c1",
+          "text": "Owner's contribution/ Owner's Account"
+        },
+        {
+          "id": "p4-table1-r17c2",
+          "text": "The portion which insured shall bear in an event of a claim."
+        },
+        {
+          "id": "p4-table1-r18c2",
+          "text": "Vehicle body parts, wreck that is left after a loss or damage."
+        }
+      ]
+    },
+    {
+      "page_number": 10,
+      "scope": "Unique block/cell anchors; not all within-block words",
+      "anchors": [
+        {
+          "id": "p10-b1",
+          "text": "f. Damage to property caused by sparks or ashes from such vehicle"
+        },
+        {
+          "id": "p10-b2",
+          "text": "g. Death of or bodily injury caused by or arising out of"
+        },
+        {
+          "id": "p10-b3",
+          "text": "2. The Company will pay all costs and expenses incurred with its"
+        },
+        {
+          "id": "p10-b4",
+          "text": "3. In terms of and subject to the limitation of the indemnity"
+        },
+        {
+          "id": "p10-b5",
+          "text": "a. Is not entitled to indemnity under any other Policy."
+        },
+        {
+          "id": "p10-b6",
+          "text": "b. Shall as though, he was the insured observe, fulfill and be"
+        },
+        {
+          "id": "p10-b7",
+          "text": "4. In the event of the death of any person entitled to"
+        },
+        {
+          "id": "p10-b8",
+          "text": "5. The Company may at its own option arrange for representation at"
+        },
+        {
+          "id": "p10-b9",
+          "text": "LIMITS OF LIABILITY"
+        },
+        {
+          "id": "p10-b10",
+          "text": "ALL VEHICLES OTHER THAN PRIVATE CARS AND MOTOR CYCLES Limit of the"
+        },
+        {
+          "id": "p10-b11",
+          "text": "SECTION 3: MEDICAL EXPENSES (APPLICABLE TO PRIVATE CARS ONLY)"
+        },
+        {
+          "id": "p10-b12",
+          "text": "The Company will pay to the insured the reasonable medical expenses incurred"
+        },
+        {
+          "id": "p10-b13",
+          "text": "AVOIDANCE OF CERTAIN TERMS AND RIGHT OF RECOVERY"
+        },
+        {
+          "id": "p10-b14",
+          "text": "Nothing in this Policy or any Clause herein shall affect the right"
+        },
+        {
+          "id": "p10-b15",
+          "text": "BUT the insured shall repay to the Company all sums paid by"
+        }
+      ]
+    },
+    {
+      "page_number": 16,
+      "scope": "Unique block/cell anchors; not all within-block words",
+      "anchors": [
+        {
+          "id": "p16-b1",
+          "text": "CLAUSE 6 - COMPULSORY EXCESS"
+        },
+        {
+          "id": "p16-b2",
+          "text": "In consideration of the payment of an additional it is hereby understood"
+        },
+        {
+          "id": "p16-b3",
+          "text": "If the expenditure incurred by the Company shall include the amount for"
+        },
+        {
+          "id": "p16-b4",
+          "text": "For the purposes of this clause the expression 'event' shall mean an"
+        },
+        {
+          "id": "p16-b5",
+          "text": "CLAUSE 7 - PERSONAL ACCIDENT BENEFITS"
+        },
+        {
+          "id": "p16-b6",
+          "text": "In consideration of the payment of an additional premiums it is hereby"
+        },
+        {
+          "id": "p16-b8",
+          "text": "(Applicable on the Sum Insured mentioned in the Schedule of the Policy)"
+        },
+        {
+          "id": "p16-table1-r1c1",
+          "text": "1. Death"
+        },
+        {
+          "id": "p16-table1-r2c1",
+          "text": "2. Total and irrecoverable loss of all sight in both eyes or"
+        },
+        {
+          "id": "p16-table1-r3c1",
+          "text": "3. Total loss by physical severance at or above the wrist or"
+        },
+        {
+          "id": "p16-b9",
+          "text": "Provided always that:"
+        },
+        {
+          "id": "p16-b10",
+          "text": "a. Compensation shall be payable under one only of items (1) to"
+        },
+        {
+          "id": "p16-b11",
+          "text": "b. No compensation shall be payable in respect of death or bodily"
+        },
+        {
+          "id": "p16-b12",
+          "text": "c. Such compensation shall be payable only with the approval of the"
+        },
+        {
+          "id": "p16-b13",
+          "text": "d. Not more than the numbers of persons specified in the schedule"
+        },
+        {
+          "id": "p16-b14",
+          "text": "e. Such person is not less than 16 or more than 65"
+        }
+      ]
+    },
+    {
+      "page_number": 20,
+      "scope": "Unique block/cell anchors; not all within-block words",
+      "anchors": [
+        {
+          "id": "p20-b1",
+          "text": "CLAUSE 16-BREAKAGE OF GLASS WINDSCREEN/ WINDOWS"
+        },
+        {
+          "id": "p20-b2",
+          "text": "In consideration of insured having paid an additional premium, it is hereby"
+        },
+        {
+          "id": "p20-b3",
+          "text": "CLAUSE17 - OMNI BUSES WITH ROUTE PERMITS"
+        },
+        {
+          "id": "p20-b4",
+          "text": "It is hereby understood and agreed that notwithstanding anything to the contrary"
+        },
+        {
+          "id": "p20-b5",
+          "text": "Provided always that in the event of an accident occurring whilst such"
+        },
+        {
+          "id": "p20-b6",
+          "text": "The maximum age of the driver who is competent to drive such"
+        },
+        {
+          "id": "p20-b7",
+          "text": "In consideration of this extension the insured shall bear compulsory excess of"
+        },
+        {
+          "id": "p20-b8",
+          "text": "CLAUSE 18 - LEARNER DRIVER/RIDER"
+        },
+        {
+          "id": "p20-b9",
+          "text": "It is hereby declared and agreed that, notwithstanding to the contrary the"
+        },
+        {
+          "id": "p20-b10",
+          "text": "In consideration of this extension, the insured shall be responsible, for the"
+        },
+        {
+          "id": "p20-b11",
+          "text": "If the expenditure incurred by the Company shall include the amount for"
+        },
+        {
+          "id": "p20-b12",
+          "text": "For the purposes of this Clause the expression 'event' shall mean an"
+        },
+        {
+          "id": "p20-b13",
+          "text": "The amount for which the insured is responsible under this Clause shall"
+        },
+        {
+          "id": "p20-b14",
+          "text": "CLAUSE 19 – AIR BAG EXTENSION"
+        },
+        {
+          "id": "p20-b15",
+          "text": "In consideration of the payment of an additional premium, it is hereby"
+        }
+      ]
+    },
+    {
+      "page_number": 27,
+      "scope": "Unique block/cell anchors; not all within-block words",
+      "anchors": [
+        {
+          "id": "p27-b1",
+          "text": "CLAUSE 25 - HIRE VEHICLES-HIRER DRIVING"
+        },
+        {
+          "id": "p27-b2",
+          "text": "In consideration of the insured having paid an additional premium, it is"
+        },
+        {
+          "id": "p27-b3",
+          "text": "1. Shall have entered into a Hire Contract with the Insured."
+        },
+        {
+          "id": "p27-b4",
+          "text": "2. Shall have satisfied the Insured"
+        },
+        {
+          "id": "p27-b5",
+          "text": "a. That such vehicle will be driven only by a person duly"
+        },
+        {
+          "id": "p27-b6",
+          "text": "b. That such person has not been refused Motor insurance or had"
+        },
+        {
+          "id": "p27-b7",
+          "text": "While such vehicle is let on hire to the Hirer the Company"
+        },
+        {
+          "id": "p27-b8",
+          "text": "CLAUSE 26 - DUTY FREE VEHICLES"
+        },
+        {
+          "id": "p27-b9",
+          "text": "It is hereby declared and agreed that the Estimated Value which includes"
+        },
+        {
+          "id": "p27-b10",
+          "text": "In Consideration of the above it is hereby declared and agreed that"
+        },
+        {
+          "id": "p27-b11",
+          "text": "CLAUSE 27 - SPECIAL TYPE CLAUSES"
+        },
+        {
+          "id": "p27-table1-r1c1",
+          "text": "1. Notwithstanding anything to the contrary contained in sub section 1 (ii)"
+        },
+        {
+          "id": "p27-table1-r1c2",
+          "text": "Passenger Indemnity – (Ambulance& Hearses)"
+        },
+        {
+          "id": "p27-table1-r2c1",
+          "text": "2. The Corporation shall not be liable under Section 1 of this"
+        },
+        {
+          "id": "p27-table1-r2c2",
+          "text": "Exclusion of losses resulting from working risk while in use as a"
+        }
+      ]
+    },
+    {
+      "page_number": 29,
+      "scope": "Unique block/cell anchors; not all within-block words",
+      "anchors": [
+        {
+          "id": "p29-b2",
+          "text": "Sri Lanka Insurance"
+        },
+        {
+          "id": "p29-b3",
+          "text": "Like a father - Like a mother"
+        },
+        {
+          "id": "p29-b4",
+          "text": "No. 21, Vauxhall Street, Colombo 02, Sri Lanka."
+        },
+        {
+          "id": "p29-b5",
+          "text": "www.srilankainsurance.com"
+        }
+      ]
+    }
+  ]
+}
