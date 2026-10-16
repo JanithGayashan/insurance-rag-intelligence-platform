@@ -10,6 +10,9 @@ from typing import Any
 import tiktoken
 
 from src.chunking.models import Chunk
+from src.chunking.structure_aware.context import resolve_contexts
+from src.chunking.structure_aware.text import section_prefix, split_text
+from src.chunking.structure_aware.artifacts import archive_artifact
 
 
 _HEADING_LABELS = {"title", "section_header"}
@@ -122,7 +125,7 @@ class StructureAwareChunker:
                     )
                 continue
 
-            if pending and pending[0].section_path != block.section_path:
+            if pending and (pending[0].section_path != block.section_path or pending[0].metadata.get("section_id") != block.metadata.get("section_id")):
                 flush_pending()
 
             candidate = [*pending, block]
@@ -158,14 +161,19 @@ class StructureAwareChunker:
         if not isinstance(body, Mapping):
             raise ValueError("Docling document is missing a body object")
 
-        heading_stack: list[_Heading] = []
         visited: set[str] = set()
-
-        for node, group_labels in self._walk_children(
-            body,
-            registry,
-            visited,
-        ):
+        items = list(self._walk_children(body, registry, visited))
+        contexts = resolve_contexts([node for node, _ in items])
+        represented_headings: set[str] = set()
+        for node, _ in items:
+            if node.get("label") in _HEADING_LABELS | _IGNORED_LABELS:
+                continue
+            if not (node.get("text") or node.get("label") == "table"):
+                continue
+            context = contexts[str(node.get("self_ref", ""))]
+            prefix = self._section_prefix(context.headings)
+            represented_headings.update(ref for text, ref in zip(context.headings, context.refs) if text in prefix)
+        for node, group_labels in items:
             label = str(node.get("label", "unspecified"))
             source_ref = str(node.get("self_ref", ""))
 
@@ -173,29 +181,19 @@ class StructureAwareChunker:
                 continue
 
             if label in _HEADING_LABELS:
-                heading_text = self._normalize_text(node.get("text", ""))
-                if not heading_text:
-                    continue
-                heading_level = self._infer_heading_level(
-                    node,
-                    heading_text,
-                    heading_stack,
-                )
-                del heading_stack[max(0, heading_level - 1) :]
-                heading_stack.append(
-                    _Heading(
-                        text=heading_text,
-                        source_ref=source_ref,
-                    )
-                )
+                if source_ref not in represented_headings and node.get("text"):
+                    context = contexts[source_ref]
+                    yield _Block(self._normalize_text(node["text"]), self._page_numbers(node), (source_ref,), context.headings, "section_header", {"section_id": source_ref, "heading_only": True, "heading_context_inferred": context.inferred})
                 continue
-
+            context = contexts.get(source_ref)
+            heading_stack = [_Heading(text, ref) for text, ref in zip(context.headings, context.refs)] if context else []
             block = self._node_to_block(
                 node=node,
                 group_labels=group_labels,
                 heading_stack=heading_stack,
             )
             if block is not None:
+                block.metadata.update({"section_id": context.refs[-1] if context and context.refs else "introduction", "heading_context_inferred": bool(context and context.inferred)})
                 yield block
 
     @staticmethod
@@ -255,6 +253,8 @@ class StructureAwareChunker:
                 node_children,
                 (str, bytes),
             ) and node_children:
+                if node.get("text") or node.get("label") == "table":
+                    yield node, group_labels
                 node_label = str(node.get("label", "group"))
                 yield from self._walk_children(
                     node,
@@ -303,7 +303,9 @@ class StructureAwareChunker:
         if not text:
             return None
         if label == "list_item" or "list" in group_labels:
-            text = f"- {text}"
+            marker = str(node.get("marker") or "-").strip()
+            if not text.startswith(marker + " "):
+                text = f"{marker} {text}"
         elif label == "caption":
             text = f"Caption: {text}"
 
@@ -316,6 +318,7 @@ class StructureAwareChunker:
             metadata={
                 "docling_label": label,
                 "group_labels": list(group_labels),
+                "list_marker": node.get("marker"),
             },
         )
 
@@ -354,6 +357,14 @@ class StructureAwareChunker:
                 "block_count": len(blocks),
                 "contains_table": "table" in element_types,
                 "section_depth": len(blocks[0].section_path),
+                "section_id": blocks[0].metadata.get("section_id"),
+                "heading_context_inferred": any(block.metadata.get("heading_context_inferred") for block in blocks),
+                "body_source_refs": list(dict.fromkeys(block.source_refs[-1] for block in blocks if block.source_refs)),
+                "source_spans": [span for block in blocks for span in block.metadata.get("source_spans", [])],
+                "body_text": "\n\n".join(block.text for block in blocks),
+                "list_markers": {block.source_refs[-1]: block.metadata["list_marker"] for block in blocks if block.metadata.get("list_marker") and block.source_refs},
+                "tokenizer": self.encoding.name,
+                "chunk_size": self.chunk_size,
             }
         )
         split_parts = [
@@ -364,6 +375,11 @@ class StructureAwareChunker:
         if split_parts:
             metadata["split_part"] = split_parts[0]
             metadata["oversized_block_split"] = True
+            metadata["fallback_token_split"] = any(block.metadata.get("fallback_token_split") for block in blocks)
+            metadata["fallback_reason"] = "oversized-source-block"
+        metadata["context_prefix_truncated"] = bool(blocks[0].section_path and self._section_prefix(blocks[0].section_path) != "Section: " + " > ".join(blocks[0].section_path))
+        if self._count_tokens(text) > self.chunk_size:
+            raise ValueError("rendered chunk exceeds chunk_size")
 
         return Chunk(
             chunk_id=f"{document_id}-structure-{chunk_index:04d}",
@@ -389,30 +405,19 @@ class StructureAwareChunker:
                 return row_parts
 
         prefix = self._section_prefix(block.section_path)
-        separator = "\n\n" if prefix else ""
-        prefix_token_count = self._count_tokens(prefix + separator)
-        available_tokens = max(1, self.chunk_size - prefix_token_count)
-        overlap = min(self.overlap, max(0, available_tokens - 1))
-        step = max(1, available_tokens - overlap)
-        tokens = self.encoding.encode(block.text)
         parts: list[_Block] = []
-
-        for start in range(0, len(tokens), step):
-            segment_tokens = tokens[start : start + available_tokens]
-            if not segment_tokens:
-                break
-            segment = self.encoding.decode(segment_tokens)
+        for segment in split_text(block.text, self.encoding, self.chunk_size, prefix=prefix, overlap=self.overlap):
             part = replace(
                 block,
-                text=segment,
+                text=segment.text,
                 metadata={
                     **block.metadata,
                     "split_part": len(parts),
+                    "fallback_token_split": segment.hard_split,
+                    "source_spans": [{"source_ref": block.source_refs[-1], "start": segment.start, "end": segment.end}],
                 },
             )
             parts.append(part)
-            if start + available_tokens >= len(tokens):
-                break
         return parts
 
     def _split_table_rows(
@@ -484,20 +489,7 @@ class StructureAwareChunker:
         return f"{prefix}\n\n{body}" if prefix else body
 
     def _section_prefix(self, section_path: Sequence[str]) -> str:
-        if not section_path:
-            return ""
-        prefix_budget = max(8, self.chunk_size // 3)
-        selected: list[str] = []
-        for heading in reversed(section_path):
-            candidate = "Section: " + " > ".join(reversed([heading, *selected]))
-            if selected and self._count_tokens(candidate) > prefix_budget:
-                break
-            selected.insert(0, heading)
-        prefix = "Section: " + " > ".join(selected)
-        prefix_tokens = self.encoding.encode(prefix)
-        if len(prefix_tokens) > prefix_budget:
-            prefix = self.encoding.decode(prefix_tokens[:prefix_budget])
-        return prefix
+        return section_prefix(tuple(section_path), self.encoding, self.chunk_size)
 
     @staticmethod
     def _page_numbers(node: Mapping[str, Any]) -> tuple[int, ...]:
@@ -623,7 +615,9 @@ def write_chunks(chunks: Sequence[Chunk], output_path: Path) -> None:
 
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(
+    archive_artifact(output_path)
+    temporary_path = output_path.with_suffix(output_path.suffix + ".tmp")
+    temporary_path.write_text(
         json.dumps(
             [chunk.model_dump(mode="json") for chunk in chunks],
             indent=2,
@@ -631,3 +625,4 @@ def write_chunks(chunks: Sequence[Chunk], output_path: Path) -> None:
         ),
         encoding="utf-8",
     )
+    temporary_path.replace(output_path)

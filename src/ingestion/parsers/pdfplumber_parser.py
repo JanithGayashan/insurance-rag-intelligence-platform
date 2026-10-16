@@ -2,6 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 from time import perf_counter
+from io import BytesIO
+
+from src.ingestion.parsers.conditional_ocr import prepare_pdf
 
 from src.ingestion.models import (
     ParseResult,
@@ -20,7 +23,12 @@ PARSER_NAME = "pdfplumber"
 
 
 def parse_pdf(
-    pdf_path: str | Path
+    pdf_path: str | Path,
+    *,
+    ocr_mode: str = "auto",
+    ocr_language: str = "eng",
+    ocr_dpi: int = 300,
+    ocr_timeout: float = 60,
 ) -> ParseResult:
 
     start = perf_counter()
@@ -37,7 +45,9 @@ def parse_pdf(
         elements = []
         tables = []
 
-        with pdfplumber.open(path) as pdf:
+        with prepare_pdf(path, ocr_mode=ocr_mode, ocr_language=ocr_language,
+                         ocr_dpi=ocr_dpi, ocr_timeout=ocr_timeout) as prepared, pdfplumber.open(
+                             BytesIO(prepared.document.tobytes()) if prepared.changed else path) as pdf:
 
             pdf_metadata = dict(
                 pdf.metadata or {}
@@ -69,6 +79,7 @@ def parse_pdf(
                             "height": float(
                                 page.height
                             ),
+                            "ocr": prepared.pages[page_index],
                         }
                     )
                 )
@@ -159,6 +170,7 @@ def parse_pdf(
                         f"table extraction failed: {exc}"
                     )
 
+        warnings.extend(prepared.warnings)
         full_text = "\n\n".join(
             page.text
             for page in pages
@@ -177,6 +189,7 @@ def parse_pdf(
             metadata={
                 "page_count": len(pages),
                 "pdf_metadata": pdf_metadata,
+                "ocr": prepared.summary(),
             },
             processing_time_seconds=(
                 perf_counter() - start

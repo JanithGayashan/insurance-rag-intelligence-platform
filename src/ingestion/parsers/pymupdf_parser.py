@@ -3,6 +3,8 @@ from __future__ import annotations
 from pathlib import Path
 from time import perf_counter
 
+from src.ingestion.parsers.conditional_ocr import prepare_pdf
+
 from src.ingestion.models import (
     ParseResult,
     ParsedElement,
@@ -20,7 +22,12 @@ PARSER_NAME = "pymupdf"
 
 
 def parse_pdf(
-    pdf_path: str | Path
+    pdf_path: str | Path,
+    *,
+    ocr_mode: str = "auto",
+    ocr_language: str = "eng",
+    ocr_dpi: int = 300,
+    ocr_timeout: float = 60,
 ) -> ParseResult:
 
     start = perf_counter()
@@ -37,7 +44,9 @@ def parse_pdf(
         elements = []
         tables = []
 
-        with pymupdf.open(path) as document:
+        with prepare_pdf(path, ocr_mode=ocr_mode, ocr_language=ocr_language,
+                         ocr_dpi=ocr_dpi, ocr_timeout=ocr_timeout) as prepared:
+            document = prepared.document
 
             pdf_metadata = dict(
                 document.metadata or {}
@@ -72,6 +81,7 @@ def parse_pdf(
                                     full=True
                                 )
                             ),
+                            "ocr": prepared.pages[page_index],
                         }
                     )
                 )
@@ -171,6 +181,7 @@ def parse_pdf(
                         f"table extraction failed: {exc}"
                     )
 
+        warnings.extend(prepared.warnings)
         full_text = "\n\n".join(
             page.text
             for page in pages
@@ -189,6 +200,7 @@ def parse_pdf(
             metadata={
                 "page_count": len(pages),
                 "pdf_metadata": pdf_metadata,
+                "ocr": prepared.summary(),
             },
             processing_time_seconds=(
                 perf_counter() - start

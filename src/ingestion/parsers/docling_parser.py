@@ -30,7 +30,8 @@ def label_to_string(label) -> str:
 
 
 def parse_pdf(
-    pdf_path: str | Path
+    pdf_path: str | Path,
+    native_output_path: Path | None = None,
 ) -> ParseResult:
 
     start = perf_counter()
@@ -56,6 +57,9 @@ def parse_pdf(
         document = (
             conversion_result.document
         )
+
+        if native_output_path is not None:
+            document.save_as_json(native_output_path)
 
         page_count = (
             document.num_pages()

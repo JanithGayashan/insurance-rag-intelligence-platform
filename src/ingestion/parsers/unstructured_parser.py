@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+import json
 from pathlib import Path
 from time import perf_counter
 
@@ -25,6 +26,7 @@ def parse_pdf(
     pdf_path: str | Path,
     strategy: str = "hi_res",
     languages: list[str] | None = None,
+    native_output_path: Path | None = None,
 ) -> ParseResult:
 
     start = perf_counter()
@@ -56,6 +58,10 @@ def parse_pdf(
 
             include_page_breaks=False,
         )
+
+        if native_output_path is not None:
+            native_output_path.write_text(json.dumps([item.to_dict() for item in raw_elements],
+                indent=2, ensure_ascii=False), encoding="utf-8")
 
         elements = []
         tables = []

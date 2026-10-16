@@ -7,6 +7,7 @@ from pathlib import Path
 from statistics import mean, median
 from typing import Any
 
+from src.configuration.dataset import get_dataset_configuration
 from src.chunking.models import Chunk
 from src.chunking.sentence_paragraph.custom import (
     CustomSentenceParagraphChunker,
@@ -16,7 +17,7 @@ from src.chunking.sentence_paragraph.spacy import (
 )
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 ALLOWED_VALIDATION_STATUSES = frozenset({"PASS", "REVIEW"})
 
 

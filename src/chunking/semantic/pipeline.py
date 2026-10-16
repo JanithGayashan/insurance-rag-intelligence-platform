@@ -6,6 +6,7 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
+from src.configuration.dataset import get_dataset_configuration
 from src.chunking.semantic.comparison import compare_semantic_chunkers
 from src.chunking.semantic.embeddings import (
     DEFAULT_EMBEDDING_MODEL,
@@ -15,7 +16,7 @@ from src.chunking.semantic.embeddings import (
 from src.chunking.structure_aware.pipeline import discover_documents
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 DEFAULT_ALLOWED_STATUSES = frozenset({"PASS", "REVIEW"})
 
 
@@ -79,6 +80,7 @@ def run_semantic_chunking_pipeline(
                 document_id,
                 resolved_embedder,
                 {
+                    **get_dataset_configuration().source_metadata(str(source.get("relative_path") or relative_document.as_posix())),
                     "source_file": source.get("relative_path"),
                     "source_sha256": source.get("sha256"),
                     "validation_status": status,

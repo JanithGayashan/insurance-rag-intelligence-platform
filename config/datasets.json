@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "default_dataset": "slic",
+  "datasets": {
+    "slic": {
+      "display_name": "Sri Lanka Insurance",
+      "short_name": "SLIC",
+      "country": "Sri Lanka",
+      "default_business_line": "general"
+    },
+    "allianz": {
+      "display_name": "Allianz Insurance Lanka",
+      "short_name": "Allianz",
+      "country": "Sri Lanka",
+      "default_business_line": "general",
+      "collection": "insurance_structure_bge_small_en_v1_5_v2",
+      "qdrant_directory": "data/indexes/qdrant",
+      "api_output_directory": "data/outputs/api",
+      "answer_output_directory": "data/outputs/answers"
+    }
+  }
+}

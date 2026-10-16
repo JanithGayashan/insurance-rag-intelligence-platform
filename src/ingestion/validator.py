@@ -12,13 +12,14 @@ import unicodedata
 import pdfplumber
 from docling_core.types.doc.document import DoclingDocument
 
+from src.configuration.dataset import get_dataset_configuration
 
 # ============================================================
 # PATHS
 # ============================================================
 
-RAW_DATA_DIR = Path("data/raw/allianz")
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+RAW_DATA_DIR = get_dataset_configuration().raw_root
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 
 SUMMARY_OUTPUT_PATH = (
     PROCESSED_DATA_DIR / "validation_summary.json"
@@ -1245,6 +1246,7 @@ def save_validation_report(
 def validate_document(
     processed_directory: Path,
     config: ValidationConfig,
+    raw_root: Path | None = None,
 ) -> dict:
 
     metadata_path = (
@@ -1283,7 +1285,7 @@ def validate_document(
     )
 
     source_pdf_path = (
-        RAW_DATA_DIR
+        (raw_root or RAW_DATA_DIR)
         / relative_source_path
     )
 
@@ -1674,10 +1676,11 @@ def validate_document(
 # ============================================================
 
 def discover_processed_documents(
+    processed_root: Path | None = None,
 ) -> list[Path]:
 
     metadata_files = sorted(
-        PROCESSED_DATA_DIR.rglob(
+        (processed_root or PROCESSED_DATA_DIR).rglob(
             "metadata.json"
         )
     )
@@ -1693,7 +1696,8 @@ def discover_processed_documents(
 # RUN FULL VALIDATION PIPELINE
 # ============================================================
 
-def run_validation_pipeline():
+def run_validation_pipeline(raw_root: Path | None = None, processed_root: Path | None = None):
+    summary_output_path = (processed_root / "validation_summary.json") if processed_root is not None else SUMMARY_OUTPUT_PATH
 
     print(
         "Starting parsing validation"
@@ -1704,7 +1708,7 @@ def run_validation_pipeline():
     config = ValidationConfig()
 
     processed_documents = (
-        discover_processed_documents()
+        discover_processed_documents(processed_root)
     )
 
     print(
@@ -1738,6 +1742,7 @@ def run_validation_pipeline():
                     processed_directory,
 
                 config=config,
+                raw_root=raw_root,
             )
 
             status = report.get(
@@ -1792,7 +1797,7 @@ def run_validation_pipeline():
         )
 
         print(
-            f"  → {status}"
+            f"  -> {status}"
         )
 
     # --------------------------------------------------------
@@ -1816,7 +1821,7 @@ def run_validation_pipeline():
             summary_documents,
     }
 
-    with SUMMARY_OUTPUT_PATH.open(
+    with summary_output_path.open(
         "w",
         encoding="utf-8",
     ) as file:
@@ -1840,7 +1845,7 @@ def run_validation_pipeline():
     )
 
     print(
-        SUMMARY_OUTPUT_PATH
+        summary_output_path
     )
 
 

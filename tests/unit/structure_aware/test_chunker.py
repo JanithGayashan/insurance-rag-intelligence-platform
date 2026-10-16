@@ -180,3 +180,68 @@ def test_structure_aware_chunker_validates_input():
         chunker.chunk_document(_document(), document_id=" ")
     with pytest.raises(ValueError, match="body"):
         chunker.chunk_document({}, document_id="policy")
+
+
+def test_consecutive_same_level_headings_retain_clause_context():
+    document = _document()
+    document["texts"][0].update(label="section_header", level=1, text="CLAUSE 8-PASSENGER RISK")
+    document["texts"][1].update(level=1, text="(Applicable to Commercial Vehicles)")
+    chunks = StructureAwareChunker().chunk_document(document, "policy")
+    coverage = next(chunk for chunk in chunks if "Damage caused" in chunk.text)
+    assert coverage.section_path == ["CLAUSE 8-PASSENGER RISK", "(Applicable to Commercial Vehicles)"]
+    assert "CLAUSE 8-PASSENGER RISK" in coverage.text
+    assert coverage.metadata["heading_context_inferred"] is True
+    assert {"#/texts/0", "#/texts/1"}.issubset(coverage.source_refs)
+
+
+def test_original_numbered_and_lettered_list_markers_are_preserved():
+    document = _document()
+    document["texts"][3].update(marker="1.", enumerated=True)
+    document["texts"][4].update(marker="a.", enumerated=True)
+    chunks = StructureAwareChunker().chunk_document(document, "policy")
+    text = "\n".join(chunk.text for chunk in chunks)
+    assert "1. Fire damage is covered." in text
+    assert "a. Flood damage is covered." in text
+    assert any(chunk.metadata["list_markers"].get("#/texts/4") == "a." for chunk in chunks)
+
+
+@pytest.mark.parametrize("overlap", [0, 5])
+def test_unicode_fallback_uses_original_character_spans(overlap):
+    document = _document()
+    text = ("රක්ෂණය සහ හානි ආවරණය. " * 35).strip()
+    document["texts"][2]["text"] = text
+    chunker = StructureAwareChunker(chunk_size=36, overlap=overlap)
+    chunks = chunker.chunk_document(document, "policy")
+    pieces = [chunk for chunk in chunks if chunk.metadata.get("source_spans") and "#/texts/2" in chunk.source_refs]
+    assert pieces
+    covered = set()
+    for chunk in pieces:
+        assert "\ufffd" not in chunk.text
+        assert chunk.token_count <= 36
+        for span in chunk.metadata["source_spans"]:
+            assert chunk.metadata["body_text"] == text[span["start"]:span["end"]]
+            covered.update(range(span["start"], span["end"]))
+    assert covered == set(range(len(text)))
+
+
+@pytest.mark.parametrize("limit", [1, 4, 8])
+def test_small_budgets_do_not_overflow_with_context(limit):
+    document = _document()
+    document["texts"][2]["text"] = "Motor insurance coverage. " * 12
+    chunks = StructureAwareChunker(chunk_size=limit, overlap=0).chunk_document(document, "policy")
+    assert chunks and all(chunk.token_count <= limit for chunk in chunks)
+
+
+def test_heading_only_sections_stay_in_document_order():
+    document = _document()
+    document["texts"].append(_text(8, "Final heading without body", "section_header", level=1))
+    document["body"]["children"].append({"$ref": "#/texts/8"})
+    chunks = StructureAwareChunker().chunk_document(document, "policy")
+    assert "Final heading without body" in chunks[-1].text
+
+
+def test_impossible_unicode_budget_raises_without_corrupting_text():
+    from src.chunking.structure_aware.text import split_text
+    import tiktoken
+    with pytest.raises(ValueError, match="Unicode"):
+        split_text("ර", tiktoken.get_encoding("cl100k_base"), 1)

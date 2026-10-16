@@ -1,9 +1,13 @@
 .env
+.env.*
+!.env.example
 
 data/raw/*
 data/processed/*
 data/indexes/*
 data/evaluation/*
+data/outputs/*
+data/.tools/
 
 venv/
 
@@ -11,4 +15,5 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 
-src/ingestion/experiments/*
+# Local Next.js experiment; intentionally excluded from this backend repository.
+/local-frontend/

@@ -2,11 +2,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import hashlib
+from datetime import datetime, timezone
+from time import perf_counter
 from collections.abc import Collection, Sequence
 from pathlib import Path
 from statistics import mean, median
 from typing import Any
 
+from src.configuration.dataset import get_dataset_configuration
+from src.chunking.structure_aware.artifacts import archive_artifact, invalidate_chunks
+from src.chunking.structure_aware.evaluation import VERSION, evaluate_chunks
 from src.chunking.models import Chunk
 from src.chunking.structure_aware.chunker import (
     StructureAwareChunker,
@@ -18,7 +24,7 @@ from src.chunking.structure_aware.docling_hybrid import (
 from src.chunking.structure_aware.pipeline import discover_documents
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 DEFAULT_ALLOWED_STATUSES = frozenset({"PASS", "REVIEW"})
 
 
@@ -39,30 +45,47 @@ def compare_document(
     output_directory.mkdir(parents=True, exist_ok=True)
     resolved_document_id = document_id or document_path.parent.name
 
+    document_bytes = document_path.read_bytes()
+    document = json.loads(document_bytes)
+    started = perf_counter()
     custom_chunks = StructureAwareChunker(
         chunk_size=chunk_size,
         overlap=overlap,
-    ).chunk_file(
-        document_path,
+    ).chunk_document(
+        document,
         document_id=resolved_document_id,
         document_metadata=document_metadata,
     )
+    custom_seconds = perf_counter() - started
+    started = perf_counter()
     hybrid_chunks = DoclingHybridStructureChunker(
         chunk_size=chunk_size,
-    ).chunk_file(
-        document_path,
+    ).chunk_document(
+        document,
         document_id=resolved_document_id,
         document_metadata=document_metadata,
     )
+    hybrid_seconds = perf_counter() - started
+    if document_path.read_bytes() != document_bytes:
+        raise RuntimeError("parsed document changed during comparison; regenerate outputs")
 
     custom_output = output_directory / "custom_chunks.json"
     hybrid_output = output_directory / "docling_hybrid_chunks.json"
     write_chunks(custom_chunks, custom_output)
     write_chunks(hybrid_chunks, hybrid_output)
+    for name, chunks in (("custom", custom_chunks), ("docling_hybrid", hybrid_chunks)):
+        (output_directory / f"{name}_chunks.txt").write_text(render_chunks_text(chunks), encoding="utf-8")
 
     custom_metrics = chunk_metrics(custom_chunks, chunk_size)
     hybrid_metrics = chunk_metrics(hybrid_chunks, chunk_size)
     comparison = {
+        "status": "COMPLETED", "version": VERSION,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "parsed_document_sha256": hashlib.sha256(document_bytes).hexdigest(),
+        "implementation_sha256": {name: hashlib.sha256((Path(__file__).parent / name).read_bytes()).hexdigest() for name in ("chunker.py", "docling_hybrid.py", "context.py", "text.py", "evaluation.py")},
+        "source_sha256": (document_metadata or {}).get("source_sha256"),
+        "active_method": "custom", "index_refresh_required": True,
+        "artifact_sha256": {name: hashlib.sha256((output_directory / name).read_bytes()).hexdigest() for name in ("custom_chunks.json", "docling_hybrid_chunks.json")},
         "document": str(document_path),
         "document_id": resolved_document_id,
         "configuration": {
@@ -71,15 +94,19 @@ def compare_document(
             "custom_overlap": overlap,
             "docling_merge_peers": True,
             "docling_repeat_table_header": True,
+            "docling_table_serializer": "MarkdownTableSerializer",
+            "heading_policy": "consecutive-heading-context-with-inference-flags",
         },
         "custom": {
             "implementation": "custom StructureAwareChunker",
             "output": str(custom_output),
+            "seconds": round(custom_seconds, 6), "evaluation": evaluate_chunks(document, custom_chunks, chunk_size),
             **custom_metrics,
         },
         "docling_hybrid": {
             "implementation": "docling.HybridChunker",
             "output": str(hybrid_output),
+            "seconds": round(hybrid_seconds, 6), "evaluation": evaluate_chunks(document, hybrid_chunks, chunk_size),
             **hybrid_metrics,
         },
         "difference": {
@@ -100,6 +127,7 @@ def compare_document(
     }
 
     comparison_path = output_directory / "comparison.json"
+    archive_artifact(comparison_path)
     comparison_path.write_text(
         json.dumps(comparison, indent=2, ensure_ascii=False),
         encoding="utf-8",
@@ -141,12 +169,14 @@ def run_comparison_pipeline(
         validation_status = str(validation.get("status", "MISSING")).upper()
         relative_document = document_path.relative_to(processed_directory)
         if validation_status not in allowed:
+            invalidate_chunks(document_path.parent, f"validation-status:{validation_status}")
             summary["skipped_documents"] += 1
             summary["documents"].append(
                 {
                     "document": str(relative_document),
                     "status": "SKIPPED",
                     "validation_status": validation_status,
+                    "parsed_document_sha256": hashlib.sha256(document_path.read_bytes()).hexdigest(),
                 }
             )
             continue
@@ -166,12 +196,15 @@ def run_comparison_pipeline(
                 overlap=overlap,
                 document_id=document_id,
                 document_metadata={
+                    **get_dataset_configuration().source_metadata(str(source.get("relative_path") or relative_document.as_posix())),
                     "source_file": source.get("relative_path"),
                     "source_sha256": source.get("sha256"),
                     "validation_status": validation_status,
+                    "parsed_document_sha256": hashlib.sha256(document_path.read_bytes()).hexdigest(),
                 },
             )
         except Exception as error:
+            invalidate_chunks(document_path.parent, f"comparison-failed:{type(error).__name__}", active=False)
             summary["failed_documents"] += 1
             summary["documents"].append(
                 {
@@ -237,6 +270,10 @@ def chunk_metrics(chunks: Sequence[Chunk], chunk_size: int) -> dict[str, Any]:
     }
 
 
+def render_chunks_text(chunks: Sequence[Chunk]) -> str:
+    return "\n\n".join(f"{'=' * 72}\nCHUNK {chunk.chunk_index + 1} | {chunk.token_count} tokens | PDF pages {chunk.page_numbers}\nSection: {' > '.join(chunk.section_path) or 'Introduction'}\nFallback: {bool(chunk.metadata.get('oversized_block_split'))}\n{'-' * 72}\n{chunk.text}\n{'=' * 72}" for chunk in chunks)
+
+
 def render_document_report(
     comparison: dict[str, Any],
     custom_chunks: Sequence[Chunk],
@@ -275,6 +312,13 @@ def render_document_report(
         )
 
     lines.extend(
+        ["", "## Automatic preservation and boundary checks", "",
+         "These compare with parsed Docling content and still require human review.", "",
+         "| Diagnostic | Custom | Docling HybridChunker |", "| --- | ---: | ---: |"]
+    )
+    for key in ("status", "represented_source_elements", "source_elements", "missing_source_words", "fragmented_or_missing_sentences", "fallback_chunks", "tiny_chunks_under_20_tokens", "duplicate_chunk_bodies"):
+        lines.append(f"| {key} | {comparison['custom']['evaluation'][key]} | {comparison['docling_hybrid']['evaluation'][key]} |")
+    lines.extend(
         _sample_section("Custom implementation", custom_chunks)
         + _sample_section("Docling HybridChunker", hybrid_chunks)
         + [
@@ -283,6 +327,7 @@ def render_document_report(
             "- `custom_chunks.json` contains every custom chunk.",
             "- `docling_hybrid_chunks.json` contains every native hybrid chunk.",
             "- `comparison.json` contains the complete metrics.",
+            "- `custom_chunks.txt` and `docling_hybrid_chunks.txt` contain all chunks with visible boundaries.",
             "",
         ]
     )

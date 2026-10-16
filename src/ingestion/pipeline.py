@@ -1,13 +1,15 @@
 from pathlib import Path
 
+from src.configuration.dataset import DatasetConfiguration, get_dataset_configuration
+
 from src.ingestion.docling_parser import (
     create_converter,
     parse_pdf,
 )
 
 
-RAW_DATA_DIR = Path("data/raw/allianz")
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+RAW_DATA_DIR = get_dataset_configuration().raw_root
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 
 
 def discover_pdfs(
@@ -19,7 +21,9 @@ def discover_pdfs(
     """
 
     pdf_files = sorted(
-        raw_directory.rglob("*.pdf"),
+        (path for path in raw_directory.rglob("*") if path.is_file()
+         and path.suffix.lower() == ".pdf" and not path.is_symlink()
+         and path.resolve().is_relative_to(raw_directory.resolve())),
         key=lambda path: (
             len(path.relative_to(raw_directory).parts),
             path.as_posix().casefold(),
@@ -29,7 +33,8 @@ def discover_pdfs(
     return pdf_files
 
 
-def run_ingestion_pipeline() -> None:
+def run_ingestion_pipeline(raw_directory: Path | None = None, processed_directory: Path | None = None,
+                           *, dataset: DatasetConfiguration | None = None) -> None:
     """
     Run the document ingestion pipeline.
 
@@ -47,9 +52,10 @@ def run_ingestion_pipeline() -> None:
     # 1. Discover PDF files
     # --------------------------------
 
-    pdf_files = discover_pdfs(
-        RAW_DATA_DIR
-    )
+    raw_directory = Path(raw_directory or (dataset.raw_root if dataset else RAW_DATA_DIR))
+    processed_directory = Path(processed_directory or (dataset.processed_root if dataset else PROCESSED_DATA_DIR))
+    dataset = dataset or get_dataset_configuration()
+    pdf_files = discover_pdfs(raw_directory)
 
     print(
         f"Found {len(pdf_files)} PDF files"
@@ -78,9 +84,10 @@ def run_ingestion_pipeline() -> None:
 
         result = parse_pdf(
             pdf_path=pdf_path,
-            raw_root=RAW_DATA_DIR,
-            processed_root=PROCESSED_DATA_DIR,
+            raw_root=raw_directory,
+            processed_root=processed_directory,
             converter=converter,
+            dataset=dataset,
         )
 
         # --------------------------------

@@ -8,6 +8,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+from src.configuration.dataset import get_dataset_configuration
+
 from src.evaluation.retrieval.runner import evaluate_dense_retrieval
 from src.evaluation.retrieval.dataset import load_dataset, select_questions
 from src.indexing.embeddings import DenseEmbeddingService
@@ -17,14 +19,15 @@ from src.retrieval.dense import DenseRetriever
 
 
 def main() -> None:
+    dataset = get_dataset_configuration()
     parser = argparse.ArgumentParser(description="Evaluate dense, BM25 and hybrid insurance retrieval with source evidence and judgment-aware pools.")
-    parser.add_argument("--dataset", type=Path, default=Path("evaluation/datasets/allianz_questions_v1.json"))
-    parser.add_argument("--output", type=Path, default=Path("data/evaluation/allianz"))
+    parser.add_argument("--dataset", type=Path, default=dataset.evaluation_dataset)
+    parser.add_argument("--output", type=Path, default=dataset.evaluation_root / "reranking_comparison")
     parser.add_argument("--qdrant-path", type=Path, default=LOCAL_QDRANT_PATH)
     parser.add_argument("--collection", default=DEFAULT_COLLECTION)
     parser.add_argument("--k", type=int, nargs="+", default=[1, 3, 5, 10])
     parser.add_argument("--include-source-checked", action="store_true", help="Allow a clearly labeled provisional baseline before human approval.")
-    parser.add_argument("--raw-root", type=Path, default=Path("data/raw/allianz"))
+    parser.add_argument("--raw-root", type=Path, default=dataset.raw_root)
     parser.add_argument("--mode", choices=["unfiltered", "policy_scoped", "both"], default="both")
     parser.add_argument("--retriever", choices=["dense", "bm25", "hybrid", "hybrid_reranked", "all"], default="all")
     parser.add_argument("--pool-depth", type=int, default=20)
@@ -42,6 +45,8 @@ def main() -> None:
     if args.legacy_dense and (args.retriever != "dense" or args.judgments or args.require_judged_top5 or args.rerank):
         parser.error("--legacy-dense requires --retriever dense without pooled judgment options")
     # Reject unreviewed-only datasets before loading the embedding model.
+    if not args.dataset.is_file():
+        parser.error(f"No reviewed evaluation questions found at {args.dataset}. Create a question dataset for {dataset.dataset_id}; another insurer's labels are not reused.")
     select_questions(load_dataset(args.dataset), args.include_source_checked)
     load_dotenv()
     embedder = DenseEmbeddingService()

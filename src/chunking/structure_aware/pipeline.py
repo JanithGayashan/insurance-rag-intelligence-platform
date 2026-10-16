@@ -1,24 +1,27 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from collections.abc import Collection
 from pathlib import Path
 from typing import Any
 
+from src.configuration.dataset import get_dataset_configuration
+from src.chunking.structure_aware.artifacts import clear_invalidation, invalidate_chunks
 from src.chunking.structure_aware.chunker import (
     StructureAwareChunker,
     write_chunks,
 )
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 DEFAULT_ALLOWED_STATUSES = frozenset({"PASS", "REVIEW"})
 
 
 def discover_documents(processed_directory: Path) -> list[Path]:
     """Find native Docling documents in deterministic path order."""
 
-    return sorted(Path(processed_directory).rglob("document.json"))
+    return sorted(path for path in Path(processed_directory).rglob("document.json") if not any(part.startswith(".") for part in path.relative_to(processed_directory).parts))
 
 
 def run_structure_chunking_pipeline(
@@ -63,12 +66,14 @@ def run_structure_chunking_pipeline(
         validation_status = str(validation.get("status", "MISSING")).upper()
 
         if validation_status not in normalized_statuses:
+            invalidate_chunks(document_directory, f"validation-status:{validation_status}")
             summary["skipped_documents"] += 1
             summary["documents"].append(
                 {
                     "document": str(relative_document),
                     "status": "SKIPPED",
                     "validation_status": validation_status,
+                    "parsed_document_sha256": hashlib.sha256(document_path.read_bytes()).hexdigest(),
                 }
             )
             continue
@@ -84,18 +89,25 @@ def run_structure_chunking_pipeline(
             source_metadata = {}
 
         try:
-            chunks = chunker.chunk_file(
-                document_path=document_path,
+            document_bytes = document_path.read_bytes()
+            chunks = chunker.chunk_document(
+                document=json.loads(document_bytes),
                 document_id=document_id,
                 document_metadata={
+                    **get_dataset_configuration().source_metadata(str(source_metadata.get("relative_path") or relative_document.as_posix())),
                     "source_file": source_metadata.get("relative_path"),
                     "source_sha256": source_metadata.get("sha256"),
                     "validation_status": validation_status,
+                    "parsed_document_sha256": hashlib.sha256(document_bytes).hexdigest(),
                 },
             )
+            if document_path.read_bytes() != document_bytes:
+                raise RuntimeError("parsed document changed during chunking; rerun")
             output_path = document_directory / "structure_chunks.json"
             write_chunks(chunks, output_path)
+            clear_invalidation(document_directory)
         except Exception as error:
+            invalidate_chunks(document_directory, f"chunking-failed:{type(error).__name__}")
             summary["failed_documents"] += 1
             summary["documents"].append(
                 {

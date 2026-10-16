@@ -4,43 +4,33 @@ import json
 from pathlib import Path
 from statistics import mean
 
+from src.configuration.dataset import get_dataset_configuration
 from src.chunking.fixed.fixed import FixedTokenChunker
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 
-DOCUMENT_NAME = "Allianz_Motor_Fle_ (Modular Product)"
 
 CHUNK_SIZE = 300
 OVERLAP = 50
 
 
-def find_document() -> Path:
-    """
-    Find the processed document.txt for the
-    selected insurance document.
-    """
-
-    candidates = list(
-        PROCESSED_DATA_DIR.rglob("document.txt")
-    )
-
-    for path in candidates:
-        if path.parent.name == DOCUMENT_NAME:
-            return path
-
-    raise FileNotFoundError(
-        f"Could not find document: {DOCUMENT_NAME}"
-    )
+def find_documents() -> list[Path]:
+    """Discover every parsed document in the active dataset."""
+    return sorted(PROCESSED_DATA_DIR.rglob("document.txt"))
 
 
-def evaluate_fixed_chunking() -> None:
+def evaluate_fixed_chunking(document_path: Path | None = None) -> None:
     """
     Evaluate fixed-token chunking on one real
     insurance document.
     """
 
-    document_path = find_document()
+    if document_path is None:
+        for candidate in find_documents():
+            evaluate_fixed_chunking(candidate)
+        return
+    document_name = document_path.parent.name
 
     text = document_path.read_text(
         encoding="utf-8"
@@ -53,7 +43,7 @@ def evaluate_fixed_chunking() -> None:
 
     chunks = chunker.chunk_text(
         text=text,
-        document_id=DOCUMENT_NAME,
+        document_id=document_name,
     )
 
     token_counts = [
@@ -84,7 +74,7 @@ def evaluate_fixed_chunking() -> None:
         )
 
     evaluation = {
-        "document": DOCUMENT_NAME,
+        "document": document_name,
         "document_path": str(document_path),
         "chunking": {
             "strategy": "fixed",
@@ -132,7 +122,7 @@ def evaluate_fixed_chunking() -> None:
     print("Fixed Token Chunking Evaluation")
     print("=" * 60)
 
-    print(f"Document: {DOCUMENT_NAME}")
+    print(f"Document: {document_name}")
     print(f"Chunks: {len(chunks)}")
     print(f"Total tokens: {sum(token_counts)}")
     print(
