@@ -2,37 +2,31 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from src.configuration.dataset import get_dataset_configuration
+
 from src.chunking.fixed.fixed import FixedTokenChunker
 
 
-PROCESSED_DATA_DIR = Path("data/processed")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 
-DOCUMENT_NAME = "Allianz_Motor_Fle_ (Modular Product)"
 
 CHUNK_SIZE = 300
 OVERLAP = 50
 
 
-def find_document() -> Path:
-    """Find the selected document.txt."""
-
-    candidates = list(
-        PROCESSED_DATA_DIR.rglob("document.txt")
-    )
-
-    for path in candidates:
-        if path.parent.name == DOCUMENT_NAME:
-            return path
-
-    raise FileNotFoundError(
-        f"Could not find document: {DOCUMENT_NAME}"
-    )
+def find_documents() -> list[Path]:
+    """Discover every parsed document in the active dataset."""
+    return sorted(PROCESSED_DATA_DIR.rglob("document.txt"))
 
 
-def inspect_chunks() -> None:
+def inspect_chunks(document_path: Path | None = None) -> None:
     """Print the complete text of every fixed chunk."""
 
-    document_path = find_document()
+    if document_path is None:
+        for candidate in find_documents():
+            inspect_chunks(candidate)
+        return
+    document_name = document_path.parent.name
 
     text = document_path.read_text(
         encoding="utf-8"
@@ -45,7 +39,7 @@ def inspect_chunks() -> None:
 
     chunks = chunker.chunk_text(
         text=text,
-        document_id=DOCUMENT_NAME,
+        document_id=document_name,
     )
 
     output = []
@@ -53,7 +47,7 @@ def inspect_chunks() -> None:
     output.append("=" * 80)
     output.append("FIXED CHUNK INSPECTION")
     output.append("=" * 80)
-    output.append(f"Document: {DOCUMENT_NAME}")
+    output.append(f"Document: {document_name}")
     output.append(f"Total chunks: {len(chunks)}")
     output.append(f"Chunk size: {CHUNK_SIZE}")
     output.append(f"Overlap: {OVERLAP}")

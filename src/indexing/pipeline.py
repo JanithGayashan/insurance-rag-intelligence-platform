@@ -12,6 +12,7 @@ import numpy as np
 from dotenv import load_dotenv
 from filelock import FileLock
 
+from src.configuration.dataset import get_dataset_configuration
 from src.chunking.semantic.embeddings import DEFAULT_EMBEDDING_MODEL
 from src.indexing.configuration import json_sha256
 from src.indexing.embeddings import DenseEmbedder, DenseEmbeddingService
@@ -23,9 +24,9 @@ from src.indexing.state import IndexingState
 from src.retrieval.dense import DenseRetriever
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
-LOCAL_QDRANT_PATH = Path("data/indexes/qdrant")
-DEFAULT_COLLECTION = "insurance_structure_bge_small_en_v1_5_v2"
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
+LOCAL_QDRANT_PATH = get_dataset_configuration().qdrant_path
+DEFAULT_COLLECTION = get_dataset_configuration().collection
 DEFAULT_EXAMPLE_QUESTIONS = (
     "What accidental damage is covered by motor insurance?",
     "Which documents are required when submitting a claim?",
@@ -161,6 +162,7 @@ def run_embedding_and_indexing_pipeline(
                         for question in example_questions]
             summary = {
                 "status": "COMPLETED", "pipeline_version": 2, "run_id": run_id,
+                "dataset_id": get_dataset_configuration().dataset_id,
                 "source_chunking_strategy": "structure-aware", "processed_directory": str(root),
                 "state_path": str(state_path.resolve()), "collection_name": store.collection_name,
                 "embedding_model": service.model_name, "embedding_configuration": config.model_dump(),

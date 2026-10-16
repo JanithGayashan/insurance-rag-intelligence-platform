@@ -120,6 +120,7 @@ def evaluate_retrieval_comparison(
         rows.append({
             **{key: value for key, value in run.items() if key != "hits"},
             "question": question.question, "category": question.category,
+            "query_filters": question.query_filters,
             "evidence_groups": labels[question.question_id], "metrics": metrics,
             "results": [{**hit.model_dump(mode="json"),
                          "relevance": accepted.get(question.question_id, {}).get(hit.chunk_id),

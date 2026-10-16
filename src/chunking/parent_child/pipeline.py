@@ -6,10 +6,11 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
+from src.configuration.dataset import get_dataset_configuration
 from src.chunking.parent_child.comparison import compare_document
 
 
-PROCESSED_DATA_DIR = Path("data/processed/allianz")
+PROCESSED_DATA_DIR = get_dataset_configuration().processed_root
 ALLOWED_VALIDATION_STATUSES = frozenset({"PASS", "REVIEW"})
 
 

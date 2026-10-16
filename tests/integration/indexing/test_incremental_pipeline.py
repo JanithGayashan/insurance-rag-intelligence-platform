@@ -66,6 +66,29 @@ def test_unchanged_run_skips_embedding_and_writes(setup):
     assert second["incremental_updates"]["documents_unchanged"] == 1
 
 
+def test_all_discovered_categories_share_the_dataset_index_and_cache(tmp_path):
+    embedder = CountingEmbedder()
+    store = QdrantVectorStore(QdrantClient(":memory:"), "slic_categories", embedder.model_name, embedder.dimension, local_mode=True)
+    sources = ["motor/book.pdf", "general/travel/book.pdf", "general/health/nested/book.pdf"]
+    for index, source in enumerate(sources):
+        path = write_document(tmp_path, name=source.removesuffix(".pdf"), version=f"v{index}",
+                              texts=[f"Coverage for category {index} includes flood damage."])
+        chunks = json.loads(path.read_text(encoding="utf-8"))
+        chunks[0]["metadata"]["insurer"] = "slic"
+        chunks[0]["metadata"]["source_file"] = source
+        path.write_text(json.dumps(chunks), encoding="utf-8")
+    try:
+        first = run_embedding_and_indexing_pipeline(tmp_path, embedder=embedder, vector_store=store, example_questions=[])
+        second = run_embedding_and_indexing_pipeline(tmp_path, embedder=embedder, vector_store=store, example_questions=[])
+        assert first["documents_indexed"] == 3 and first["chunks_indexed"] == 3
+        assert set(first["document_chunk_counts"]) == set(sources)
+        assert second["incremental_updates"]["points_unchanged"] == 3
+        assert len(embedder.inputs) == 3
+        assert all(item["payload"]["metadata"]["insurer"] == "slic" for item in store.snapshot().values())
+    finally:
+        store.close()
+
+
 def test_changed_policy_reuses_unchanged_text_and_removes_old_version(setup):
     root, embedder, store = setup
     run(setup)
