@@ -247,11 +247,13 @@ def prepare_pdf(source, *, ocr_mode="auto", ocr_language="eng", ocr_dpi=300, ocr
                 prepared.warnings.append(f"Page {index + 1}: OCR incomplete: {error}")
         if prepared.changed:
             command, env, _ = runtime()
-            try:
-                completed = subprocess.run([command, "--version"], env=env, capture_output=True,
-                    text=True, timeout=10, check=True,
-                    **({"creationflags": subprocess.CREATE_NO_WINDOW} if os.name == "nt" else {}))
-                prepared.settings["engine_version"] = completed.stdout.splitlines()[0]
-            except (OSError, subprocess.SubprocessError, IndexError):
-                prepared.settings["engine_version"] = "unavailable"
+            prepared.settings["engine_version"] = "unavailable"
+            if command:
+                try:
+                    completed = subprocess.run([command, "--version"], env=env, capture_output=True,
+                        text=True, timeout=10, check=True,
+                        **({"creationflags": subprocess.CREATE_NO_WINDOW} if os.name == "nt" else {}))
+                    prepared.settings["engine_version"] = completed.stdout.splitlines()[0]
+                except (OSError, subprocess.SubprocessError, IndexError):
+                    pass  # Optional version metadata must not discard successful OCR.
         yield prepared

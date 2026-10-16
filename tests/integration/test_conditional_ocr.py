@@ -125,7 +125,11 @@ def test_existing_ocr_layer_is_masked_before_recognition(tmp_path, monkeypatch):
 
 
 @pytest.mark.parametrize("overlay_failure", [False, True])
-def test_unreadable_native_text_is_replaced_only_after_successful_ocr(tmp_path, monkeypatch, overlay_failure):
+@pytest.mark.parametrize("version_command", [None, "missing-tesseract-version-executable"])
+def test_unreadable_native_text_is_replaced_only_after_successful_ocr(tmp_path, monkeypatch, overlay_failure, version_command):
+    monkeypatch.setattr(ocr, "runtime", lambda: (version_command, {}, None))
+    if version_command is None:
+        monkeypatch.setattr(ocr.subprocess, "run", lambda *args, **kwargs: pytest.fail("A missing optional executable must not be invoked"))
     path = tmp_path / "broken-encoding.pdf"
     with pymupdf.open() as document:
         page = document.new_page(width=600, height=800)
@@ -151,6 +155,7 @@ def test_unreadable_native_text_is_replaced_only_after_successful_ocr(tmp_path, 
         else:
             assert "Recovered coverage" in prepared.document[0].get_text()
             assert "cid:" not in prepared.document[0].get_text()
+            assert prepared.summary()["engine_version"] == "unavailable"
         assert prepared.document[0].get_drawings(), "Native table/rule graphics must survive"
         assert prepared.pages[0]["replace_native_text"]
     with pymupdf.open(path) as original:
